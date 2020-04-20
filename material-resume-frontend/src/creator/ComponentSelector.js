@@ -1,7 +1,10 @@
 import React from 'react';
 import Tab from '@material/react-tab';
 import TabBar from '@material/react-tab-bar';
+
 import './ComponentSelector.scss';
+
+import CardComponent from './components/CardComponent.js';
 
 export default class ComponentSelector extends React.Component {
   state = {activeIndex: 0};
@@ -22,7 +25,7 @@ export default class ComponentSelector extends React.Component {
           </Tab>
         </TabBar>
         <div class='component-selector-components'>
-
+          <CardComponent/>
         </div>
       </div>
     )

@@ -6,8 +6,10 @@ import store from './app/store';
 import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
 
+
 ReactDOM.render(
   <Provider store={store}>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
     <App />
   </Provider>,
   document.getElementById('root')

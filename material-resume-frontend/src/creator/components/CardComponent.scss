@@ -1,0 +1,29 @@
+.card-component{
+
+    .mdc-card{
+        height: 100%;
+        width: 100%;
+        padding: 16px;
+
+        .mdc-typography--body2{
+            margin: 0px
+        }
+
+        .mdc-typography--headline6{
+            margin: 0px
+        }
+    }
+}
+
+.card-location-date{
+    display: flex;
+    justify-content: space-between;
+}
+
+.card-date-text{
+    display:flex;
+
+    .material-icons{
+        font-size: 0.875rem;
+    }
+}

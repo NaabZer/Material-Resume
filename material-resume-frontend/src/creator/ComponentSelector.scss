@@ -2,7 +2,18 @@
     padding: 8px;
 
     .component-selector-components{
-        height: 200px;
+        display:flex;
+        justify-content: flex-start;
+        align-items: center;
+
         background: gray;
+
+        height: 200px;
+
+        > * {
+            margin: 8px;
+            height: 90%;
+            width: 200px;
+        }
     }
 }
