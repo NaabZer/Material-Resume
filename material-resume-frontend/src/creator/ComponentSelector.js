@@ -12,7 +12,7 @@ export default class ComponentSelector extends React.Component {
   handleActiveIndexUpdate = (activeIndex) => this.setState({activeIndex});
   render(){
     return (
-      <div class='component-selector'>
+      <div className='component-selector'>
         <TabBar
           activeIndex={this.state.activeIndex}
           handleActiveIndexUpdate={this.handleActiveIndexUpdate}
@@ -24,8 +24,15 @@ export default class ComponentSelector extends React.Component {
             <span className='mdc-tab__text-label'>Two</span>
           </Tab>
         </TabBar>
-        <div class='component-selector-components'>
-          <CardComponent/>
+        <div className='component-selector-components'>
+          <div 
+            className="droppable-element"
+            draggable={true}
+            unselectable="on"
+            onDragStart={e => e.dataTransfer.setData("text/plain", "")}
+          >
+            <CardComponent/>
+          </div>
         </div>
       </div>
     )

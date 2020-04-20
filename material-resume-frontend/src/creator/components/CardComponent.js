@@ -20,20 +20,25 @@ import MaterialIcon from '@material/react-material-icon';
 
 
 export default class CardComponent extends React.Component {
+  constructor(props){
+    super(props)
+    console.log(props.key);
+  }
+
   render(){
     return (
-      <div class='card-component'>
-        <Card>
-          <Headline6>Title</Headline6>
-          <div class='card-location-date'>
-            <Body2>Location</Body2>
-            <div class='card-date-text'>
-              <Body2>Date</Body2>
-            </div>
+      <Card 
+        className='card-component'
+      >
+        <Headline6>Title</Headline6>
+        <div className='card-location-date'>
+          <Body2>Location</Body2>
+          <div className='card-date-text'>
+            <Body2>Date</Body2>
           </div>
-          <Body1>Job Description goes here lalalalallala</Body1>
-        </Card>
-      </div>
+        </div>
+        <Body1>Job Description goes here lalalalallala</Body1>
+      </Card>
     )
   }
 }
