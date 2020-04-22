@@ -1,5 +1,4 @@
 import React from 'react';
-import ResumeGrid from './ResumeGrid';
 import ComponentSelector from './ComponentSelector';
 
 export default class CreatorPage extends React.Component {
@@ -10,7 +9,8 @@ export default class CreatorPage extends React.Component {
     return (
       <div>
         <ComponentSelector/>
-        <ResumeGrid/>
+        <div style={{background: "blue"}}>
+        </div>
       </div>
     )
   }
