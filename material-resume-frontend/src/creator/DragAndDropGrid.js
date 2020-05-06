@@ -79,7 +79,6 @@ class DragAndDropGrid extends React.Component {
 
 
   render(){
-    console.log(this.props.grids)
     const children = this.props.grids[this.props.componentid].map(elemId => {
       const elem = this.props.components[elemId]
       const style = {
@@ -99,7 +98,6 @@ class DragAndDropGrid extends React.Component {
         </DraggableComponent>
       )
     })
-    console.log(children);
 
     const rowStyle = "minmax(0, 1fr) ".repeat(this.rows);
     const colStyle = "minmax(0, 1fr) ".repeat(this.cols);

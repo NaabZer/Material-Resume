@@ -3,7 +3,8 @@ import {COMPONENT_ADD, COMPONENT_DELETE, COMPONENT_RESIZE, COMPONENT_MOVE} from 
 const initialState = {
   components: {},
   grids: {
-    0: []
+    0: [],
+    1: []
   },
 }
 
@@ -36,8 +37,16 @@ export function components(state = initialState, action){
       let {id, containerId, col, row} = action;
 
       var gridState = state.grids;
-      if(state.components[id].containerId !== containerId){
-        //todo: fix moving between grids
+      const old_container_id = state.components[id].containerId;
+      if(old_container_id !== containerId){
+        const old_id_grid = state.grids[old_container_id].filter( l_id => {
+          return l_id !== id
+        });
+        const new_id_grid = [...state.grids[containerId] + id];
+        gridState = {
+          [old_container_id]: old_id_grid,
+          [containerId]: new_id_grid
+        }
       }
 
       return Object.assign({}, state, {
