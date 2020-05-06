@@ -16,6 +16,7 @@ export default class ComponentSelector extends React.Component {
 
   onComponentDrop = (comp, e, data) => {
     comp.resetPos();
+    this.props.componentdropcallback(comp, e, data);
   }
 
 
@@ -37,8 +38,8 @@ export default class ComponentSelector extends React.Component {
         </TabBar>
         <div className='component-selector-components'>
           <DraggableComponent
-            onDrop={this.onComponentDrop}
-            onDrag={this.onComponentDrag}
+            ondropcallback={this.onComponentDrop}
+            ondragcallback={this.onComponentDrag}
           >
             <CardComponent/>
           </DraggableComponent>

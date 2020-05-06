@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.scss';
+import './stylesheets/main.scss';
+import './stylesheets/components/drag-and-drop-grid.scss';
 import App from './App';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';

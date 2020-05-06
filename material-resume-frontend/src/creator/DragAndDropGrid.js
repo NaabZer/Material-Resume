@@ -1,7 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
-export default class DragAndDropGrid extends React.Component {
+import { connect } from 'react-redux';
+import { addComponent } from '../actions/components';
+import DraggableComponent from './components/DraggableComponent';
+import CardComponent from './components/CardComponent.js';
+ 
+class DragAndDropGrid extends React.Component {
   constructor(props){
     super(props)
 
@@ -20,7 +24,7 @@ export default class DragAndDropGrid extends React.Component {
   static propTypes = {
     columns: PropTypes.number.isRequired,
     rows: PropTypes.number.isRequired,
-    isGrid: PropTypes.bool.isRequired
+    isgrid: PropTypes.bool.isRequired
   }
 
   getGridPosition = (x, y) =>{
@@ -39,8 +43,8 @@ export default class DragAndDropGrid extends React.Component {
     var col = -1;
     // This function assumes that you can not have overlapping grids.
     this.children.forEach(child => {
-      if(child.props.isGrid){
-        const [elem, childRow, childCol] = child.getDeepestGridElemAndPos(x, y)
+      if(child.props.isgrid){
+        const [elem, childCol, childRow] = child.getDeepestGridElemAndPos(x, y)
         if(childRow >= 0 && childRow < this.rows &&
            childCol >= 0 && childCol < this.cols){
           childE = elem;
@@ -54,24 +58,79 @@ export default class DragAndDropGrid extends React.Component {
     if(childE !== null){
       return [childE, row, col];
     } else{
-      const [row, col] = this.getGridPosition(x, y);
-      if(row >= 0 && col < this.rows &&
+      const [col, row] = this.getGridPosition(x, y);
+      if(row >= 0 && row < this.rows &&
          col >= 0 && col < this.cols){
-        return [this, row, col];
+        return [this, col, row];
       } else{
         return [null, null, null];
       }
     }
   }
 
+  componentDragCallback = (elem, e, data) =>{
+    this.props.componentdragcallback(elem, e, data);
+  }
+
+  componentDropCallback = (elem, e, data) =>{
+    elem.resetPos();
+    this.props.componentdropcallback(elem, e, data);
+  }
+
 
   render(){
+    console.log(this.props.grids)
+    const children = this.props.grids[this.props.componentid].map(elemId => {
+      const elem = this.props.components[elemId]
+      const style = {
+        gridRow: elem.row + " / span " + elem.width,
+        gridColumn: elem.col + " / span " + elem.height
+      }
+
+      return (
+        <DraggableComponent
+          key={elemId}
+          componentid={elemId}
+          ondragcallback={e => {}}
+          ondropcallback={this.componentDropCallback}
+          style={style}
+        >
+          <CardComponent/>
+        </DraggableComponent>
+      )
+    })
+    console.log(children);
+
+    const rowStyle = "minmax(0, 1fr) ".repeat(this.rows);
+    const colStyle = "minmax(0, 1fr) ".repeat(this.cols);
+    const {grids, components, isgrid, style, addcomponent, 
+      componentdragcallback, componentdropcallback, ...props} = this.props
     return (
-      <div {...this.props}
+      <div 
+        {...props}
         ref={this.divRef}
+        className="drag-and-drop-grid"
+        style={{
+          ...style,
+          gridTemplateColumns: colStyle,
+          gridTemplateRows: rowStyle,
+          gap: "8px"
+        }}
       >
-        {this.props.children}
-  console  </div>
+        {children}
+      </div>
     )
   }
 }
+
+const mapStateToProps = state => ({
+  components: state.components.components,
+  grids: state.components.grids
+});
+
+const mapDispatchToProps = dispatch => ({
+  addcomponent: (componentType, containerId, row, col, width, height) => 
+    dispatch(addComponent(componentType, containerId, row, col, width, height))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps, null, {forwardRef: true})(DragAndDropGrid);

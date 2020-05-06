@@ -1,20 +1,26 @@
 export const COMPONENT_ADD = "COMPONENT_ADD"
+export const COMPONENT_MOVE = "COMPONENT_MOVE"
 export const COMPONENT_RESIZE = "COMPONENT_RESIZE"
 export const COMPONENT_DELETE = "COMPONENT_DELETE"
 
-let nextCompId = 0;
-export const addComponent = (componentType, containerId, row, col, width, height) => ({
-  type: 'COMPONENT_ADD',
+let nextCompId = 1;
+export const addComponent = (componentType, containerId, col, row, width, height) => ({
+  type: COMPONENT_ADD,
   id: nextCompId++,
-  componentType, containerId, row, col, width, height
+  componentType, containerId, col, row, width, height
+})
+
+export const moveComponent = (id, containerId, col, row) => ({
+  type: COMPONENT_MOVE,
+  id, col, row
 })
 
 export const resizeComponent = (id, width, height) => ({
-  type: 'COMPONENT_RESIZE',
-  width, height
+  type: COMPONENT_RESIZE,
+  id, width, height
 })
 
 export const deleteComponent = (id) => ({
-  type: 'COMPONENT_DELETE',
+  type: COMPONENT_DELETE,
   id
 })
