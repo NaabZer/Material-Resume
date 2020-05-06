@@ -17,6 +17,8 @@ class CreatorPage extends React.Component {
       col: 1,
       width: 1,
       height: 1,
+      x: 0,
+      y: 0,
     }
   }
 
@@ -42,6 +44,7 @@ class CreatorPage extends React.Component {
       }
     });
     
+    this.setState({x: x, y: y});
     if(childE !== null){
       if(type === 0){
         this.props.addcomponent(1, childE.props.componentid, col, row, 1, 1);
@@ -71,6 +74,11 @@ class CreatorPage extends React.Component {
   render(){
     return (
       <div>
+        <div
+          style={{
+            position: "fixed", transform: "translate("+this.state.x+"px, "+this.state.y+"px)",
+            background: 'blue', width: '10px', height: '10px', top: "0px", left: "0px"}}
+        />
         <ComponentSelector
           componentdropcallback={(c, e, d) => this.onDrop(c, e, d, 0)}
         />
