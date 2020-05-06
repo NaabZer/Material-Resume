@@ -5,9 +5,20 @@ import TabBar from '@material/react-tab-bar';
 import './ComponentSelector.scss';
 
 import CardComponent from './components/CardComponent.js';
+import DraggableComponent from './components/DraggableComponent.js';
 
 export default class ComponentSelector extends React.Component {
   state = {activeIndex: 0};
+  
+  onComponentDrag = (comp, e, data) => {
+    
+  }
+
+  onComponentDrop = (comp, e, data) => {
+    comp.resetPos();
+  }
+
+
 
   handleActiveIndexUpdate = (activeIndex) => this.setState({activeIndex});
   render(){
@@ -25,14 +36,12 @@ export default class ComponentSelector extends React.Component {
           </Tab>
         </TabBar>
         <div className='component-selector-components'>
-          <div 
-            className="droppable-element"
-            draggable={true}
-            unselectable="on"
-            onDragStart={e => e.dataTransfer.setData("text/plain", "")}
+          <DraggableComponent
+            onDrop={this.onComponentDrop}
+            onDrag={this.onComponentDrag}
           >
             <CardComponent/>
-          </div>
+          </DraggableComponent>
         </div>
       </div>
     )
