@@ -15,7 +15,8 @@ class DraggableComponent extends React.Component {
   static propTypes = {
     ondropcallback: PropTypes.func.isRequired,
     ondragcallback: PropTypes.func.isRequired,
-    resizable: PropTypes.bool
+    resizable: PropTypes.bool,
+    componentid: PropTypes.number.isRequired,
   }
 
   resetPos = () =>{
@@ -45,14 +46,22 @@ class DraggableComponent extends React.Component {
   }
 
   onResize = (e, data) => {
+    // Ugly hack since react-resizable needs a size, but I need 100%
+    // By doing this, and having a percentage size, it gives changes in size
     const delta_x = data.size.width - 100;
     const delta_y = data.size.height - 100;
     this.setState({w: this.state.w + delta_x, h: this.state.h + delta_y})
   }
 
   onResizeStop = (e, data) => {
+    const rect = this.ref.current.getBoundingClientRect()
+    const newData = {
+      width: rect.width,
+      height: rect.height,
+      id: this.props.componentid
+    }
 
-    this.resetSize();
+    this.props.onresizestopcallback(this, e, newData);
   }
 
   render(){

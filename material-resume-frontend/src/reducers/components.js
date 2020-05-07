@@ -62,9 +62,19 @@ export function components(state = initialState, action){
         grids: gridState
       });
     }
+    case COMPONENT_RESIZE: {
+      let {id, width, height} = action;
+      return Object.assign({}, state, {
+        ...state,
+        components: {
+          ...state.components,
+          [id]: {
+            ...state.components[id], width, height
+          }
+        },
+      });
+    }
     case COMPONENT_DELETE:
-      return state
-    case COMPONENT_RESIZE:
       return state
     default:
       return state

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { addComponent } from '../actions/components';
+import { addComponent, resizeComponent } from '../actions/components';
 import DraggableComponent from './components/DraggableComponent';
 import CardComponent from './components/CardComponent.js';
  
@@ -24,15 +24,19 @@ class DragAndDropGrid extends React.Component {
   static propTypes = {
     columns: PropTypes.number.isRequired,
     rows: PropTypes.number.isRequired,
-    isgrid: PropTypes.bool.isRequired
+    isgrid: PropTypes.bool.isRequired,
+    componentdragcallback: PropTypes.func.isRequired,
+    componentdropcallback: PropTypes.func.isRequired,
   }
 
   getGridPosition = (x, y) =>{
-    const pos = this.divRef.current.getBoundingClientRect();
-    const relativeX = x - pos.x;
-    const relativeY = y - pos.y;
-    const col = Math.round(relativeX/(pos.width/this.cols))
-    const row = Math.round(relativeY/(pos.height/this.rows))
+    const rect = this.divRef.current.getBoundingClientRect();
+    const colSize = rect.width/this.cols
+    const rowSize = rect.height/this.rows;
+    const relativeX = x - rect.x;
+    const relativeY = y - rect.y;
+    const col = Math.round(relativeX/colSize)
+    const row = Math.round(relativeY/rowSize)
 
     return [col, row]
   }
@@ -68,6 +72,16 @@ class DragAndDropGrid extends React.Component {
     }
   }
 
+  getClosestRowColSize = (width, height) => {
+    const rect = this.divRef.current.getBoundingClientRect();
+    const colSize = rect.width/this.cols
+    const rowSize = rect.height/this.rows;
+    const closestCol = Math.min(this.cols, Math.max(1, Math.round(width/colSize)));
+    const closestRow = Math.min(this.rows, Math.max(1, Math.round(height/rowSize)));
+
+    return [closestCol, closestRow];
+  }
+
   componentDragCallback = (elem, e, data) =>{
     this.props.componentdragcallback(elem, e, data);
   }
@@ -77,14 +91,20 @@ class DragAndDropGrid extends React.Component {
     this.props.componentdropcallback(elem, e, data);
   }
 
+  componentResizeStopCallback = (elem, e, data) =>{
+    elem.resetSize();
+    const [width, height] = this.getClosestRowColSize (data.width, data.height);
+    this.props.resizeComponent(data.id, width, height)
+  };
+
 
   render(){
     const grid = this.props.grids[this.props.componentid] || []
     const children = grid.map(elemId => {
       const elem = this.props.components[elemId]
       const style = {
-        gridRow: (elem.row + 1) + " / span " + elem.width,
-        gridColumn: (elem.col + 1) + " / span " + elem.height
+        gridRow: (elem.row + 1) + " / span " + elem.height,
+        gridColumn: (elem.col + 1) + " / span " + elem.width
       }
 
       return (
@@ -93,6 +113,7 @@ class DragAndDropGrid extends React.Component {
           componentid={elemId}
           ondragcallback={e => {}}
           ondropcallback={this.componentDropCallback}
+          onresizestopcallback={this.componentResizeStopCallback}
           resizable={true}
           style={style}
         >
@@ -103,8 +124,9 @@ class DragAndDropGrid extends React.Component {
 
     const rowStyle = "minmax(0, 1fr) ".repeat(this.rows);
     const colStyle = "minmax(0, 1fr) ".repeat(this.cols);
-    const {grids, components, isgrid, style, addcomponent, 
-      componentdragcallback, componentdropcallback, ...props} = this.props
+    const {grids, components, isgrid, style, addcomponent, resizeComponent,
+      componentdragcallback, componentdropcallback,
+      ...props} = this.props
     return (
       <div 
         {...props}
@@ -125,12 +147,14 @@ class DragAndDropGrid extends React.Component {
 
 const mapStateToProps = state => ({
   components: state.components.components,
-  grids: state.components.grids
+  grids: state.components.grids,
+  drag: state.dragAndDrop
 });
 
 const mapDispatchToProps = dispatch => ({
   addcomponent: (componentType, containerId, row, col, width, height) => 
-    dispatch(addComponent(componentType, containerId, row, col, width, height))
+    dispatch(addComponent(componentType, containerId, row, col, width, height)),
+  resizeComponent: (id, width, height) => dispatch(resizeComponent(id, width, height))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps, null, {forwardRef: true})(DragAndDropGrid);

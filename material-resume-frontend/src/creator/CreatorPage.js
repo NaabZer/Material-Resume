@@ -2,7 +2,7 @@ import React from 'react';
 import ComponentSelector from './ComponentSelector';
 import DragAndDropGrid from './DragAndDropGrid';
 import { connect } from 'react-redux';
-import { addComponent, moveComponent } from '../actions/components';
+import { addComponent, moveComponent, resizeComponent } from '../actions/components';
 
 class CreatorPage extends React.Component {
   constructor(props){
@@ -45,9 +45,12 @@ class CreatorPage extends React.Component {
     this.setState({x: 0, y: 0});
     if(childE !== null){
       if(type === 0){
-        this.props.addcomponent(1, childE.props.componentid, col, row, 2, 3);
+        const [width, height] = childE.getClosestRowColSize(200, 200);
+        this.props.addcomponent(1, childE.props.componentid, col, row, width, height);
       } else if (type ===1){
+        const [width, height] = childE.getClosestRowColSize(this.props.drag.width, this.props.drag.height);
         this.props.movecomponent(data.id, childE.props.componentid, col, row);
+        this.props.resizeComponent(data.id, width, height);
       }
     } 
   }
@@ -116,8 +119,8 @@ class CreatorPage extends React.Component {
         <DragAndDropGrid 
           componentdropcallback={(c, e, d) => this.onDrop(c, e, d, 1)}
           isgrid={true}
-          rows={6}
-          columns={12}
+          rows={3}
+          columns={3}
           componentid={1}
           ref={ref => this.grid2 = ref} 
           name="red" 
@@ -137,7 +140,8 @@ const mapDispatchToProps = dispatch => ({
   addcomponent: (componentType, containerId, row, col, width, height) => 
     dispatch(addComponent(componentType, containerId, row, col, width, height)),
   movecomponent: (id, containerId, row, col) => 
-    dispatch(moveComponent(id, containerId, row, col))
+    dispatch(moveComponent(id, containerId, row, col)),
+  resizeComponent: (id, width, height) => dispatch(resizeComponent(id, width, height))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreatorPage);
