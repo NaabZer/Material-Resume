@@ -6,7 +6,7 @@ export const COMPONENT_DELETE = "COMPONENT_DELETE"
 let nextCompId = 2;
 export const addComponent = (componentType, containerId, col, row, width, height) => ({
   type: COMPONENT_ADD,
-  id: nextCompId++,
+  id: Number(nextCompId++),
   componentType, containerId, col, row, width, height
 })
 

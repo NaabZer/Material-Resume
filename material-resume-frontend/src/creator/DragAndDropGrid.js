@@ -79,7 +79,8 @@ class DragAndDropGrid extends React.Component {
 
 
   render(){
-    const children = this.props.grids[this.props.componentid].map(elemId => {
+    const grid = this.props.grids[this.props.componentid] || []
+    const children = grid.map(elemId => {
       const elem = this.props.components[elemId]
       const style = {
         gridRow: (elem.row + 1) + " / span " + elem.width,

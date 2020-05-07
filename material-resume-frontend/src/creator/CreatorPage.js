@@ -35,7 +35,6 @@ class CreatorPage extends React.Component {
         const [elem, childCol, childRow] = child.getDeepestGridElemAndPos(x, y)
         if(elem !== null && childRow >= 0 && childRow < elem.rows &&
           childCol >= 0 && childCol < elem.cols){
-          console.log(elem.props.name + ": " +childRow + ", " + childCol);
           childE = elem;
           col = childCol;
           row = childRow;
@@ -44,17 +43,14 @@ class CreatorPage extends React.Component {
       }
     });
     
-    this.setState({x: x, y: y});
+    this.setState({x: 0, y: 0});
     if(childE !== null){
       if(type === 0){
         this.props.addcomponent(1, childE.props.componentid, col, row, 1, 1);
       } else if (type ===1){
-        console.log("this is id: " + childE.props.componentid);
         this.props.movecomponent(data.id, childE.props.componentid, col, row);
       }
-    } else{
-      console.log("No grid clicked");
-    }
+    } 
   }
 
   handleChange = e => {
@@ -62,7 +58,7 @@ class CreatorPage extends React.Component {
     const value = target.value
     const name = target.name
 
-    this.setState({[name]: value})
+    this.setState({[name]: Number(value)})
   }
 
   addComp = e =>{

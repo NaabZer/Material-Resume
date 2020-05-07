@@ -42,8 +42,11 @@ export function components(state = initialState, action){
         const old_id_grid = state.grids[old_container_id].filter( l_id => {
           return l_id !== id
         });
-        const new_id_grid = [...state.grids[containerId] + id];
+        console.log(old_id_grid)
+        const new_id_grid = state.grids[containerId].concat([Number(id)]);
+        console.log(new_id_grid)
         gridState = {
+          ...gridState,
           [old_container_id]: old_id_grid,
           [containerId]: new_id_grid
         }
