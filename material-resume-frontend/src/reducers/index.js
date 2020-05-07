@@ -1,8 +1,11 @@
-import { components } from './components';
 import { combineReducers } from 'redux'
 
+import { components } from './components';
+import { dragAndDrop } from './dragAndDrop';
+
 const reducer = combineReducers({
-  components
+  components,
+  dragAndDrop
 });
 
 export default reducer

@@ -1,13 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {DraggableCore} from 'react-draggable';
-import {Resizable} from 'react-resizable';
+import { DraggableCore } from 'react-draggable';
+import { Resizable } from 'react-resizable';
 import { connect } from 'react-redux';
+import { startDrag, endDrag } from '../../actions/dragAndDrop';
 
 class DraggableComponent extends React.Component {
   constructor(props){
     super(props)
     this.state = {x: 0, y: 0, w: 0, h: 0}
+    this.ref = React.createRef();
   }
 
   static propTypes = {
@@ -28,7 +30,13 @@ class DraggableComponent extends React.Component {
     if('componentid' in this.props){
       data.id = this.props.componentid;
     }
+    this.props.endDrag();
     this.props.ondropcallback(this, e, data)
+  }
+
+  onDragStart = (e, data) => {
+    const rect = this.ref.current.getBoundingClientRect()
+    this.props.startDrag(rect.width, rect.height, data.x - rect.x, data.y - rect.y)
   }
 
   onDrag = (e, data) => {
@@ -48,7 +56,8 @@ class DraggableComponent extends React.Component {
   }
 
   render(){
-    const {style, ondropcallback, ondragcallback, resizable, ...props} = this.props
+    const {style, ondropcallback, ondragcallback, resizable, 
+           startDrag, endDrag, ...props } = this.props;
     var new_style = {
       ...style, transform: "translate("+this.state.x+"px, "+this.state.y+"px)",
       width:  "calc(100% + " + this.state.w + "px)",
@@ -57,6 +66,7 @@ class DraggableComponent extends React.Component {
     if(resizable){
       return (
         <DraggableCore
+          onStart={this.onDragStart}
           onStop={this.onDrop}
           onDrag={this.onDrag}
           cancel=".react-resizable-handle"
@@ -70,6 +80,7 @@ class DraggableComponent extends React.Component {
             <div
               style={new_style}
               {...props}
+              ref={this.ref}
             >
               {props.children}
             </div>
@@ -79,6 +90,7 @@ class DraggableComponent extends React.Component {
     } else{
       return(
         <DraggableCore
+          onStart={this.onDragStart}
           onStop={this.onDrop}
           onDrag={this.onDrag}
           cancel=".react-resizable-handle"
@@ -86,6 +98,7 @@ class DraggableComponent extends React.Component {
           <div
             style={new_style}
             {...props}
+            ref={this.ref}
           >
             {props.children}
           </div>
@@ -94,3 +107,11 @@ class DraggableComponent extends React.Component {
     }
   }
 }
+const mapDispatchToProps = dispatch => ({
+  startDrag: (width, height, grab_x, grab_y) => 
+    dispatch(startDrag(width, height, grab_x, grab_y)),
+  endDrag: () => 
+    dispatch(endDrag()),
+});
+
+export default connect(null, mapDispatchToProps)(DraggableComponent)
