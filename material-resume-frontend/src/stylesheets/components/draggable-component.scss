@@ -1,0 +1,22 @@
+.draggable-component-uneditable {
+    > .react-resizable-handle{
+        display: none;
+    }
+}
+
+.draggable-component-editable {
+    > .react-resizable-handle{
+        display: none;
+    }
+
+    &:hover .react-resizable-handle{
+        display: inherit;
+    }
+
+    &.draggable-component-resizing{
+        > .react-resizable-handle{
+            display:inherit;
+        }
+    }
+
+}

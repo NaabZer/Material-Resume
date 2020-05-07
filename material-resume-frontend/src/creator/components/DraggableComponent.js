@@ -4,18 +4,19 @@ import { DraggableCore } from 'react-draggable';
 import { Resizable } from 'react-resizable';
 import { connect } from 'react-redux';
 import { startDrag, endDrag } from '../../actions/dragAndDrop';
+import '../../stylesheets/components/draggable-component.scss';
 
 class DraggableComponent extends React.Component {
   constructor(props){
     super(props)
-    this.state = {x: 0, y: 0, w: 0, h: 0}
+    this.state = {x: 0, y: 0, w: 0, h: 0, resizing: false}
     this.ref = React.createRef();
   }
 
   static propTypes = {
     ondropcallback: PropTypes.func.isRequired,
     ondragcallback: PropTypes.func.isRequired,
-    resizable: PropTypes.bool,
+    editable: PropTypes.bool,
     componentid: PropTypes.number.isRequired,
   }
 
@@ -60,61 +61,60 @@ class DraggableComponent extends React.Component {
       height: rect.height,
       id: this.props.componentid
     }
-
+    this.setState({resizing: false});
     this.props.onresizestopcallback(this, e, newData);
+  }
+  
+  onResizeStart = (e, data) => {
+    this.setState({resizing: true});
   }
 
   render(){
     const {style, ondropcallback, ondragcallback, resizable, 
-           startDrag, endDrag, ...props } = this.props;
+           startDrag, endDrag, className, editable, ...props } = this.props;
+    var classNames = className || "";
+
+    if(editable === true){
+      classNames += " draggable-component-editable";
+    } else{
+      classNames += " draggable-component-uneditable";
+    }
+
+    if(this.state.resizing === true){
+      classNames += " draggable-component-resizing";
+    }
+
     var new_style = {
       ...style, transform: "translate("+this.state.x+"px, "+this.state.y+"px)",
       width:  "calc(100% + " + this.state.w + "px)",
       height: "calc(100% + " + this.state.h + "px)",
       overflow: 'hidden'
     }
-    if(resizable){
-      return (
-        <DraggableCore
-          onStart={this.onDragStart}
-          onStop={this.onDrop}
-          onDrag={this.onDrag}
-          cancel=".react-resizable-handle"
-        >
-          <Resizable
-            onResize={this.onResize}
-            onResizeStop={this.onResizeStop}
-            width={100}
-            height={100}
-          >
-            <div
-              style={new_style}
-              {...props}
-              ref={this.ref}
-            >
-              {props.children}
-            </div>
-          </Resizable>
-        </DraggableCore>
-      );
-    } else{
-      return(
-        <DraggableCore
-          onStart={this.onDragStart}
-          onStop={this.onDrop}
-          onDrag={this.onDrag}
-          cancel=".react-resizable-handle"
+    return (
+      <DraggableCore
+        onStart={this.onDragStart}
+        onStop={this.onDrop}
+        onDrag={this.onDrag}
+        cancel=".react-resizable-handle"
+      >
+        <Resizable
+          onResize={this.onResize}
+          onResizeStop={this.onResizeStop}
+          onResizeStart={this.onResizeStart}
+          width={100}
+          height={100}
         >
           <div
             style={new_style}
-            {...props}
+            className={classNames}
             ref={this.ref}
+            {...props}
           >
             {props.children}
           </div>
-        </DraggableCore>
-      );
-    }
+        </Resizable>
+      </DraggableCore>
+    );
   }
 }
 const mapDispatchToProps = dispatch => ({
