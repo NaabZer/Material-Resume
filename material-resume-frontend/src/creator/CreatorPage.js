@@ -124,7 +124,7 @@ class CreatorPage extends React.Component {
           componentid={1}
           ref={ref => this.grid2 = ref} 
           name="red" 
-          style={{background: "red", height: '400px'}}
+          style={{background: "red", height: '200px'}}
         />
       </div>
     )

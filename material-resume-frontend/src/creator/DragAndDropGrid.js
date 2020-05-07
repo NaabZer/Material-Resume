@@ -136,7 +136,8 @@ class DragAndDropGrid extends React.Component {
           ...style,
           gridTemplateColumns: colStyle,
           gridTemplateRows: rowStyle,
-          gap: "8px"
+          gap: "8px",
+          padding: '8px',
         }}
       >
         {children}
