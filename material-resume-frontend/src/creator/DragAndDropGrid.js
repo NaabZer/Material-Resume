@@ -31,8 +31,8 @@ class DragAndDropGrid extends React.Component {
     const pos = this.divRef.current.getBoundingClientRect();
     const relativeX = x - pos.x;
     const relativeY = y - pos.y;
-    const col = Math.floor(relativeX/(pos.width/this.cols))
-    const row = Math.floor(relativeY/(pos.height/this.rows))
+    const col = Math.round(relativeX/(pos.width/this.cols))
+    const row = Math.round(relativeY/(pos.height/this.rows))
 
     return [col, row]
   }

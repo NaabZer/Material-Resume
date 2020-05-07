@@ -22,8 +22,8 @@ class CreatorPage extends React.Component {
   }
 
   onDrop = (comp, e, data, type) => {
-    const x = data.x;
-    const y = data.y;
+    const x = data.x - this.props.drag.grab_x;
+    const y = data.y - this.props.drag.grab_y;
     var childE = null
     var row = -1;
     var col = -1;
@@ -129,7 +129,8 @@ class CreatorPage extends React.Component {
 }
 const mapStateToProps = state => ({
   components: state.components.components,
-  grids: state.components.grids
+  grids: state.components.grids,
+  drag: state.dragAndDrop
 });
 
 const mapDispatchToProps = dispatch => ({
