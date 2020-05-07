@@ -93,6 +93,7 @@ class DragAndDropGrid extends React.Component {
           componentid={elemId}
           ondragcallback={e => {}}
           ondropcallback={this.componentDropCallback}
+          resizable={true}
           style={style}
         >
           <CardComponent/>

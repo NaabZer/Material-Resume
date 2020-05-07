@@ -1,7 +1,6 @@
 import React from 'react';
 import ComponentSelector from './ComponentSelector';
 import DragAndDropGrid from './DragAndDropGrid';
-import DraggableComponent from './components/DraggableComponent';
 import { connect } from 'react-redux';
 import { addComponent, moveComponent } from '../actions/components';
 
@@ -46,7 +45,7 @@ class CreatorPage extends React.Component {
     this.setState({x: 0, y: 0});
     if(childE !== null){
       if(type === 0){
-        this.props.addcomponent(1, childE.props.componentid, col, row, 1, 1);
+        this.props.addcomponent(1, childE.props.componentid, col, row, 2, 3);
       } else if (type ===1){
         this.props.movecomponent(data.id, childE.props.componentid, col, row);
       }
@@ -114,7 +113,6 @@ class CreatorPage extends React.Component {
           name="green" 
           style={{background: "green", height: '400px'}}
         />
-        <div style={{background: "grey", height: '200px'}}/>
         <DragAndDropGrid 
           componentdropcallback={(c, e, d) => this.onDrop(c, e, d, 1)}
           isgrid={true}
