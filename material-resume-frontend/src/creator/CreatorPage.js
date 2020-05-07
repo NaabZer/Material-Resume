@@ -10,15 +10,6 @@ class CreatorPage extends React.Component {
 
     this.grid1 = null;
     this.grid2 = null;
-    this.state = {
-      type: 1,
-      row: 1,
-      col: 1,
-      width: 1,
-      height: 1,
-      x: 0,
-      y: 0,
-    }
   }
 
   onDrop = (comp, e, data, type) => {
@@ -55,57 +46,12 @@ class CreatorPage extends React.Component {
     } 
   }
 
-  handleChange = e => {
-    const target = e.target
-    const value = target.value
-    const name = target.name
-
-    this.setState({[name]: Number(value)})
-  }
-
-  addComp = e =>{
-    e.preventDefault();
-    const {type, row, col, width, height} = this.state;
-    this.props.addcomponent(type, 0, row, col, width, height);
-  }
-
   render(){
     return (
       <div>
-        <div
-          style={{
-            position: "fixed", transform: "translate("+this.state.x+"px, "+this.state.y+"px)",
-            background: 'blue', width: '10px', height: '10px', top: "0px", left: "0px"}}
-        />
         <ComponentSelector
           componentdropcallback={(c, e, d) => this.onDrop(c, e, d, 0)}
         />
-        <form
-          onSubmit={this.addComp}
-        >
-          <input type='number' name='type'
-            value={this.state.type}
-            onChange={this.handleChange}
-          />
-          <input type='number' name='row'
-            value={this.state.row}
-            onChange={this.handleChange}
-          />
-          <input type='number' name='col'
-            value={this.state.col}
-            onChange={this.handleChange}
-          />
-          <input type='number' name='width'
-            value={this.state.width}
-            onChange={this.handleChange}
-          />
-          <input type='number' name='height'
-            value={this.state.height}
-            onChange={this.handleChange}
-          />
-
-          <input type="submit" value="Submit" />
-        </form>
         <DragAndDropGrid 
           componentdropcallback={(c, e, d) => this.onDrop(c, e, d, 1)}
           isgrid={true}
