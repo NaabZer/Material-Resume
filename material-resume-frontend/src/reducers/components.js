@@ -42,9 +42,7 @@ export function components(state = initialState, action){
         const old_id_grid = state.grids[old_container_id].filter( l_id => {
           return l_id !== id
         });
-        console.log(old_id_grid)
         const new_id_grid = state.grids[containerId].concat([Number(id)]);
-        console.log(new_id_grid)
         gridState = {
           ...gridState,
           [old_container_id]: old_id_grid,
@@ -74,8 +72,23 @@ export function components(state = initialState, action){
         },
       });
     }
-    case COMPONENT_DELETE:
-      return state
+    case COMPONENT_DELETE: {
+      let {id} = action;
+      // TODO: Be able to remove grid objects containing stuff
+      const containerId = state.components[id].containerId;
+      const {[id]:_ , ...newComponents} = state.components;
+      const newGrid = state.grids[containerId].filter(val => {
+        return val !== id;
+      });
+      return Object.assign({}, state, {
+        ...state,
+        components: newComponents,
+        grids:{
+          ...state.grids,
+          [containerId]: newGrid
+        }
+      });
+    }
     default:
       return state
   }

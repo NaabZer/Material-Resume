@@ -22,7 +22,6 @@ import MaterialIcon from '@material/react-material-icon';
 export default class CardComponent extends React.Component {
   constructor(props){
     super(props)
-    console.log(props.key);
   }
 
   render(){

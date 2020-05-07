@@ -4,6 +4,9 @@ import { DraggableCore } from 'react-draggable';
 import { Resizable } from 'react-resizable';
 import { connect } from 'react-redux';
 import { startDrag, endDrag } from '../../actions/dragAndDrop';
+import { deleteComponent } from '../../actions/components';
+import IconButton from '@material/react-icon-button';
+import MaterialIcon from '@material/react-material-icon';
 import '../../stylesheets/components/draggable-component.scss';
 
 class DraggableComponent extends React.Component {
@@ -110,6 +113,12 @@ class DraggableComponent extends React.Component {
             ref={this.ref}
             {...props}
           >
+            <IconButton
+              className='draggable-component-close'
+              onClick={() => this.props.deleteComponent(this.props.componentid)}
+            >
+              <MaterialIcon icon='close' />
+            </IconButton>
             {props.children}
           </div>
         </Resizable>
@@ -120,8 +129,8 @@ class DraggableComponent extends React.Component {
 const mapDispatchToProps = dispatch => ({
   startDrag: (width, height, grab_x, grab_y) => 
     dispatch(startDrag(width, height, grab_x, grab_y)),
-  endDrag: () => 
-    dispatch(endDrag()),
+  endDrag: () => dispatch(endDrag()),
+  deleteComponent: (id) => dispatch(deleteComponent(id)),
 });
 
 export default connect(null, mapDispatchToProps)(DraggableComponent)

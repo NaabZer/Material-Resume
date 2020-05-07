@@ -1,5 +1,11 @@
+@import '@material/react-icon-button/index.scss';
+@import '@material/react-material-icon/index.scss';
 .draggable-component-uneditable {
     > .react-resizable-handle{
+        display: none;
+    }
+
+    > .mdc-icon-button{
         display: none;
     }
 }
@@ -9,8 +15,18 @@
         display: none;
     }
 
-    &:hover .react-resizable-handle{
-        display: inherit;
+    > .mdc-icon-button{
+        display: none;
+    }
+
+    &:hover{
+        > .react-resizable-handle{
+            display: inherit;
+        }
+        
+        > .mdc-icon-button{
+            display: inherit;
+        }
     }
 
     &.draggable-component-resizing{
@@ -19,4 +35,18 @@
         }
     }
 
+}
+
+.mdc-icon-button {
+    &.draggable-component-close{
+        position: absolute !important;
+        top: 0px;
+        right: 0px;
+
+        @include mdc-icon-button-size(12px);
+
+        > .material-icons{
+            font-size: 12px !important;
+        }
+    }
 }
