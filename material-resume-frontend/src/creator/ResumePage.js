@@ -39,7 +39,8 @@ class ResumePage extends React.Component {
 
       <Card
         outlined
-        style={{height: '297mm', width: '210mm', background: "gray"}}
+        className='mdc-elevation--z4'
+        style={{height: '297mm', width: '210mm'}}
       >
         <DragAndDropGrid 
           {...props}
