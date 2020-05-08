@@ -45,13 +45,15 @@ class DraggableComponent extends React.Component {
 
   onDragStart = (e, data) => {
     const rect = this.ref.current.getBoundingClientRect();
-    this.props.startDrag(this.props.componenttype, rect.width,
+    this.props.startDrag(this.props.componenttype, this.props.componentid, rect.width,
       rect.height, data.x - rect.x, data.y - rect.y);
+    //e.preventDefault();
   }
 
   onDrag = (e, data) => {
     this.setState({x: this.state.x + data.deltaX, y: this.state.y + data.deltaY})
     this.props.ondragcallback(this, e, data);
+    //e.preventDefault();
   }
 
   onResize = (e, data) => {
@@ -80,7 +82,7 @@ class DraggableComponent extends React.Component {
   render(){
     const {style, ondropcallback, ondragcallback, resizable, 
            startDrag, endDrag, className, editable, onresizestopcallback,
-           componenttype, deleteComponent, ...props } = this.props;
+           componenttype, deleteComponent, forwardedRef, ...props } = this.props;
     var classNames = className || "";
 
     if(editable === true){
@@ -101,7 +103,13 @@ class DraggableComponent extends React.Component {
 
     const InnerComponentType = getComponentFromType(this.props.componenttype);
     const settings = this.props.settings || InnerComponentType.defaultSettings
-    const InnerComponent = <InnerComponentType settings={settings}/>;
+    const InnerComponent = 
+      <InnerComponentType
+        settings={settings} 
+        ondropcallback={this.onDrop}
+        componentid={this.props.componentid}
+        ref={forwardedRef}
+      />;
 
     return (
       <DraggableCore
@@ -145,10 +153,14 @@ const mapStateToProps = (state, props) => {
 }
 
 const mapDispatchToProps = dispatch => ({
-  startDrag: (componentType, width, height, grab_x, grab_y) => 
-    dispatch(startDrag(componentType, width, height, grab_x, grab_y)),
+  startDrag: (componentType, componentId, width, height, grab_x, grab_y) => 
+    dispatch(startDrag(componentType, componentId, width, height, grab_x, grab_y)),
   endDrag: () => dispatch(endDrag()),
   deleteComponent: (id) => dispatch(deleteComponent(id)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(DraggableComponent)
+const forwardedDraggableComponent = React.forwardRef((props, ref) =>{
+  return <DraggableComponent {...props} forwardedRef={ref} />
+});
+
+export default connect(mapStateToProps, mapDispatchToProps, null, {forwardRef: true})(forwardedDraggableComponent)

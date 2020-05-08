@@ -1,9 +1,12 @@
 import CardComponent from './CardComponent';
+import ColoredArea from './ColoredArea';
 
 export const COMPONENT_CARD = "C_CARD"
+export const COMPONENT_COLORED_AREA = "C_COL_A"
 
 export const componentList = [
-  COMPONENT_CARD
+  COMPONENT_CARD,
+  COMPONENT_COLORED_AREA
 ]
 
 export const containerList = [
@@ -13,6 +16,8 @@ export function getComponentFromType(type){
   switch(type){
     case COMPONENT_CARD:
       return CardComponent;
+    case COMPONENT_COLORED_AREA:
+      return ColoredArea;
     default:
       return null;
   }

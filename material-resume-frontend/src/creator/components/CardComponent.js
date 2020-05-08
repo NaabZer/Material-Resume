@@ -15,17 +15,20 @@ import {
 
 class CardComponent extends React.Component {
   static defaultSettings = {
-    dataSource: 'initial'
+    dataSource: '2'
   }
 
   static propTypes = {
     settings: PropTypes.object.isRequired,
+    componentid: PropTypes.number
   }
+
+  static isGrid = false;
 
   static displayName = "Work Card";
   
   render(){
-    const {data, settings} = this.props;
+    const {data} = this.props;
     return (
       <Card 
         className='card-component'

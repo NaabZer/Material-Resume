@@ -24,10 +24,14 @@ class CreatorPage extends React.Component {
     var col = -1;
     // This function assumes that you can not have overlapping grids.
     //const child = this.grid;
+    var excludedIds = [];
+    if(this.props.drag.componentId){
+      excludedIds = [this.props.drag.componentId]
+    }
     this.pages.forEach(childRef => {
       const child = childRef.current;
       if(child.props.isgrid){
-        const [elem, childCol, childRow] = child.getDeepestGridElemAndPos(x, y)
+        const [elem, childCol, childRow] = child.getDeepestGridElemAndPos(x, y, excludedIds)
         if(elem !== null && childRow >= 0 && childRow < elem.rows &&
           childCol >= 0 && childCol < elem.cols){
           childE = elem;
@@ -37,12 +41,11 @@ class CreatorPage extends React.Component {
         }
       }
     });
-    
     this.setState({x: 0, y: 0});
     if(childE !== null){
       if(type === 0){
         const [width, height] = childE.getClosestRowColSize(200, 200);
-        this.props.addcomponent('C_CARD', childE.props.componentid, col, row, width, height);
+        this.props.addcomponent(this.props.drag.componentType, childE.props.componentid, col, row, width, height);
       } else if (type ===1){
         const [width, height] = childE.getClosestRowColSize(this.props.drag.width, this.props.drag.height);
         this.props.movecomponent(data.id, childE.props.componentid, col, row);

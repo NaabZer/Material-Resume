@@ -12,14 +12,10 @@ class DragAndDropGrid extends React.Component {
   constructor(props){
     super(props)
 
-    this.children = []
+    this.childGrids = []
     this.rows = props.rows
     this.cols = props.columns
     this.divRef = React.createRef();
-    this.state = {
-      children: {},
-      childrenPos: {}
-    }
   }
 
   static displayName = 'DragAndDropGrid';
@@ -45,16 +41,18 @@ class DragAndDropGrid extends React.Component {
     return [col, row]
   }
 
-  getDeepestGridElemAndPos = (x, y) => {
+  getDeepestGridElemAndPos = (x, y, excludeIds=[]) => {
     var childE = null
     var row = -1;
     var col = -1;
     // This function assumes that you can not have overlapping grids.
-    this.children.forEach(child => {
-      if(child.props.isgrid){
-        const [elem, childCol, childRow] = child.getDeepestGridElemAndPos(x, y)
-        if(childRow >= 0 && childRow < this.rows &&
-           childCol >= 0 && childCol < this.cols){
+    this.childGrids.forEach(childRef => {
+      const child = childRef.current;
+      if(child && child.props.isgrid){
+        const [elem, childCol, childRow] = child.getDeepestGridElemAndPos(x, y, excludeIds)
+        if(elem !== null && !excludeIds.includes(elem.props.componentid) && 
+            childRow >= 0 && childRow < this.rows &&
+            childCol >= 0 && childCol < this.cols){
           childE = elem;
           row = childRow;
           col = childCol;
@@ -67,7 +65,7 @@ class DragAndDropGrid extends React.Component {
       return [childE, row, col];
     } else{
       const [col, row] = this.getGridPosition(x, y);
-      if(row >= 0 && row < this.rows &&
+      if(!excludeIds.includes(this.props.componentid) && row >= 0 && row < this.rows &&
          col >= 0 && col < this.cols){
         return [this, col, row];
       } else{
@@ -104,13 +102,19 @@ class DragAndDropGrid extends React.Component {
 
   render(){
     const grid = this.props.grids[this.props.componentid] || []
+    this.childGrids = [];
     const children = grid.map(elemId => {
       const elem = this.props.components[elemId]
       const style = {
         gridRow: (elem.row + 1) + " / span " + elem.height,
         gridColumn: (elem.col + 1) + " / span " + elem.width
       }
+
       const Component = getComponentFromType(elem.componentType);
+      const ref = React.createRef();
+      if(Component.isGrid){
+        this.childGrids.push(ref);
+      }
 
       return (
         <DraggableComponent
@@ -121,6 +125,7 @@ class DragAndDropGrid extends React.Component {
           onresizestopcallback={this.componentResizeStopCallback}
           editable={true}
           style={style}
+          ref={ref}
           componenttype={elem.componentType}
         />
       )
@@ -150,6 +155,7 @@ class DragAndDropGrid extends React.Component {
   }
 }
 
+// TODO: optimize for only current grid
 const mapStateToProps = state => ({
   components: state.components.components,
   grids: state.components.grids,
