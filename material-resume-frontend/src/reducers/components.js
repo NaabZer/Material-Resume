@@ -1,11 +1,22 @@
-import {COMPONENT_ADD, COMPONENT_DELETE, COMPONENT_RESIZE, COMPONENT_MOVE} from '../actions/components';
+import {
+  COMPONENT_ADD,
+  COMPONENT_DELETE,
+  COMPONENT_RESIZE,
+  COMPONENT_MOVE,
+  PAGE_ADD,
+  PAGE_REMOVE,
+} from '../actions/components';
 
 const initialState = {
   components: {},
-  grids: {
-    0: [],
-    1: []
-  },
+  grids: {},
+  componentSettings: {},
+  pages: [],
+  pageSettings: {
+    cols: 12,
+    rows: 12,
+    gap: '8px'
+  }
 }
 
 export function components(state = initialState, action){
@@ -87,6 +98,17 @@ export function components(state = initialState, action){
           ...state.grids,
           [containerId]: newGrid
         }
+      });
+    }
+    case PAGE_ADD: {
+      let {id} = action;
+      return Object.assign({}, state, {
+        ...state,
+        grids:{
+          ...state.grids,
+          [id]: []
+        },
+        pages: [...state.pages, id]
       });
     }
     default:

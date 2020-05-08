@@ -24,6 +24,7 @@ class DragAndDropGrid extends React.Component {
   static propTypes = {
     columns: PropTypes.number.isRequired,
     rows: PropTypes.number.isRequired,
+    gap: PropTypes.string.isRequired,
     isgrid: PropTypes.bool.isRequired,
     componentdragcallback: PropTypes.func.isRequired,
     componentdropcallback: PropTypes.func.isRequired,
@@ -125,7 +126,7 @@ class DragAndDropGrid extends React.Component {
     const rowStyle = "minmax(0, 1fr) ".repeat(this.rows);
     const colStyle = "minmax(0, 1fr) ".repeat(this.cols);
     const {grids, components, isgrid, style, addcomponent, resizeComponent,
-      componentdragcallback, componentdropcallback,
+      componentdragcallback, componentdropcallback, gap,
       ...props} = this.props
     return (
       <div 
@@ -136,8 +137,8 @@ class DragAndDropGrid extends React.Component {
           ...style,
           gridTemplateColumns: colStyle,
           gridTemplateRows: rowStyle,
-          gap: "8px",
-          padding: '8px',
+          gap: gap,
+          padding: gap,
         }}
       >
         {children}

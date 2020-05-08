@@ -23,8 +23,13 @@ export default class ComponentSelector extends React.Component {
 
   handleActiveIndexUpdate = (activeIndex) => this.setState({activeIndex});
   render(){
+    const {componentdropcallback, className, ...props} = this.props;
+    const nClassName = className + ' component-selector';
     return (
-      <div className='component-selector'>
+      <div 
+        {...props}
+        className={nClassName}
+      >
         <TabBar
           activeIndex={this.state.activeIndex}
           handleActiveIndexUpdate={this.handleActiveIndexUpdate}

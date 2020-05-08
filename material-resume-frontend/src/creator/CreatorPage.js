@@ -1,15 +1,17 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
+import { addComponent, moveComponent, resizeComponent, addPage } from '../actions/components';
+
 import ComponentSelector from './ComponentSelector';
 import DragAndDropGrid from './DragAndDropGrid';
-import { connect } from 'react-redux';
-import { addComponent, moveComponent, resizeComponent } from '../actions/components';
+import ResumePage from './ResumePage';
 
 class CreatorPage extends React.Component {
   constructor(props){
     super(props);
 
-    this.grid1 = null;
-    this.grid2 = null;
+    this.pages = [];
   }
 
   onDrop = (comp, e, data, type) => {
@@ -20,8 +22,10 @@ class CreatorPage extends React.Component {
     var col = -1;
     // This function assumes that you can not have overlapping grids.
     //const child = this.grid;
-    [this.grid1, this.grid2].forEach(child => {
-      if(child.props.isgrid){
+    this.pages.forEach(childRef => {
+      const child = childRef.current;
+      console.log(child);
+      if(child.isgrid){
         const [elem, childCol, childRow] = child.getDeepestGridElemAndPos(x, y)
         if(elem !== null && childRow >= 0 && childRow < elem.rows &&
           childCol >= 0 && childCol < elem.cols){
@@ -47,38 +51,41 @@ class CreatorPage extends React.Component {
   }
 
   render(){
+    this.pages = [];
+    const pages = this.props.pages.map( (id, i) => {
+      this.pages.push(React.createRef());
+      return(
+        <ResumePage 
+          key={id}
+          componentdropcallback={(c, e, d) => this.onDrop(c, e, d, 1)}
+          pageid={id}
+          ref={this.pages[i]} 
+        />
+      );
+    });
+
     return (
       <div>
         <ComponentSelector
           componentdropcallback={(c, e, d) => this.onDrop(c, e, d, 0)}
+          style={{position: 'sticky', top: '0px'}}
         />
-        <DragAndDropGrid 
-          componentdropcallback={(c, e, d) => this.onDrop(c, e, d, 1)}
-          isgrid={true}
-          rows={6}
-          columns={12}
-          componentid={0}
-          ref={ref => this.grid1 = ref} 
-          name="green" 
-          style={{background: "green", height: '400px'}}
-        />
-        <DragAndDropGrid 
-          componentdropcallback={(c, e, d) => this.onDrop(c, e, d, 1)}
-          isgrid={true}
-          rows={3}
-          columns={3}
-          componentid={1}
-          ref={ref => this.grid2 = ref} 
-          name="red" 
-          style={{background: "red", height: '200px'}}
-        />
+        <div
+          style={{display: 'flex', flexDirection:'column', alignItems: 'center'}}
+        >
+          {pages}
+          <button
+            onClick={()=> this.props.addPage()}
+          >
+            Add page
+          </button>
+        </div>
       </div>
     )
   }
 }
 const mapStateToProps = state => ({
-  components: state.components.components,
-  grids: state.components.grids,
+  pages: state.components.pages,
   drag: state.dragAndDrop
 });
 
@@ -87,7 +94,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(addComponent(componentType, containerId, row, col, width, height)),
   movecomponent: (id, containerId, row, col) => 
     dispatch(moveComponent(id, containerId, row, col)),
-  resizeComponent: (id, width, height) => dispatch(resizeComponent(id, width, height))
+  resizeComponent: (id, width, height) => dispatch(resizeComponent(id, width, height)),
+  addPage: () => dispatch(addPage())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreatorPage);
