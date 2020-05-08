@@ -7,34 +7,13 @@ import Card from "@material/react-card";
 import DragAndDropGrid from './DragAndDropGrid';
 
 class ResumePage extends React.Component {
-  constructor(props){
-    super(props)
-
-    this.isgrid = true;
-    this.gridRef = React.createRef();
-  }
-
   static propTypes = {
     componentdropcallback: PropTypes.func.isRequired,
     pageid: PropTypes.number.isRequired
   }
 
-
-  getGridPosition = (x, y) =>{
-    return this.gridRef.current.getGridPosition(x, y);
-  }
-
-  getDeepestGridElemAndPos = (x, y) => {
-    console.log(this.gridRef.current)
-    return this.gridRef.current.getDeepestGridElemAndPos(x, y);
-  }
-
-  getClosestRowColSize = (width, height) => {
-    return this.gridRef.current.getClosestRowColSize(width, height);
-  }
-
   render(){
-    const {componentdropcallback, settings, pageid, ...props} = this.props;
+    const {componentdropcallback, settings, pageid, forwardedRef, ...props} = this.props;
     return(
 
       <Card
@@ -44,7 +23,7 @@ class ResumePage extends React.Component {
       >
         <DragAndDropGrid 
           {...props}
-          ref={this.gridRef}
+          ref={forwardedRef}
           componentdropcallback={componentdropcallback}
           isgrid={true}
           rows={settings.rows}
@@ -66,4 +45,7 @@ const mapStateToProps = state => ({
 });
 
 
-export default connect(mapStateToProps, null, null, {forwardRef: true})(ResumePage);
+const forwardedResumePage = React.forwardRef((props, ref) =>{
+  return <ResumePage {...props} forwardedRef={ref} />
+});
+export default connect(mapStateToProps, null, null, {forwardRef: true})(forwardedResumePage);
