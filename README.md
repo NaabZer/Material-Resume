@@ -1,4 +1,8 @@
 # TDDD27 Project - Material Resume
+
+## Mid term screencast
+The mid term screencast can be found [here](https://youtu.be/XOEv0hoGAg0)
+
 ### Functional Specifiation
 ---
 The aim of this project is to create an interactive webb app in which one can create resumes with a [material design](https://material.io/design/), using a drag and drop interface and then export to a PDF.
