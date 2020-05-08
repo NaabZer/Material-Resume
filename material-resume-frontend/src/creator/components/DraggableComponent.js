@@ -100,7 +100,8 @@ class DraggableComponent extends React.Component {
     }
 
     const InnerComponentType = getComponentFromType(this.props.componenttype);
-    const InnerComponent = <InnerComponentType/>;
+    const settings = this.props.settings || InnerComponentType.defaultSettings
+    const InnerComponent = <InnerComponentType settings={settings}/>;
 
     return (
       <DraggableCore
@@ -135,6 +136,14 @@ class DraggableComponent extends React.Component {
     );
   }
 }
+
+const mapStateToProps = (state, props) => {
+  const id = props.componentid;
+  return({
+    settings: state.components.componentSettings[id]
+  })
+}
+
 const mapDispatchToProps = dispatch => ({
   startDrag: (componentType, width, height, grab_x, grab_y) => 
     dispatch(startDrag(componentType, width, height, grab_x, grab_y)),
@@ -142,4 +151,4 @@ const mapDispatchToProps = dispatch => ({
   deleteComponent: (id) => dispatch(deleteComponent(id)),
 });
 
-export default connect(null, mapDispatchToProps)(DraggableComponent)
+export default connect(mapStateToProps, mapDispatchToProps)(DraggableComponent)

@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import './CardComponent.scss';
 
@@ -11,18 +13,29 @@ import {
 } from '@material/react-typography';
 
 
-export default class CardComponent extends React.Component {
+class CardComponent extends React.Component {
+  static defaultSettings = {
+    dataSource: 'initial'
+  }
+
+  static propTypes = {
+    settings: PropTypes.object.isRequired,
+  }
+
+  static displayName = "Work Card";
   
   render(){
+    const {data, settings} = this.props;
     return (
       <Card 
         className='card-component'
       >
-        <Headline6>Title</Headline6>
+        <Headline6>{data.en.title}</Headline6>
         <div className='card-location-date'>
-          <Body2>Location</Body2>
+          <Body2>{data.en.location}</Body2>
           <div className='card-date-text'>
-            <Body2>Date</Body2>
+            <Body2>{data.en.dateStart + "-"}</Body2>
+            <Body2>{data.en.dateEnd}</Body2>
           </div>
         </div>
         <Body1>Job Description goes here lalalalallala</Body1>
@@ -30,3 +43,12 @@ export default class CardComponent extends React.Component {
     )
   }
 }
+
+const mapStateToProps = (state, props) => {
+  const dataSource = props.settings.dataSource;
+  return({ 
+    data: state.entries.work[dataSource]
+  });
+}
+
+export default connect(mapStateToProps, null)(CardComponent);

@@ -20,6 +20,8 @@
 
 .card-date-text{
     display:flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
 
     .material-icons{
         font-size: 0.875rem;

@@ -7,6 +7,8 @@ import {
   PAGE_REMOVE,
 } from '../actions/components';
 
+import { getComponentFromType } from '../creator/components/ComponentFactory';
+
 const initialState = {
   components: {},
   grids: {},
@@ -31,12 +33,18 @@ export function components(state = initialState, action){
         gridVal = [id]
       }
 
+      const settings = getComponentFromType(componentType).defaultSettings;
+
       return Object.assign({}, state, {
         components: {
           ...state.components,
           [id]: {
             componentType, containerId, col, row, width, height
           }
+        },
+        componentSettings:{
+          ...state.componentSettings,
+          [id]: settings
         },
         grids: {
           ...state.grids,
