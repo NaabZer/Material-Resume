@@ -26,7 +26,6 @@ class CreatorPage extends React.Component {
     //const child = this.grid;
     this.pages.forEach(childRef => {
       const child = childRef.current;
-      console.log(child);
       if(child.props.isgrid){
         const [elem, childCol, childRow] = child.getDeepestGridElemAndPos(x, y)
         if(elem !== null && childRow >= 0 && childRow < elem.rows &&
@@ -43,7 +42,7 @@ class CreatorPage extends React.Component {
     if(childE !== null){
       if(type === 0){
         const [width, height] = childE.getClosestRowColSize(200, 200);
-        this.props.addcomponent(1, childE.props.componentid, col, row, width, height);
+        this.props.addcomponent('C_CARD', childE.props.componentid, col, row, width, height);
       } else if (type ===1){
         const [width, height] = childE.getClosestRowColSize(this.props.drag.width, this.props.drag.height);
         this.props.movecomponent(data.id, childE.props.componentid, col, row);

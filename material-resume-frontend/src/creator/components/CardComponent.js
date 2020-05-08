@@ -2,13 +2,7 @@ import React from 'react';
 
 import './CardComponent.scss';
 
-import Card, {
-    CardPrimaryContent,
-    CardMedia,
-    CardActions,
-    CardActionButtons,
-    CardActionIcons
-} from "@material/react-card";
+import Card from "@material/react-card";
 
 import {
   Body1,
@@ -16,14 +10,9 @@ import {
   Headline6,
 } from '@material/react-typography';
 
-import MaterialIcon from '@material/react-material-icon';
-
 
 export default class CardComponent extends React.Component {
-  constructor(props){
-    super(props)
-  }
-
+  
   render(){
     return (
       <Card 

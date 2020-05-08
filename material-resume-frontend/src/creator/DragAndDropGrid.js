@@ -1,9 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+
 import { addComponent, resizeComponent } from '../actions/components';
 import DraggableComponent from './components/DraggableComponent';
 import CardComponent from './components/CardComponent.js';
+import { getComponentFromType} from './components/ComponentFactory';
+
  
 class DragAndDropGrid extends React.Component {
   constructor(props){
@@ -107,6 +110,7 @@ class DragAndDropGrid extends React.Component {
         gridRow: (elem.row + 1) + " / span " + elem.height,
         gridColumn: (elem.col + 1) + " / span " + elem.width
       }
+      const Component = getComponentFromType(elem.componentType);
 
       return (
         <DraggableComponent
@@ -117,16 +121,15 @@ class DragAndDropGrid extends React.Component {
           onresizestopcallback={this.componentResizeStopCallback}
           editable={true}
           style={style}
-        >
-          <CardComponent/>
-        </DraggableComponent>
+          componenttype={elem.componentType}
+        />
       )
     })
 
     const rowStyle = "minmax(0, 1fr) ".repeat(this.rows);
     const colStyle = "minmax(0, 1fr) ".repeat(this.cols);
     const {grids, components, isgrid, style, addcomponent, resizeComponent,
-      componentdragcallback, componentdropcallback, gap,
+      componentdragcallback, componentdropcallback, gap, drag, dispatch,
       ...props} = this.props
     return (
       <div 

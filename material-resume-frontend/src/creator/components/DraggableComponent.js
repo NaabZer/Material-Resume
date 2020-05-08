@@ -3,8 +3,11 @@ import PropTypes from 'prop-types';
 import { DraggableCore } from 'react-draggable';
 import { Resizable } from 'react-resizable';
 import { connect } from 'react-redux';
+
 import { startDrag, endDrag } from '../../actions/dragAndDrop';
 import { deleteComponent } from '../../actions/components';
+import { getComponentFromType } from './ComponentFactory';
+
 import IconButton from '@material/react-icon-button';
 import MaterialIcon from '@material/react-material-icon';
 import '../../stylesheets/components/draggable-component.scss';
@@ -20,7 +23,8 @@ class DraggableComponent extends React.Component {
     ondropcallback: PropTypes.func.isRequired,
     ondragcallback: PropTypes.func.isRequired,
     editable: PropTypes.bool,
-    componentid: PropTypes.number.isRequired,
+    componentid: PropTypes.number,
+    componenttype: PropTypes.string.isRequired,
   }
 
   resetPos = () =>{
@@ -40,8 +44,9 @@ class DraggableComponent extends React.Component {
   }
 
   onDragStart = (e, data) => {
-    const rect = this.ref.current.getBoundingClientRect()
-    this.props.startDrag(rect.width, rect.height, data.x - rect.x, data.y - rect.y)
+    const rect = this.ref.current.getBoundingClientRect();
+    this.props.startDrag(this.props.componenttype, rect.width,
+      rect.height, data.x - rect.x, data.y - rect.y);
   }
 
   onDrag = (e, data) => {
@@ -74,7 +79,8 @@ class DraggableComponent extends React.Component {
 
   render(){
     const {style, ondropcallback, ondragcallback, resizable, 
-           startDrag, endDrag, className, editable, ...props } = this.props;
+           startDrag, endDrag, className, editable, onresizestopcallback,
+           componenttype, deleteComponent, ...props } = this.props;
     var classNames = className || "";
 
     if(editable === true){
@@ -92,6 +98,10 @@ class DraggableComponent extends React.Component {
       width:  "calc(100% + " + this.state.w + "px)",
       height: "calc(100% + " + this.state.h + "px)",
     }
+
+    const InnerComponentType = getComponentFromType(this.props.componenttype);
+    const InnerComponent = <InnerComponentType/>;
+
     return (
       <DraggableCore
         onStart={this.onDragStart}
@@ -118,7 +128,7 @@ class DraggableComponent extends React.Component {
             >
               <MaterialIcon icon='close' />
             </IconButton>
-            {props.children}
+            {InnerComponent}
           </div>
         </Resizable>
       </DraggableCore>
@@ -126,8 +136,8 @@ class DraggableComponent extends React.Component {
   }
 }
 const mapDispatchToProps = dispatch => ({
-  startDrag: (width, height, grab_x, grab_y) => 
-    dispatch(startDrag(width, height, grab_x, grab_y)),
+  startDrag: (componentType, width, height, grab_x, grab_y) => 
+    dispatch(startDrag(componentType, width, height, grab_x, grab_y)),
   endDrag: () => dispatch(endDrag()),
   deleteComponent: (id) => dispatch(deleteComponent(id)),
 });

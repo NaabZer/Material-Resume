@@ -2,6 +2,7 @@ import {DRAG_END, DRAG_START} from '../actions/dragAndDrop';
 
 const initialState = {
   dragging:false,
+  componentType: null,
   width: 0,
   height: 0,
   grab_x: 0,
@@ -11,10 +12,10 @@ const initialState = {
 export function dragAndDrop(state = initialState, action){
   switch(action.type){
     case DRAG_START: {
-      let {width, height, grab_x, grab_y} = action;
+      let {componentType, width, height, grab_x, grab_y} = action;
       return Object.assign({}, state, {
         dragging: true,
-        width, height, grab_x, grab_y
+        componentType, width , height, grab_x, grab_y
       });
     }
     case DRAG_END:

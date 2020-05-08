@@ -4,6 +4,7 @@ import TabBar from '@material/react-tab-bar';
 
 import './ComponentSelector.scss';
 
+import { componentList, getComponentFromType } from './components/ComponentFactory';
 import CardComponent from './components/CardComponent.js';
 import DraggableComponent from './components/DraggableComponent.js';
 
@@ -19,12 +20,20 @@ export default class ComponentSelector extends React.Component {
     this.props.componentdropcallback(comp, e, data);
   }
 
-
-
   handleActiveIndexUpdate = (activeIndex) => this.setState({activeIndex});
   render(){
     const {componentdropcallback, className, ...props} = this.props;
     const nClassName = className + ' component-selector';
+    const components = componentList.map(type => {
+      return (
+        <DraggableComponent
+          ondropcallback={this.onComponentDrop}
+          ondragcallback={this.onComponentDrag}
+          key={type}
+          componenttype={type}
+        />
+      );
+    });
     return (
       <div 
         {...props}
@@ -42,12 +51,7 @@ export default class ComponentSelector extends React.Component {
           </Tab>
         </TabBar>
         <div className='component-selector-components'>
-          <DraggableComponent
-            ondropcallback={this.onComponentDrop}
-            ondragcallback={this.onComponentDrag}
-          >
-            <CardComponent/>
-          </DraggableComponent>
+          {components}
         </div>
       </div>
     )

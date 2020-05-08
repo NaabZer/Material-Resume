@@ -29,6 +29,7 @@ class ResumePage extends React.Component {
             {...props}
             ref={forwardedRef}
             componentdropcallback={componentdropcallback}
+            componentdragcallback={() => {}}
             isgrid={true}
             rows={settings.rows}
             columns={settings.cols}
