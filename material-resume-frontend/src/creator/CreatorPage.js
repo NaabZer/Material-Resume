@@ -58,7 +58,8 @@ class CreatorPage extends React.Component {
         <ResumePage 
           key={id}
           componentdropcallback={(c, e, d) => this.onDrop(c, e, d, 1)}
-          pageid={id}
+          pageid={i}
+          componentid={id}
           ref={this.pages[i]} 
         />
       );
