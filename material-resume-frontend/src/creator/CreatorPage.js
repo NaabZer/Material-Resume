@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import Button from '@material/react-button';
+
 import { addComponent, moveComponent, resizeComponent, addPage } from '../actions/components';
 
 import ComponentSelector from './ComponentSelector';
@@ -75,11 +77,13 @@ class CreatorPage extends React.Component {
           style={{display: 'flex', flexDirection:'column', alignItems: 'center'}}
         >
           {pages}
-          <button
+          <Button
+            raised
             onClick={()=> this.props.addPage()}
+            style={{margin: '8px'}}
           >
             Add page
-          </button>
+          </Button>
         </div>
       </div>
     )
