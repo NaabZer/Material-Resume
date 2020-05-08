@@ -1,7 +1,7 @@
 # TDDD27 Project - Material Resume
 
 ## Mid term screencast
-The mid term screencast can be found [here](https://youtu.be/XOEv0hoGAg0)
+The mid term screencast can be found [here](https://youtu.be/XOEv0hoGAg0) (sorry for the flickering screen, not sure why that happened).
 
 ### Functional Specifiation
 ---
