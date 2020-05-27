@@ -7,7 +7,10 @@ import {
   PAGE_REMOVE,
 } from '../actions/components';
 
-import { getComponentFromType } from '../creator/components/ComponentFactory';
+import { 
+  getComponentFromType,
+  getIsGridFromType 
+} from '../creator/components/ComponentFactory';
 
 const initialState = {
   components: {},
@@ -34,6 +37,22 @@ export function components(state = initialState, action){
       }
 
       const settings = getComponentFromType(componentType).defaultSettings;
+      const isGrid = getIsGridFromType(componentType);
+
+      var gridsState = null;
+      // Add grid if new component is a grid
+      if(isGrid){
+        gridsState={
+          ...state.grids,
+          [id]: [],
+          [containerId]: gridVal
+        }
+      } else{
+        gridsState={
+          ...state.grids,
+          [containerId]: gridVal
+        }
+      }
 
       return Object.assign({}, state, {
         components: {
@@ -46,10 +65,7 @@ export function components(state = initialState, action){
           ...state.componentSettings,
           [id]: settings
         },
-        grids: {
-          ...state.grids,
-          [containerId]: gridVal
-        }
+        grids: gridsState
       });
     }
     case COMPONENT_MOVE: {
