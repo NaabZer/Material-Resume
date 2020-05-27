@@ -5,12 +5,16 @@ import './stylesheets/main.scss';
 import './stylesheets/components/drag-and-drop-grid.scss';
 import App from './App';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import * as serviceWorker from './serviceWorker';
+import logger from 'redux-logger'
 
 import reducer from './reducers/index.js';
 
-const store = createStore(reducer)
+const store = createStore(
+  reducer,
+  applyMiddleware(logger)
+)
 
 ReactDOM.render(
   <Provider store={store}>
