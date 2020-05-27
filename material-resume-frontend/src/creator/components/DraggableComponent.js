@@ -35,25 +35,34 @@ class DraggableComponent extends React.Component {
     this.setState({w: 0, h: 0})
   }
 
-  onDrop = (e, data) => {
-    if('componentid' in this.props){
-      data.id = this.props.componentid;
+  onDrop = (e, data, data2) => {
+    if(this.props.dragAndDrop.componentId !== this.props.componentid){
+      this.props.endDrag();
     }
-    this.props.endDrag();
-    this.props.ondropcallback(this, e, data)
+    if(typeof(data2) !== 'undefined'){
+      // If there are only two parameters, this is the original draggable elements drop function
+      this.props.ondropcallback(e, data, data2)
+    } else{
+      // If there are three elements, this is the function passed down through DragAndDropGrid
+      // from CreatorPage, that handles dropping items.
+      if('componentid' in this.props){
+        data.id = this.props.componentid;
+      }
+      this.props.ondropcallback(this, e, data)
+    }
   }
 
   onDragStart = (e, data) => {
+    e.stopPropagation();
     const rect = this.ref.current.getBoundingClientRect();
     this.props.startDrag(this.props.componenttype, this.props.componentid, rect.width,
       rect.height, data.x - rect.x, data.y - rect.y);
-    //e.preventDefault();
   }
 
   onDrag = (e, data) => {
+    //e.stopPropagation();
     this.setState({x: this.state.x + data.deltaX, y: this.state.y + data.deltaY})
     this.props.ondragcallback(this, e, data);
-    //e.preventDefault();
   }
 
   onResize = (e, data) => {
@@ -148,7 +157,8 @@ class DraggableComponent extends React.Component {
 const mapStateToProps = (state, props) => {
   const id = props.componentid;
   return({
-    settings: state.components.componentSettings[id]
+    settings: state.components.componentSettings[id],
+    dragAndDrop: state.dragAndDrop
   })
 }
 

@@ -54,4 +54,4 @@ const mapStateToProps = (state, props) => {
   });
 }
 
-export default connect(mapStateToProps, null)(CardComponent);
+export default connect(mapStateToProps, null, null, {forwardRef: true})(CardComponent);

@@ -22,3 +22,12 @@ export function getComponentFromType(type){
       return null;
   }
 }
+
+export function getIsGridFromType(type){
+  switch(type){
+    case COMPONENT_COLORED_AREA:
+      return true;
+    default:
+      return false;
+  }
+}

@@ -62,7 +62,7 @@ class DragAndDropGrid extends React.Component {
     });
     
     if(childE !== null){
-      return [childE, row, col];
+      return [childE, col, row];
     } else{
       const [col, row] = this.getGridPosition(x, y);
       if(!excludeIds.includes(this.props.componentid) && row >= 0 && row < this.rows &&
