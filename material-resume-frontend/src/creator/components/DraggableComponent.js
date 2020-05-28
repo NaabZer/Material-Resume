@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { DraggableCore } from 'react-draggable';
 import { Resizable } from 'react-resizable';
 import { connect } from 'react-redux';
+import { NavLink, withRouter } from 'react-router-dom';
 
 import { startDrag, endDrag } from '../../actions/dragAndDrop';
 import { deleteComponent } from '../../actions/components';
@@ -18,6 +19,7 @@ class DraggableComponent extends React.Component {
     this.state = {x: 0, y: 0, w: 0, h: 0, resizing: false}
     this.ref = React.createRef();
   }
+
 
   static propTypes = {
     ondropcallback: PropTypes.func.isRequired,
@@ -91,7 +93,7 @@ class DraggableComponent extends React.Component {
   render(){
     const {style, ondropcallback, ondragcallback, resizable, 
            startDrag, endDrag, className, editable, onresizestopcallback,
-           componenttype, deleteComponent, forwardedRef, ...props } = this.props;
+           componenttype, componentid, deleteComponent, forwardedRef, ...props } = this.props;
     var classNames = className || "";
 
     if(editable === true){
@@ -140,6 +142,19 @@ class DraggableComponent extends React.Component {
             ref={this.ref}
             {...props}
           >
+            <NavLink
+              style={{color: 'black', decoration: 'none'}}
+              to={{
+                pathname:"/components/" + componentid + "/settings",
+                state: {background: this.props.location}
+              }}
+            >
+              <IconButton
+                className='draggable-component-settings'
+              >
+                <MaterialIcon icon='settings' />
+              </IconButton>
+            </NavLink>
             <IconButton
               className='draggable-component-close'
               onClick={() => this.props.deleteComponent(this.props.componentid)}
@@ -173,4 +188,4 @@ const forwardedDraggableComponent = React.forwardRef((props, ref) =>{
   return <DraggableComponent {...props} forwardedRef={ref} />
 });
 
-export default connect(mapStateToProps, mapDispatchToProps, null, {forwardRef: true})(forwardedDraggableComponent)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps, null, {forwardRef: true})(forwardedDraggableComponent));
