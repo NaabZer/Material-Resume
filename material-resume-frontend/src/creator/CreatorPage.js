@@ -1,12 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Route, withRouter } from 'react-router-dom';
 
 import Button from '@material/react-button';
 
 import { addComponent, moveComponent, resizeComponent, addPage } from '../actions/components';
+import SettingsModal from './SettingsModal';
 
 import ComponentSelector from './ComponentSelector';
-import DragAndDropGrid from './DragAndDropGrid';
 import ResumePage from './ResumePage';
 
 class CreatorPage extends React.Component {
@@ -55,6 +56,10 @@ class CreatorPage extends React.Component {
   }
 
   render(){
+
+    let background = this.props.location.state && this.props.location.state.background;
+    console.log(background);
+
     this.pages = [];
     const pages = this.props.pages.map( (id, i) => {
       this.pages.push(React.createRef());
@@ -71,6 +76,7 @@ class CreatorPage extends React.Component {
 
     return (
       <div>
+        {background && <Route path='/component/:id/settings' children={<SettingsModal/>} />}
         <ComponentSelector
           componentdropcallback={(c, e, d) => this.onDrop(c, e, d, 0)}
           style={{position: 'sticky', top: '0px'}}
@@ -105,4 +111,4 @@ const mapDispatchToProps = dispatch => ({
   addPage: () => dispatch(addPage())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreatorPage);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CreatorPage));

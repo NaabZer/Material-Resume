@@ -110,6 +110,7 @@ export function components(state = initialState, action){
     case COMPONENT_DELETE: {
       let {id} = action;
       // TODO: Be able to remove grid objects containing stuff
+      // TODO: Remove settings for removed objects
       const containerId = state.components[id].containerId;
       const {[id]:_ , ...newComponents} = state.components;
       const newGrid = state.grids[containerId].filter(val => {

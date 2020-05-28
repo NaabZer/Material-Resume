@@ -128,8 +128,8 @@ class DraggableComponent extends React.Component {
         onStart={this.onDragStart}
         onStop={this.onDrop}
         onDrag={this.onDrag}
-        cancel=".react-resizable-handle"
-      >
+        cancel=".react-resizable-handle, .mdc-icon-button"
+        >
         <Resizable
           onResize={this.onResize}
           onResizeStop={this.onResizeStop}
@@ -146,7 +146,7 @@ class DraggableComponent extends React.Component {
             <NavLink
               style={{color: 'black', decoration: 'none'}}
               to={{
-                pathname:"/components/" + this.props.componentid + "/settings",
+                pathname:"/component/" + this.props.componentid + "/settings",
                 state: {background: this.props.location}
               }}
             >
