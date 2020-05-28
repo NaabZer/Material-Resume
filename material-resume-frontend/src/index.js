@@ -8,6 +8,7 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import * as serviceWorker from './serviceWorker';
 import logger from 'redux-logger'
+import { BrowserRouter as Router, Route} from 'react-router-dom';
 
 import reducer from './reducers/index.js';
 
@@ -19,7 +20,9 @@ const store = createStore(
 ReactDOM.render(
   <Provider store={store}>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
-    <App />
+    <Router>
+      <Route path='/' component={App} />
+    </Router>
   </Provider>,
   document.getElementById('root')
 );
