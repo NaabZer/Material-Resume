@@ -5,8 +5,14 @@
         display: none;
     }
 
-    .mdc-icon-button{
+    > .mdc-icon-button{
         display: none;
+    }
+
+    > a {
+        > .mdc-icon-button{
+            display: none;
+        }
     }
 }
 
@@ -15,8 +21,14 @@
         display: none;
     }
 
-    .mdc-icon-button{
+    > .mdc-icon-button{
         display: none;
+    }
+
+    > a {
+        > .mdc-icon-button{
+            display: none;
+        }
     }
 
     &:hover{
@@ -24,8 +36,14 @@
             display: inherit;
         }
         
-        .mdc-icon-button{
+        > .mdc-icon-button{
             display: inherit;
+        }
+
+        > a {
+            > .mdc-icon-button{
+                display: inherit;
+            }
         }
     }
 

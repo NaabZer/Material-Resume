@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import { DraggableCore } from 'react-draggable';
 import { Resizable } from 'react-resizable';
 import { connect } from 'react-redux';
-import { NavLink, withRouter } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 import { startDrag, endDrag } from '../../actions/dragAndDrop';
 import { deleteComponent } from '../../actions/components';
 import { getComponentFromType } from './ComponentFactory';
+import { withRouterAndRef } from '../../utility/utilityFunctions';
 
 import IconButton from '@material/react-icon-button';
 import MaterialIcon from '@material/react-material-icon';
@@ -93,7 +94,7 @@ class DraggableComponent extends React.Component {
   render(){
     const {style, ondropcallback, ondragcallback, resizable, 
            startDrag, endDrag, className, editable, onresizestopcallback,
-           componenttype, componentid, deleteComponent, forwardedRef, ...props } = this.props;
+           componenttype, deleteComponent, forwardedRef, ...props } = this.props;
     var classNames = className || "";
 
     if(editable === true){
@@ -145,7 +146,7 @@ class DraggableComponent extends React.Component {
             <NavLink
               style={{color: 'black', decoration: 'none'}}
               to={{
-                pathname:"/components/" + componentid + "/settings",
+                pathname:"/components/" + this.props.componentid + "/settings",
                 state: {background: this.props.location}
               }}
             >
@@ -184,8 +185,6 @@ const mapDispatchToProps = dispatch => ({
   deleteComponent: (id) => dispatch(deleteComponent(id)),
 });
 
-const forwardedDraggableComponent = React.forwardRef((props, ref) =>{
-  return <DraggableComponent {...props} forwardedRef={ref} />
-});
+const forwardedDraggableComponent = withRouterAndRef(DraggableComponent);
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps, null, {forwardRef: true})(forwardedDraggableComponent));
+export default connect(mapStateToProps, mapDispatchToProps, null, {forwardRef: true})(forwardedDraggableComponent);
