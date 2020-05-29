@@ -18,13 +18,15 @@ const initialState = {
         title: "Titel",
         location: "Arbetsplats",
         dateStart: "Mar 2020",
-        dateEnd: "Aug 2020"
+        dateEnd: "Aug 2020",
+        description: "Jobba jobba på ett företag"
       },
       en:{
         title: "Title",
         location: "Location",
         dateStart: "Mar 2020",
-        dateEnd: "Aug 2020"
+        dateEnd: "Aug 2020",
+        description: "Here is a job description"
       }
 
     },
@@ -34,13 +36,15 @@ const initialState = {
         title: "Webbutvecklare",
         location: "Linköpings universitet",
         dateStart: "Apr 2020",
-        dateEnd: "Jun 2020"
+        dateEnd: "Jun 2020",
+        description: "Developed a drag and drop resume creator with material design, for the course TDDD27"
       },
       en:{
         title: "Web developer",
         location: "Linköpings University",
         dateStart: "Apr 2020",
-        dateEnd: "Jun 2020"
+        dateEnd: "Jun 2020",
+        description: "Developed a drag and drop resume creator with material design, for the course TDDD27"
       }
     },
     2: {
@@ -49,13 +53,15 @@ const initialState = {
         title: "Datavetare",
         location: "Coolt företag",
         dateStart: "Apr 2020",
-        dateEnd: "Jun 2020"
+        dateEnd: "Jun 2020",
+        description: "Machine learning is very cool!"
       },
       en:{
         title: "Data scientist",
         location: "Cool company",
         dateStart: "Apr 2020",
-        dateEnd: "Jun 2020"
+        dateEnd: "Jun 2020",
+        description: "Machine learning is very cool!"
       }
     }
   }

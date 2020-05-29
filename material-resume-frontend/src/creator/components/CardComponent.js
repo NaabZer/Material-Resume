@@ -15,7 +15,7 @@ import {
 
 class CardComponent extends React.Component {
   static defaultSettings = {
-    dataSource: '2'
+    dataSource: 'initial'
   }
 
   static propTypes = {
@@ -41,7 +41,9 @@ class CardComponent extends React.Component {
             <Body2>{data.en.dateEnd}</Body2>
           </div>
         </div>
-        <Body1>Job Description goes here lalalalallala</Body1>
+        <Body1>
+          {data.en.description}
+        </Body1>
       </Card>
     )
   }
