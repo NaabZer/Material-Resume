@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import './CardComponent.scss';
 
 import Card from "@material/react-card";
-
+import Select, { Option } from '@material/react-select';
 import {
   Body1,
   Body2,
@@ -25,7 +25,7 @@ class CardComponent extends React.Component {
 
   static isGrid = false;
 
-  static displayName = "Work Card";
+  static Name = "Work Card";
   
   render(){
     const {data} = this.props;
@@ -55,3 +55,48 @@ const mapStateToProps = (state, props) => {
 }
 
 export default connect(mapStateToProps, null, null, {forwardRef: true})(CardComponent);
+
+export class CardComponentSettingsForm extends React.Component {
+  constructor(props){
+    super(props);
+
+    this.state = this.props.settings;
+  }
+
+  onChange = e =>{
+    console.log(e.target.value);
+    this.setState({[e.target.name]: e.target.value});
+  }
+
+  getSettings = () =>{
+    return(this.state);
+  }
+
+  render(){
+    console.log(this.props.entries.work)
+    const options = Object.entries(this.props.entries.work).map(([key, entry]) => {
+      console.log(entry.id);
+      return(
+      <Option key={key} value={entry.id}>
+        {entry.en.title + " - " + entry.en.location}
+      </Option>
+    )});
+
+
+    return(
+      <div
+        style={{width: '100%'}}
+      >
+        <Select 
+          style={{width: '100%'}}
+          label='Data source'
+          name='dataSource'
+          value={this.state.dataSource}
+          onChange={this.onChange}
+        >
+          {options}
+        </Select>
+      </div>
+    );
+  }
+}

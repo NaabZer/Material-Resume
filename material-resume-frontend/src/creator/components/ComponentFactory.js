@@ -1,4 +1,4 @@
-import CardComponent from './CardComponent';
+import CardComponent, { CardComponentSettingsForm } from './CardComponent';
 import ColoredArea from './ColoredArea';
 
 export const COMPONENT_CARD = "C_CARD"
@@ -30,4 +30,14 @@ export function getIsGridFromType(type){
     default:
       return false;
   }
+}
+
+export function getSettingsFormFromType(type){
+  switch(type){
+    case COMPONENT_CARD:
+      return CardComponentSettingsForm;
+    default:
+      return null;
+  }
+
 }

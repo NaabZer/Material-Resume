@@ -7,6 +7,7 @@
     "@material/react-card": "^0.15.0",
     "@material/react-icon-button": "^0.15.0",
     "@material/react-material-icon": "^0.15.0",
+    "@material/react-select": "^0.15.0",
     "@material/react-tab": "^0.15.0",
     "@material/react-tab-bar": "^0.15.0",
     "@material/react-tab-indicator": "^0.15.0",
