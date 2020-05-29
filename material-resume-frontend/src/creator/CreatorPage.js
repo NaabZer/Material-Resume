@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Route, withRouter } from 'react-router-dom';
 
-import Button from '@material/react-button';
+import { Button } from '@rmwc/button';
 
 import { addComponent, moveComponent, resizeComponent, addPage } from '../actions/components';
 import SettingsModal from './SettingsModal';

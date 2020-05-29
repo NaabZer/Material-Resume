@@ -4,13 +4,9 @@ import { connect } from 'react-redux';
 
 import './CardComponent.scss';
 
-import Card from "@material/react-card";
-import Select, { Option } from '@material/react-select';
-import {
-  Body1,
-  Body2,
-  Headline6,
-} from '@material/react-typography';
+import { Card } from "@rmwc/card";
+import { Select } from '@rmwc/select';
+import { Typography } from '@rmwc/typography';
 
 
 class CardComponent extends React.Component {
@@ -33,17 +29,17 @@ class CardComponent extends React.Component {
       <Card 
         className='card-component'
       >
-        <Headline6>{data.en.title}</Headline6>
+        <Typography use='headline6'>{data.en.title}</Typography>
         <div className='card-location-date'>
-          <Body2>{data.en.location}</Body2>
+          <Typography use='body2'>{data.en.location}</Typography>
           <div className='card-date-text'>
-            <Body2>{data.en.dateStart + "-"}</Body2>
-            <Body2>{data.en.dateEnd}</Body2>
+            <Typography use='body2'>{data.en.dateStart + "-"}</Typography>
+            <Typography use='body2'>{data.en.dateEnd}</Typography>
           </div>
         </div>
-        <Body1>
+        <Typography use='body1'>
           {data.en.description}
-        </Body1>
+        </Typography>
       </Card>
     )
   }
@@ -65,9 +61,8 @@ export class CardComponentSettingsForm extends React.Component {
     this.state = this.props.settings;
   }
 
-  onChange = e =>{
-    console.log(e.target.value);
-    this.setState({[e.target.name]: e.target.value});
+  onChange = (type, e) =>{
+    this.setState({[type]: e.currentTarget.value});
   }
 
   getSettings = () =>{
@@ -77,11 +72,10 @@ export class CardComponentSettingsForm extends React.Component {
   render(){
     console.log(this.props.entries.work)
     const options = Object.entries(this.props.entries.work).map(([key, entry]) => {
-      console.log(entry.id);
       return(
-      <Option key={key} value={entry.id}>
+      <option key={key} value={entry.id}>
         {entry.en.title + " - " + entry.en.location}
-      </Option>
+      </option>
     )});
 
 
@@ -94,7 +88,7 @@ export class CardComponentSettingsForm extends React.Component {
           label='Data source'
           name='dataSource'
           value={this.state.dataSource}
-          onChange={this.onChange}
+          onChange={e => this.onChange('dataSource', e)}
         >
           {options}
         </Select>

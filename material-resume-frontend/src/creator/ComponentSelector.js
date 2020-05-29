@@ -1,6 +1,5 @@
 import React from 'react';
-import Tab from '@material/react-tab';
-import TabBar from '@material/react-tab-bar';
+import { Tab, TabBar } from '@rmwc/tabs';
 
 import './ComponentSelector.scss';
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import Card from "@material/react-card";
+import { Card } from "@rmwc/card";
 import PropTypes from 'prop-types';
 
 import './Modal.scss';

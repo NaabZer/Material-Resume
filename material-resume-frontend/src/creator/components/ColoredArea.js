@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+
+import { Select } from '@rmwc/select';
 
 import './CardComponent.scss';
 import hoistNonReactStatic from 'hoist-non-react-statics';
@@ -23,7 +24,7 @@ class ColoredArea extends React.Component {
 
   static isGrid = true;
 
-  static displayName = "Colored Area"
+  static Name = "Colored Area"
   
   render(){
     const {settings, componentid, forwardedRef, ondropcallback, props,} = this.props;

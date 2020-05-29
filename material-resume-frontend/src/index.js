@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import './material-components.scss';
 import './index.scss';
 import './stylesheets/main.scss';
 import './stylesheets/components/drag-and-drop-grid.scss';

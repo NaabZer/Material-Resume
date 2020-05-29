@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import Card from "@material/react-card";
+import { Card } from "@rmwc/card";
 
 import DragAndDropGrid from './DragAndDropGrid';
 

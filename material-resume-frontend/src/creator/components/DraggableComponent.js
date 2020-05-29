@@ -10,8 +10,7 @@ import { deleteComponent } from '../../actions/components';
 import { getComponentFromType } from './ComponentFactory';
 import { withRouterAndRef } from '../../utility/utilityFunctions';
 
-import IconButton from '@material/react-icon-button';
-import MaterialIcon from '@material/react-material-icon';
+import { IconButton } from '@rmwc/icon-button';
 import '../../stylesheets/components/draggable-component.scss';
 
 class DraggableComponent extends React.Component {
@@ -152,16 +151,14 @@ class DraggableComponent extends React.Component {
             >
               <IconButton
                 className='draggable-component-settings'
-              >
-                <MaterialIcon icon='settings' />
-              </IconButton>
+                icon='settings'
+              />
             </NavLink>
             <IconButton
               className='draggable-component-close'
               onClick={() => this.props.deleteComponent(this.props.componentid)}
-            >
-              <MaterialIcon icon='close' />
-            </IconButton>
+              icon='close'
+            />
             {InnerComponent}
           </div>
         </Resizable>

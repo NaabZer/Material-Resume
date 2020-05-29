@@ -6,10 +6,7 @@ import Modal from '../Modal';
 import { getComponentFromType, getSettingsFormFromType } from './components/ComponentFactory';
 import { changeSettings } from '../actions/components';
 
-import {
-  Body2,
-  Headline4,
-} from '@material/react-typography';
+import { Typography } from '@rmwc/typography';
 
 
 class SettingsModal extends React.Component {
@@ -36,19 +33,21 @@ class SettingsModal extends React.Component {
         open={true}
         backgroundClickCallback={e => this.back(e)}
       >
-        <Headline4
+        <Typography
+          use="headline4"
           style={{margin: '8px 0px'}}
         >
           {Component.Name}
-        </Headline4>
-        <Body2
+        </Typography>
+        <Typography
           style={{
             marginTop: '-8px',
             color: 'gray'
           }}
+          use='body2'
         >
           Settings
-        </Body2>
+        </Typography>
         <SettingsForm
           ref={this.formRef}
           settings={this.props.settings}
