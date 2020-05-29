@@ -5,6 +5,7 @@ import {
   COMPONENT_MOVE,
   PAGE_ADD,
   PAGE_REMOVE,
+  SETTINGS_CHANGE,
 } from '../actions/components';
 
 import { 
@@ -134,6 +135,16 @@ export function components(state = initialState, action){
           [id]: []
         },
         pages: [...state.pages, id]
+      });
+    }
+    case SETTINGS_CHANGE: {
+      let {id, settings} = action;
+      return Object.assign({}, state,{
+        ...state,
+        componentSettings:{
+          ...state.componentSettings,
+          [id]: settings
+        }
       });
     }
     default:

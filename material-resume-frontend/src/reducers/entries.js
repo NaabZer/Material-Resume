@@ -1,16 +1,19 @@
 const initialState = {
   text:{
     initial:{
+      id: 'initial',
       sv: "Exempeltext",
       en: "Example Text",
     },
     1:{
+      id: 1,
       sv: "Arbetserfarenhet",
       en: "Work experience",
     },
   },
   work:{
     initial:{
+      id: 'initial',
       sv:{
         title: "Titel",
         location: "Arbetsplats",
@@ -26,6 +29,7 @@ const initialState = {
 
     },
     1: {
+      id: 1,
       sv:{
         title: "Webbutvecklare",
         location: "Linköpings universitet",
@@ -40,6 +44,7 @@ const initialState = {
       }
     },
     2: {
+      id: 2,
       sv:{
         title: "Datavetare",
         location: "Coolt företag",

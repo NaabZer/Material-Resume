@@ -4,6 +4,7 @@ export const COMPONENT_RESIZE = "COMPONENT_RESIZE"
 export const COMPONENT_DELETE = "COMPONENT_DELETE"
 export const PAGE_ADD = "PAGE_ADD"
 export const PAGE_REMOVE = "PAGE_REMOVE"
+export const SETTINGS_CHANGE = "SETTINGS_CHANGE"
 
 let nextCompId = 0;
 export const addComponent = (componentType, containerId, col, row, width, height) => ({
@@ -35,4 +36,9 @@ export const addPage = () => ({
 export const removePage = id => ({
   type: PAGE_REMOVE,
   id
+})
+
+export const changeSettings = (id, settings) => ({
+  type: SETTINGS_CHANGE,
+  id, settings
 })
