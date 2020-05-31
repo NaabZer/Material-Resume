@@ -20,7 +20,8 @@ class Component(models.Model):
 
     def __str__(self):
         return self.component_type + "(" +\
-                [self.row, self.col, self.width, self.height].join(',') + ")"
+                ', '.join(map(str, [self.row, self.col,
+                                    self.width, self.height])) + ")"
 
 
 class SettingsRow(models.Model):
