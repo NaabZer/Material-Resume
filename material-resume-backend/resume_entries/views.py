@@ -1,26 +1,15 @@
-from django.http import HttpResponse, JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from rest_framework.parsers import JSONParser
-from .models import Experience, ExperienceEntry
-from .serializers import ExperienceSerializer
+from rest_framework import viewsets
+from .models import Experience, Text
+from .serializers import ExperienceSerializer, TextSerializer
 
 # Create your views here.
 
 
-@csrf_exempt
-def experience_list(request):
-    """
-    List all code snippets, or create a new snippet.
-    """
-    if request.method == 'GET':
-        experiences = Experience.objects.all()
-        serializer = ExperienceSerializer(experiences, many=True)
-        return JsonResponse(serializer.data, safe=False)
+class ExperienceViewSet(viewsets.ModelViewSet):
+    queryset = Experience.objects.all()
+    serializer_class = ExperienceSerializer
 
-    elif request.method == 'POST':
-        data = JSONParser().parse(request)
-        serializer = ExperienceSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data, status=201)
-        return JsonResponse(serializer.errors, status=400)
+
+class TextViewSet(viewsets.ModelViewSet):
+    queryset = Text.objects.all()
+    serializer_class = TextSerializer
