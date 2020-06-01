@@ -12,6 +12,7 @@ class ExperienceEntry(models.Model):
                                    on_delete=models.CASCADE)
     lang = models.CharField(max_length=2, default='en')
     title = models.TextField()
+    location = models.TextField()
     start = models.DateField()
     end = models.DateField(blank=True)
     description = models.TextField()
