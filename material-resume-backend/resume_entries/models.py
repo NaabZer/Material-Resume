@@ -4,6 +4,8 @@ from django.db import models
 
 
 class Experience(models.Model):
+    owner = models.ForeignKey('auth.user', related_name='experiences',
+                              on_delete=models.CASCADE)
     pass
 
 
@@ -19,6 +21,8 @@ class ExperienceEntry(models.Model):
 
 
 class Text(models.Model):
+    owner = models.ForeignKey('auth.user', related_name='texts',
+                              on_delete=models.CASCADE)
     pass
 
 
