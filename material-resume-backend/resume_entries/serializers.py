@@ -40,7 +40,7 @@ class TextEntrySerializer(serializers.HyperlinkedModelSerializer):
 
 
 class TextSerializer(serializers.HyperlinkedModelSerializer):
-    entries = ExperienceEntrySerializer(many=True, read_only=True)
+    entries = TextEntrySerializer(many=True, read_only=True)
 
     class Meta:
         model = Text

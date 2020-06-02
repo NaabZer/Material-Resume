@@ -34,6 +34,6 @@ class Text(models.Model):
 
 class TextEntry(models.Model):
     text_obj = models.ForeignKey(Text, related_name='entries',
-                             on_delete=models.CASCADE)
+                                 on_delete=models.CASCADE)
     lang = models.CharField(max_length=2, default='en')
     text = models.TextField(blank=True, null=True)
