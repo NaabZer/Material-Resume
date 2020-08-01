@@ -1,4 +1,14 @@
+import {
+  ENTRY_CREATE,
+  ENTRY_EDIT,
+  ENTRY_REMOVE,
+} from '../actions/entries';
+
 const initialState = {
+  max_ids:{
+    text: 1,
+    work: 2,
+  },
   text:{
     initial:{
       id: 'initial',
@@ -64,11 +74,57 @@ const initialState = {
         description: "Machine learning is very cool!"
       }
     }
-  }
+}
 }
 
 export function entries(state = initialState, action){
   switch(action.type){
+    case ENTRY_CREATE: {
+      let {entryType, values} = action;
+      let id = state[entryType].max_id + 1;
+
+      return Object.assign({}, state, {
+        [entryType]: {
+          [id]: {
+            id: id,
+            values
+          },
+          ...state[entryType]
+        },
+        max_ids: {
+          [entryType]: id,
+          ...state.max_id
+        },
+        ...state
+      });
+    }
+    case ENTRY_EDIT: {
+      let {id, entryType, values} = action;
+      return Object.assign({}, state, {
+        [entryType]: {
+          [id]: {
+            id: id,
+            values
+          },
+          ...state[entryType]
+        },
+        max_ids: {
+          [entryType]: id,
+          ...state.max_id
+        },
+        ...state
+      });
+    }
+    case ENTRY_REMOVE: {
+      let {id, entryType} = action;
+      const {[id]:_ , ...newState} = state[entryType];
+      return Object.assign({}, state, {
+        [entryType]: {
+          newState
+        },
+        ...state,
+      });
+    }
     default:
       return state
   }
