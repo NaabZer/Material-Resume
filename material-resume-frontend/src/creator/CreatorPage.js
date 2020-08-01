@@ -56,6 +56,7 @@ class CreatorPage extends React.Component {
   }
 
   render(){
+    console.log('inside creatorpage')
 
     let background = this.props.location.state && this.props.location.state.background;
     console.log(background);
@@ -76,7 +77,7 @@ class CreatorPage extends React.Component {
 
     return (
       <div>
-        {background && <Route path='/component/:id/settings' children={<SettingsModal/>} />}
+        {background && <Route path='/creator/component/:id/settings' children={<SettingsModal/>} />}
         <ComponentSelector
           componentdropcallback={(c, e, d) => this.onDrop(c, e, d, 0)}
           style={{position: 'sticky', top: '0px'}}

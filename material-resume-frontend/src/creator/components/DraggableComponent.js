@@ -145,7 +145,7 @@ class DraggableComponent extends React.Component {
             <NavLink
               style={{color: 'black', decoration: 'none'}}
               to={{
-                pathname:"/component/" + this.props.componentid + "/settings",
+                pathname:"/creator/component/" + this.props.componentid + "/settings",
                 state: {background: this.props.location}
               }}
             >
