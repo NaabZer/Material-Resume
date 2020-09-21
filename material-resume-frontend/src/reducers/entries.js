@@ -118,11 +118,13 @@ export function entries(state = initialState, action){
     case ENTRY_REMOVE: {
       let {id, entryType} = action;
       const {[id]:_ , ...newState} = state[entryType];
+      console.log('---')
+      console.log(newState)
       return Object.assign({}, state, {
-        [entryType]: {
-          newState
-        },
         ...state,
+        [entryType]: {
+          ...newState
+        },
       });
     }
     default:

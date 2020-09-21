@@ -14,5 +14,10 @@
 @use '@material/menu-surface/mdc-menu-surface';
 @use '@material/menu/mdc-menu';
 @use '@material/select/mdc-select';
+@use '@material/floating-label/mdc-floating-label';
+@use "@material/notched-outline/mdc-notched-outline";
+@use '@material/textfield/mdc-text-field';
+@use '@material/textfield/dist/mdc.textfield.css';
+
 
 @import '../node_modules/react-resizable/css/styles.css'

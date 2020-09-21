@@ -1,5 +1,6 @@
 import React from 'react';
 import CreatorPage from './creator/CreatorPage';
+import EntriesPage from './entries/EntriesPage';
 import StartPage from './StartPage';
 import { BrowserRouter as Router, Route} from 'react-router-dom';
 
@@ -9,7 +10,7 @@ function App() {
       <Router>
         <Route exact path='/' component={StartPage} />
         <Route path='/creator' component={CreatorPage} />
-        <Route path='/entries' component={CreatorPage} />
+        <Route path='/entries' component={EntriesPage} />
       </Router>
     </div>
   );
