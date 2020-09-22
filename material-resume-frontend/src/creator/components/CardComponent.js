@@ -48,7 +48,7 @@ class CardComponent extends React.Component {
 const mapStateToProps = (state, props) => {
   const dataSource = props.settings.dataSource;
   return({ 
-    data: state.entries.work[dataSource]
+    data: state.entries.experience[dataSource]
   });
 }
 
@@ -70,8 +70,8 @@ export class CardComponentSettingsForm extends React.Component {
   }
 
   render(){
-    console.log(this.props.entries.work)
-    const options = Object.entries(this.props.entries.work).map(([key, entry]) => {
+    console.log(this.props.entries.experience)
+    const options = Object.entries(this.props.entries.experience).map(([key, entry]) => {
       return(
       <option key={key} value={entry.id}>
         {entry.en.title + " - " + entry.en.location}

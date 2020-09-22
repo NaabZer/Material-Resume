@@ -21,7 +21,7 @@ const initialState = {
       en: "Work experience",
     },
   },
-  work:{
+  experience:{
     initial:{
       id: 'initial',
       sv:{

@@ -44,11 +44,12 @@ class EntryModal extends React.Component {
 
 
   render(){
+    var uppercaseType = this.props.type.charAt(0).toUpperCase() + this.props.type.slice(1);
     var id = 'initial'
-    var entryString = 'New entry'
+    var entryString = 'New'
     if(this.props.match.params.entryid){
       id = this.props.match.params.entryid
-      entryString = 'Edit entry'
+      entryString = 'Edit'
     }
     const Form = getEntryFormFromType(this.props.type);
     return(
@@ -62,7 +63,7 @@ class EntryModal extends React.Component {
               use="headline4"
               style={{margin: '8px 0px'}}
             >
-              Work Experience
+              {uppercaseType}
             </Typography>
             <Typography
               style={{

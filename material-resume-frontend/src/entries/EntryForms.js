@@ -5,10 +5,49 @@ import '@rmwc/textfield/styles';
 
 export function getEntryFormFromType(type){
   switch(type){
-    case 'work':
+    case 'experience':
       return WorkForm;
+    case 'text':
+      return TextForm;
     default:
       return null;
+  }
+}
+
+class TextForm extends React.Component {
+  constructor(props){
+    super(props);
+
+    this.state = {...this.props.entry};
+  }
+
+  onChange = (e) =>{
+    this.setState({[this.props.lang]: e.currentTarget.value});
+  }
+
+  getValues = () =>{
+    return(this.state);
+  }
+
+  focusAll = (event) => event.target.select();
+
+  render(){
+    return(
+      <div
+        style={{width: '100%'}}
+      >
+        <TextField
+          autoFocus
+          style={{width: '100%'}}
+          label='Text'
+          name='text'
+          value={this.state[this.props.lang]}
+          onChange={e => this.onChange(e)}
+          onFocus={this.focusAll}
+        >
+        </TextField>
+      </div>
+    );
   }
 }
 

@@ -11,7 +11,7 @@ import { createEntry } from '../actions/entries';
 import EntryModal from './EntryModal';
 
 const indexToType = [
-  'work',
+  'experience',
   'text'
 ]
 
@@ -61,7 +61,7 @@ class EntriesPage extends React.Component {
             activeTabIndex={this.state.tabI}
               onActivate={evt => this.setState({tabI: evt.detail.index})}
             >
-            <Tab>Entries</Tab>
+            <Tab>Experiences</Tab>
             <Tab>Text</Tab>
           </TabBar>
           <div
@@ -77,7 +77,7 @@ class EntriesPage extends React.Component {
                 raised
                 style={{width: 'calc(100% - 16px)', height: '48px', margin: '8px'}}
               >
-                New entry
+                New {entryType}
               </Button>
             </Link>
             {entryElems}
