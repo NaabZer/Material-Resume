@@ -35,7 +35,8 @@
     "react-scripts": "3.4.1",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
-    "sass": "^1.26.7"
+    "sass": "^1.26.7",
+    "url-join": "^4.0.1"
   },
   "scripts": {
     "start": "react-scripts start",

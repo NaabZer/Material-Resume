@@ -33,10 +33,10 @@ class EntryModal extends React.Component {
       // If edit
       
       this.props.editEntry(this.props.match.params.entryid,
-                           this.props.type,
+                           this.props.match.params.type,
                            values)
     } else{
-      this.props.createEntry(this.props.type, values)
+      this.props.createEntry(this.props.match.params.type, values)
     }
     this.props.history.goBack();
   }
@@ -44,14 +44,15 @@ class EntryModal extends React.Component {
 
 
   render(){
-    var uppercaseType = this.props.type.charAt(0).toUpperCase() + this.props.type.slice(1);
+    const type = this.props.match.params.type
+    var uppercaseType = type.charAt(0).toUpperCase() + type.slice(1);
     var id = 'initial'
     var entryString = 'New'
     if(this.props.match.params.entryid){
       id = this.props.match.params.entryid
       entryString = 'Edit'
     }
-    const Form = getEntryFormFromType(this.props.type);
+    const Form = getEntryFormFromType(type);
     return(
       <Modal
         open={true}
@@ -86,7 +87,7 @@ class EntryModal extends React.Component {
         <form onSubmit={(e) => this.submit(e)}>
           <Form
             ref={this.formRef}
-            entry={this.props.entries[this.props.type][id]}
+            entry={this.props.entries[type][id]}
             lang={this.state.lang}
           />
           <div
