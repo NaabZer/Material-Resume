@@ -42,7 +42,7 @@ class EntriesPage extends React.Component {
     const [_, entries, type, ...rest] = currentUrl.split("/")
     const newType = indexToType[e.detail.index]
     const newUrl = "/" +  urljoin(entries, newType, ...rest)
-    this.props.history.push(newUrl)
+    this.props.history.replace(newUrl)
   }
 
   render(){
