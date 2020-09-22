@@ -69,14 +69,18 @@ class Entry extends React.Component {
           <div className='entry-expanded-content'>
             <div>
               {expandedContent}
+              <div style={{height:'8px'}}/>
             </div>
-            <Button
-              raised
-              danger
-              onClick={() => this.props.removeEntry(this.props.id, this.props.type)}
-            >
-              remove
-            </Button>
+            <div>
+              <Button
+                raised
+                danger
+                onClick={() => this.props.removeEntry(this.props.id, this.props.type)}
+              >
+                remove
+              </Button>
+              <div style={{height:'8px'}}/>
+            </div>
           </div>
         </CardPrimaryAction>
       </Card>

@@ -77,7 +77,7 @@ class EntriesPage extends React.Component {
                 raised
                 style={{width: 'calc(100% - 16px)', height: '48px', margin: '8px'}}
               >
-                Add entry
+                New entry
               </Button>
             </Link>
             {entryElems}

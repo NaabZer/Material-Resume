@@ -1,12 +1,11 @@
 .entry {
     margin: 8px;
-    min-height: 62px;
+    min-height: 54px;
 
 
     &.entry-contracted{
         .entry-expanded-content{
             max-height: 0px;
-            margin-bottom: -8px;
 
         }
     }
@@ -14,20 +13,20 @@
     &.entry-expanded{
         .entry-expanded-content{
             max-height: 400px;
-
         }
     }
 
     .mdc-card__primary-action{
         padding: 0px 8px;
+        --mdc-ripple-fg-scale:1.84 !important;
+        --mdc-ripple-fg-translate-end: 141.297px, -60.5px !important;
     }
 };
 
 .entry-expanded-content{
-    transition: max-height 0.15s ease-in;
+    transition: max-height 0.25s ease-in;
 
     font-size: 1em;
-    padding-bottom:8px;
 
     display:flex;
     justify-content: space-between;

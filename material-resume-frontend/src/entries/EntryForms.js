@@ -23,22 +23,25 @@ class WorkForm extends React.Component {
     this.setState({[this.props.lang]:{...this.state[this.props.lang], [type]: e.currentTarget.value}});
   }
 
-  getSettings = () =>{
+  getValues = () =>{
     return(this.state);
   }
 
+  focusAll = (event) => event.target.select();
+
   render(){
-    console.log(this.state);
     return(
       <div
         style={{width: '100%'}}
       >
         <TextField
+          autoFocus
           style={{width: '100%'}}
           label='Title'
           name='title'
           value={this.state[this.props.lang].title}
           onChange={e => this.onChange('title', e)}
+          onFocus={this.focusAll}
         >
         </TextField>
         <TextField
@@ -47,6 +50,7 @@ class WorkForm extends React.Component {
           name='location'
           value={this.state[this.props.lang].location}
           onChange={e => this.onChange('location', e)}
+          onFocus={this.focusAll}
         >
         </TextField>
         <TextField
@@ -56,6 +60,7 @@ class WorkForm extends React.Component {
           name='dateStart'
           value={this.state[this.props.lang].dateStart}
           onChange={e => this.onChange('dateStart', e)}
+          onFocus={this.focusAll}
         >
         </TextField>
         <TextField
@@ -65,6 +70,7 @@ class WorkForm extends React.Component {
           name='dateEnd'
           value={this.state[this.props.lang].dateEnd}
           onChange={e => this.onChange('dateEnd', e)}
+          onFocus={this.focusAll}
         >
         </TextField>
         <TextField
@@ -74,6 +80,7 @@ class WorkForm extends React.Component {
           name='description'
           value={this.state[this.props.lang].description}
           onChange={e => this.onChange('description', e)}
+          onFocus={this.focusAll}
         >
         </TextField>
       </div>

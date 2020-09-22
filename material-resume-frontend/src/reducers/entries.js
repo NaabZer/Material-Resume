@@ -81,38 +81,34 @@ export function entries(state = initialState, action){
   switch(action.type){
     case ENTRY_CREATE: {
       let {entryType, values} = action;
-      let id = state[entryType].max_id + 1;
+      let id = state.max_ids[entryType] + 1;
 
       return Object.assign({}, state, {
-        [entryType]: {
-          [id]: {
-            id: id,
-            values
-          },
-          ...state[entryType]
-        },
+        ...state,
         max_ids: {
           [entryType]: id,
           ...state.max_id
         },
-        ...state
+        [entryType]: {
+          [id]: {
+            id: id,
+            ...values
+          },
+          ...state[entryType]
+        },
       });
     }
     case ENTRY_EDIT: {
       let {id, entryType, values} = action;
       return Object.assign({}, state, {
+        ...state,
         [entryType]: {
+          ...state[entryType],
           [id]: {
             id: id,
-            values
+            ...values
           },
-          ...state[entryType]
         },
-        max_ids: {
-          [entryType]: id,
-          ...state.max_id
-        },
-        ...state
       });
     }
     case ENTRY_REMOVE: {

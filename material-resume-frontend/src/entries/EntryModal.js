@@ -5,8 +5,11 @@ import { withRouter } from 'react-router-dom';
 import Modal from '../Modal';
 import { getEntryFormFromType } from './EntryForms';
 
+import { editEntry, createEntry } from '../actions/entries';
+
 import { Typography } from '@rmwc/typography';
 import { Select } from '@rmwc/select';
+import { Button } from '@rmwc/button';
 
 
 class EntryModal extends React.Component {
@@ -22,10 +25,30 @@ class EntryModal extends React.Component {
     this.props.history.goBack();
   }
 
+  submit = (e) =>{
+    e.preventDefault();
+    const {id, ...values} = this.formRef.current.getValues();
+    console.log(values)
+    if(this.props.match.params.entryid){
+      // If edit
+      
+      this.props.editEntry(this.props.match.params.entryid,
+                           this.props.type,
+                           values)
+    } else{
+      this.props.createEntry(this.props.type, values)
+    }
+    this.props.history.goBack();
+  }
+
+
+
   render(){
     var id = 'initial'
+    var entryString = 'New entry'
     if(this.props.match.params.entryid){
       id = this.props.match.params.entryid
+      entryString = 'Edit entry'
     }
     const Form = getEntryFormFromType(this.props.type);
     return(
@@ -48,7 +71,7 @@ class EntryModal extends React.Component {
               }}
               use='body2'
             >
-              Edit entry
+              {entryString}
             </Typography>
           </div>
           <Select
@@ -59,11 +82,33 @@ class EntryModal extends React.Component {
             onChange={(e) => this.setState({lang: e.currentTarget.value})}
           />
         </div>
-        <Form
-          ref={this.formRef}
-          entry={this.props.entries[this.props.type][id]}
-          lang={this.state.lang}
-        />
+        <form onSubmit={(e) => this.submit(e)}>
+          <Form
+            ref={this.formRef}
+            entry={this.props.entries[this.props.type][id]}
+            lang={this.state.lang}
+          />
+          <div
+            style={{marginTop: '8px', display: 'flex', justifyContent:'space-between'}}
+          >
+            <Button
+              raised
+              type='submit'
+              style={{order: '2'}}
+            >
+              Save
+            </Button>
+            <Button
+              raised
+              danger
+              type='button'
+              onClick={e => this.back(e)}
+              style={{order: '1'}}
+            >
+              Cancel
+            </Button>
+          </div>
+        </form>
       </Modal>
     );
   }
@@ -77,6 +122,10 @@ const mapStateToProps = (state, props) => {
 }
 
 const mapDispatchToProps = dispatch => ({
+  createEntry: (entryType, values) => 
+    dispatch(createEntry(entryType, values)),
+  editEntry: (entryId, entryType, values) => 
+    dispatch(editEntry(entryId, entryType, values)),
 });
 
 
