@@ -3,25 +3,31 @@ import CreatorPage from './creator/CreatorPage';
 import EntriesPage from './entries/EntriesPage';
 import StartPage from './StartPage';
 import NavBar from './NavBar';
-import { BrowserRouter as Router, Switch, Route, Redirect} from 'react-router-dom';
+import { useLocation, Switch, Route, Redirect} from 'react-router-dom';
 import { DrawerAppContent } from '@rmwc/drawer';
+import LoginModal from './LoginModal';
 
 function App() {
+  let location = useLocation();
+  let background = location.state && location.state.background;
+
   return (
     <div className="App">
-      <Router>
-        <NavBar/>
-        <DrawerAppContent>
-            <Switch>
-              <Route exact path='/' component={StartPage} />
-              <Route path='/creator' component={CreatorPage} />
-              <Route exact path='/entries'>
-                <Redirect to='/entries/experience'/>
-              </Route>
-              <Route path='/entries/:type' component={EntriesPage} />
-            </Switch>
-        </DrawerAppContent>
-      </Router>
+      <NavBar/>
+      <DrawerAppContent>
+        <Switch location={background || location}>
+          <Route exact path='/' component={StartPage} />
+          <Route path='/creator' component={CreatorPage} />
+          <Route exact path='/entries'>
+            <Redirect to='/entries/experience'/>
+          </Route>
+          <Route path='/entries/:type' component={EntriesPage} />
+        </Switch>
+
+        {background && <Route path="/user/login" children={<LoginModal />} />}
+        {background && <Route path="/user/register" children={<LoginModal register/>} />}
+
+      </DrawerAppContent>
     </div>
   );
 }

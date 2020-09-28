@@ -35,7 +35,7 @@ export default class NavBar extends React.Component {
   render(){
     return(
       <React.Fragment>
-        <TopAppBar>
+        <TopAppBar style={{zIndex: 999}}>
           <TopAppBarRow>
             <TopAppBarSection alignStart>
               <TopAppBarNavigationIcon
@@ -94,11 +94,15 @@ class AccountMenuUNC extends React.Component {
     this.state = {open: false}
   }
 
+  closeCallback = e =>{
+    this.setState({open: false})
+  }
+
   render(){
     const user = this.props.user
     console.log(user)
     var AccountComponent = AccountMenuNotLoggedIn;
-    if(user){
+    if(Object.keys(user).length !== 0){
       AccountComponent = AccountMenuLoggedIn;
     }
     return(
@@ -106,9 +110,14 @@ class AccountMenuUNC extends React.Component {
         <MenuSurfaceAnchor>
           <MenuSurface 
             open={this.state.open} 
-            onClose={() => this.setState({open: false})}>
+            onClose={() => this.setState({open: false})}
+          >
             <div style={{ padding: '8px', minWidth: '240px'}}>
-              <AccountComponent user={this.props.user}/>
+              <AccountComponent 
+                user={this.props.user} 
+                location={this.props.location}
+                closeCallback={this.closeCallback}
+              />
             </div>
           </MenuSurface>
 
@@ -124,18 +133,39 @@ class AccountMenuUNC extends React.Component {
 
 class AccountMenuNotLoggedIn extends React.Component {
   render(){
+    const location = this.props.location;
     return(
       <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
         <Typography use='headline5' style={{paddingBottom: '16px'}}>
           Not Logged In
         </Typography>
         <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
-          <Button raised>
-            Register
-          </Button>
-          <Button raised>
-            Log In
-          </Button>
+          <Link
+            to={{
+              pathname: `/user/register`,
+              state: { background: location }
+            }}
+          >
+            <Button 
+              raised
+              onClick={this.props.closeCallback}
+            >
+              Register
+            </Button>
+          </Link>
+          <Link
+            to={{
+              pathname: `/user/login`,
+              state: { background: location }
+            }}
+          >
+            <Button 
+              raised
+              onClick={this.props.closeCallback}
+            >
+              Log In
+            </Button>
+          </Link>
         </div>
       </div>
     );
@@ -165,7 +195,7 @@ class AccountMenuLoggedIn extends React.Component {
           {UserImage}
         </div>
         <Typography use='headline5' style={{paddingBottom: '16px', paddingTop: '8px'}}>
-          {this.props.user.name}
+          {this.props.user.first_name + ' ' + this.props.user.last_name}
         </Typography>
         <Button raised>
           Log Out

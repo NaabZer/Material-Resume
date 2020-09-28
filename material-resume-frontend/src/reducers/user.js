@@ -1,5 +1,4 @@
 const initialState = {
-  name: 'Anton Gefvert'
 }
 
 export function user(state = initialState, action){
