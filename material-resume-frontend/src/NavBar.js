@@ -17,7 +17,12 @@ import {
   DrawerSubtitle
 } from '@rmwc/drawer';
 import { List, ListItem } from '@rmwc/list';
+import { MenuSurface, MenuSurfaceAnchor } from '@rmwc/menu';
+import { Typography } from '@rmwc/typography';
+import { Icon } from '@rmwc/icon';
+import { Theme } from '@rmwc/theme';
 import { Link, withRouter } from 'react-router-dom';
+import { Button } from '@rmwc/button';
 import { connect } from 'react-redux';
 
 
@@ -25,7 +30,7 @@ export default class NavBar extends React.Component {
   constructor(props){
     super(props);
     
-    this.state = {navOpen: true}
+    this.state = {navOpen: false}
   }
   render(){
     return(
@@ -40,7 +45,7 @@ export default class NavBar extends React.Component {
               <TopAppBarTitle>All Features</TopAppBarTitle>
             </TopAppBarSection>
             <TopAppBarSection alignEnd>
-              <TopAppBarActionItem icon="account_circle" />
+              <AccountMenu/>
             </TopAppBarSection>
           </TopAppBarRow>
         </TopAppBar>
@@ -81,3 +86,98 @@ class NavDrawer extends React.Component {
     );
   }
 }
+
+class AccountMenuUNC extends React.Component {
+  constructor(props){
+    super(props);
+
+    this.state = {open: false}
+  }
+
+  render(){
+    const user = this.props.user
+    console.log(user)
+    var AccountComponent = AccountMenuNotLoggedIn;
+    if(user){
+      AccountComponent = AccountMenuLoggedIn;
+    }
+    return(
+      <React.Fragment>
+        <MenuSurfaceAnchor>
+          <MenuSurface 
+            open={this.state.open} 
+            onClose={() => this.setState({open: false})}>
+            <div style={{ padding: '8px', minWidth: '240px'}}>
+              <AccountComponent user={this.props.user}/>
+            </div>
+          </MenuSurface>
+
+          <TopAppBarActionItem 
+            icon="account_circle"
+            onClick={() => this.setState({open: true})}
+          />
+        </MenuSurfaceAnchor>
+      </React.Fragment>
+    );
+  }
+}
+
+class AccountMenuNotLoggedIn extends React.Component {
+  render(){
+    return(
+      <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+        <Typography use='headline5' style={{paddingBottom: '16px'}}>
+          Not Logged In
+        </Typography>
+        <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
+          <Button raised>
+            Register
+          </Button>
+          <Button raised>
+            Log In
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+}
+
+class AccountMenuLoggedIn extends React.Component {
+  render(){
+    var UserImage = this.props.user.image
+    if(!UserImage){
+      UserImage = 
+        <Theme
+          use={['primaryBg']} wrap
+        >
+          <div
+            style={{width: '100px', height: '100px', color: 'white'}}
+          >
+            <Icon icon='person' style={{fontSize: '100px'}}/>
+          </div>
+        </Theme>
+    }
+    console.log(UserImage)
+    return(
+      <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+        <div style={{borderRadius: '50px', overflow: 'hidden'}}>
+          {UserImage}
+        </div>
+        <Typography use='headline5' style={{paddingBottom: '16px', paddingTop: '8px'}}>
+          {this.props.user.name}
+        </Typography>
+        <Button raised>
+          Log Out
+        </Button>
+      </div>
+    );
+  }
+
+}
+
+const mapStateToProps = state => ({
+  user: state.user,
+});
+
+const AccountMenu = withRouter(connect(mapStateToProps)(AccountMenuUNC));
