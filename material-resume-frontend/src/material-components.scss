@@ -18,6 +18,8 @@
 @use "@material/notched-outline/mdc-notched-outline";
 @use '@material/textfield/mdc-text-field';
 @use '@material/textfield/dist/mdc.textfield.css';
+@use '@material/top-app-bar/mdc-top-app-bar';
+@use '@material/drawer/mdc-drawer';
 
 
 @import '../node_modules/react-resizable/css/styles.css'
