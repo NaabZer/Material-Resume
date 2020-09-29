@@ -1,9 +1,12 @@
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import authenticate
 from django.http import JsonResponse
 from rest_framework.authtoken.models import Token
-from django.http import HttpResponse
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
 from material_resume_backend.forms import SignUpForm
+from material_resume_backend.serializers import UserSerializer
 
 
 def signup(request):
@@ -20,3 +23,11 @@ def signup(request):
             return JsonResponse({'token': token.key})
         else:
             return JsonResponse(form.errors.get_json_data(), status=400)
+
+
+class GetUser(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, format=None):
+        serializer = UserSerializer(request.user)
+        return Response(serializer.data)

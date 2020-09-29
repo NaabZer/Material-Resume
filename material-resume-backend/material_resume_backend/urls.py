@@ -26,5 +26,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-token-auth/', views.obtain_auth_token),
     path('api-auth/', include('rest_framework.urls')),
+    path('user/', core_views.GetUser.as_view()),
     path('user/signup', csrf_exempt(core_views.signup), name='signup'),
 ]
