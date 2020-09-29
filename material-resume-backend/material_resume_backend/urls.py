@@ -16,6 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from rest_framework.authtoken import views
+from material_resume_backend import views as core_views
+from django.views.decorators.csrf import csrf_exempt
+
 
 urlpatterns = [
     path('components/', include('resume_components.urls')),
@@ -23,4 +26,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-token-auth/', views.obtain_auth_token),
     path('api-auth/', include('rest_framework.urls')),
+    path('user/signup', csrf_exempt(core_views.signup), name='signup'),
 ]
