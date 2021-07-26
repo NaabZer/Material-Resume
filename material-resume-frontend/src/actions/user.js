@@ -1,27 +1,31 @@
 import api from '../api';
 
-export const USER_SUBMIT_LOG_IN = "LOG_IN"
-export const USER_GET_TOKEN = "GET_TOKEN"
-export const USER_GET_USER = "GET_USER"
+export const USER_LOG_IN = "LOG_IN"
+export const USER_SET_TOKEN = "SET_TOKEN"
+export const USER_LOG_IN_SUCCESS = "LOG_IN_SUCCESS"
+export const USER_LOG_IN_FAIL = "LOG_IN_FAIL"
 
 export const submitLogIn = () => ({
-  type: USER_SUBMIT_LOG_IN
+  type: USER_LOG_IN
 })
 
-export const getToken = (token) => ({
-  type: USER_GET_TOKEN,
+export const setToken = (token) => ({
+  type: USER_SET_TOKEN,
   token
 })
 
-export const getUser = (user) => ({
-  type: USER_GET_USER,
+export const logInSuccess = (user) => ({
+  type: USER_LOG_IN_SUCCESS,
   user
+})
+export const logInFail = (errorObj) => ({
+  type: USER_LOG_IN_FAIL,
+  errorObj
 })
 
 export function logIn(username, password){
   return dispatch => {
     dispatch(submitLogIn(username, password))
-
     return api.post('api-token-auth/',
                   JSON.stringify({'username': username, 'password': password}))
       .then(response => response.data)
@@ -29,11 +33,15 @@ export function logIn(username, password){
         const token = json['token']
         api.defaults.headers.common['Authorization'] = 'Token ' + token;
 
-        dispatch(getToken(token))
+        dispatch(setToken(token))
 
         api.get('user/')
           .then(response => response.data)
-          .then(json => dispatch(getUser(json)))
+          .then(json => dispatch(logInSuccess(json)))
+      })
+      .catch(error=> {
+        dispatch(logInFail(error))
+        throw error
       })
   }
 }

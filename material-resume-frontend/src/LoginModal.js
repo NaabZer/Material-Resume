@@ -37,9 +37,10 @@ class LoginModal extends React.Component {
         })
         .catch(err => {
           console.log(this.errorRef.current.scrollHeight);
-          this.setState({hasError: true, error: err.message});
+          var errorMsg = err.response.data.non_field_errors
+          this.setState({hasError: true, error: errorMsg});
           //TODO: Ugly hack to make error render with correct size
-          this.setState({error: err.message});
+          this.setState({error: errorMsg})
         });
     }
   }
@@ -91,6 +92,7 @@ class LoginModal extends React.Component {
                 raised
                 type='submit'
                 style={{order:2}}
+                disabled={this.props.user.isFetching}
               >
                 {loginText}
               </Button>
