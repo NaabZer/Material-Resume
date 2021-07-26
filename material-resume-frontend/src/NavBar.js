@@ -99,10 +99,9 @@ class AccountMenuUNC extends React.Component {
   }
 
   render(){
-    const user = this.props.user
-    console.log(user)
+    const user = this.props.user.user
     var AccountComponent = AccountMenuNotLoggedIn;
-    if(Object.keys(user).length !== 0){
+    if(user && Object.keys(user).length !== 0){
       AccountComponent = AccountMenuLoggedIn;
     }
     return(
@@ -188,7 +187,6 @@ class AccountMenuLoggedIn extends React.Component {
           </div>
         </Theme>
     }
-    console.log(UserImage)
     return(
       <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
         <div style={{borderRadius: '50px', overflow: 'hidden'}}>

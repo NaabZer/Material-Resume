@@ -10,14 +10,38 @@ import { TextField } from '@rmwc/textfield';
 import { Typography } from '@rmwc/typography';
 import '@rmwc/textfield/styles';
 
+import DjangoCSRFToken from 'django-react-csrftoken'
+
+import { logIn } from './actions/user';
+
 // TODO: Add form validation
 class LoginModal extends React.Component {
   constructor(props){
     super(props);
+
+    this.formRef = React.createRef();
+    this.errorRef = React.createRef()
+    this.state = {hasError: false, error: ""}
   }
 
   submit = e =>{
     e.preventDefault();
+    this.setState({hasError: false});
+    const values = this.formRef.current.getValues();
+    if(this.props.register){
+    } else{
+      this.props.logIn(values.username, values.password)
+        .then(response => {
+          // close modal
+          this.props.history.goBack()
+        })
+        .catch(err => {
+          console.log(this.errorRef.current.scrollHeight);
+          this.setState({hasError: true, error: err.message});
+          //TODO: Ugly hack to make error render with correct size
+          this.setState({error: err.message});
+        });
+    }
   }
 
   back = (e) =>{
@@ -45,7 +69,21 @@ class LoginModal extends React.Component {
             {loginText}
           </Typography>
           <form onSubmit={this.submit}>
-            <Form/>
+            <DjangoCSRFToken/>
+            <Form
+              ref={this.formRef}
+            />
+            <div
+              ref={this.errorRef}
+              style={{height: (this.state.hasError) ? this.errorRef.current.scrollHeight : 0}}
+              className="modal-error"
+            >
+              <Typography
+                use="headline8"
+              >
+                {this.state.error}
+              </Typography>
+            </div>
             <div
               style={{marginTop: '8px', display: 'flex', justifyContent:'space-between'}}
             >
@@ -59,6 +97,7 @@ class LoginModal extends React.Component {
               <Button
                 raised
                 danger
+                onClick={this.back}
                 style={{order: '1'}}
               >
                 cancel
@@ -96,10 +135,10 @@ class LoginForm extends React.Component {
         <TextField
           autoFocus
           style={{width: '100%'}}
-          label='Email'
-          name='email'
-          value={this.state.email}
-          onChange={e => this.onChange('email', e)}
+          label='Username'
+          name='username'
+          value={this.state.username}
+          onChange={e => this.onChange('username', e)}
           onFocus={this.focusAll}
         >
         </TextField>
@@ -107,6 +146,7 @@ class LoginForm extends React.Component {
           style={{width: '100%'}}
           label='Password'
           name='password'
+          type='password'
           value={this.state.password}
           onChange={e => this.onChange('password', e)}
           onFocus={this.focusAll}
@@ -140,7 +180,7 @@ class RegistrationForm extends React.Component {
         style={{width: '100%'}}
       >
         <TextField
-          autouocus
+          autoFocus
           style={{width: '100%'}}
           label='Username'
           name='username'
@@ -179,18 +219,20 @@ class RegistrationForm extends React.Component {
         <TextField
           style={{width: '100%'}}
           label='Password'
-          name='password'
-          value={this.state.password}
-          onChange={e => this.onChange('password', e)}
+          name='password1'
+          type='password'
+          value={this.state.password1}
+          onChange={e => this.onChange('password1', e)}
           onFocus={this.focusAll}
         >
         </TextField>
         <TextField
           style={{width: '100%'}}
           label='Password Confirmation'
-          name='password_confirm'
-          value={this.state.password_confirm}
-          onChange={e => this.onChange('password_confirm', e)}
+          name='password2'
+          type='password'
+          value={this.state.password2}
+          onChange={e => this.onChange('password2', e)}
           onFocus={this.focusAll}
         >
         </TextField>
@@ -199,8 +241,13 @@ class RegistrationForm extends React.Component {
   }
 }
 
+const mapDispatchToProps = dispatch => ({
+  logIn: (username, password) => 
+    dispatch(logIn(username, password)),
+});
+
 const mapStateToProps = state => ({
   user: state.user,
 });
 
-export default withRouter(connect(mapStateToProps)(LoginModal));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(LoginModal));
