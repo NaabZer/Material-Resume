@@ -25,6 +25,7 @@ import { Link, withRouter } from 'react-router-dom';
 import { Button } from '@rmwc/button';
 import { connect } from 'react-redux';
 
+import { logOut } from './actions/user';
 
 export default class NavBar extends React.Component {
   constructor(props){
@@ -116,6 +117,7 @@ class AccountMenuUNC extends React.Component {
                 user={this.props.user} 
                 location={this.props.location}
                 closeCallback={this.closeCallback}
+                logOut={this.props.logOut}
               />
             </div>
           </MenuSurface>
@@ -173,6 +175,11 @@ class AccountMenuNotLoggedIn extends React.Component {
 }
 
 class AccountMenuLoggedIn extends React.Component {
+  logout = (e) =>{
+    e.preventDefault();
+    this.props.closeCallback();
+    this.props.logOut();
+  }
   render(){
     var UserImage = this.props.user.image
     if(!UserImage){
@@ -195,7 +202,10 @@ class AccountMenuLoggedIn extends React.Component {
         <Typography use='headline5' style={{paddingBottom: '16px', paddingTop: '8px'}}>
           {this.props.user.first_name + ' ' + this.props.user.last_name}
         </Typography>
-        <Button raised>
+        <Button 
+          raised
+          onClick={this.logout}
+        >
           Log Out
         </Button>
       </div>
@@ -204,8 +214,13 @@ class AccountMenuLoggedIn extends React.Component {
 
 }
 
+const mapDispatchToProps = dispatch => ({
+  logOut: () => 
+    dispatch(logOut()),
+});
+
 const mapStateToProps = state => ({
   user: state.user,
 });
 
-const AccountMenu = withRouter(connect(mapStateToProps)(AccountMenuUNC));
+const AccountMenu = withRouter(connect(mapStateToProps, mapDispatchToProps)(AccountMenuUNC));

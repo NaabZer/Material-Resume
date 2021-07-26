@@ -4,6 +4,7 @@ export const USER_LOG_IN = "LOG_IN"
 export const USER_SET_TOKEN = "SET_TOKEN"
 export const USER_LOG_IN_SUCCESS = "LOG_IN_SUCCESS"
 export const USER_LOG_IN_FAIL = "LOG_IN_FAIL"
+export const USER_RESET = "RESET"
 
 export const submitLogIn = () => ({
   type: USER_LOG_IN
@@ -18,9 +19,14 @@ export const logInSuccess = (user) => ({
   type: USER_LOG_IN_SUCCESS,
   user
 })
+
 export const logInFail = (errorObj) => ({
   type: USER_LOG_IN_FAIL,
   errorObj
+})
+
+export const resetUser = () => ({
+  type: USER_RESET
 })
 
 export function logIn(username, password){
@@ -43,5 +49,11 @@ export function logIn(username, password){
         dispatch(logInFail(error))
         throw error
       })
+  }
+}
+
+export function logOut(){
+  return dispatch => {
+    dispatch(resetUser());
   }
 }

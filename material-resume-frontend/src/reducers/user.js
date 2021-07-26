@@ -3,6 +3,7 @@ import {
   USER_LOG_IN_SUCCESS,
   USER_LOG_IN_FAIL,
   USER_SET_TOKEN,
+  USER_RESET,
 } from '../actions/user';
 
 const initialState = {
@@ -44,6 +45,13 @@ export function user(state = initialState, action){
       return Object.assign({}, state, {
         ...state,
         token: token,
+      });
+    }
+    case USER_RESET: {
+      return Object.assign({}, state, {
+        ...state,
+        user: null,
+        token: null,
       });
     }
     default:
