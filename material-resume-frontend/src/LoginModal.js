@@ -33,10 +33,11 @@ class LoginModal extends React.Component {
       this.props.logIn(values.username, values.password)
         .then(response => {
           // close modal
-          this.props.history.goBack()
+          console.log('success');
+          this.replaceBack(e);
         })
         .catch(err => {
-          console.log(this.errorRef.current.scrollHeight);
+          console.log('error');
           var errorMsg = err.response.data.non_field_errors
           this.setState({hasError: true, error: errorMsg});
           //TODO: Ugly hack to make error render with correct size
@@ -45,10 +46,21 @@ class LoginModal extends React.Component {
     }
   }
 
-  back = (e) =>{
+  back = e => {
     e.preventDefault();
     this.props.history.goBack()
   }
+
+  replaceBack = e => {
+    e.preventDefault();
+    if(this.props.history.location.state.background){
+      // Goes back from modal, and doesn't allow to go 'forward' to the modal again
+      const backgroundUrl = this.props.history.location.state.background;
+      this.props.history.replace(backgroundUrl);
+    } else{
+      this.props.history.goBack()
+    }
+  };
 
   render(){
     var Form = LoginForm;
@@ -99,7 +111,7 @@ class LoginModal extends React.Component {
               <Button
                 raised
                 danger
-                onClick={this.back}
+                onClick={this.replaceBack}
                 style={{order: '1'}}
               >
                 cancel
