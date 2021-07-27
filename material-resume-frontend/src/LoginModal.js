@@ -30,7 +30,7 @@ class LoginModal extends React.Component {
     const values = this.formRef.current.getValues();
     if(this.props.register){
     } else{
-      this.props.logIn(values.username, values.password)
+      this.props.logIn(values.email, values.password)
         .then(response => {
           // close modal
           console.log('success');
@@ -39,6 +39,7 @@ class LoginModal extends React.Component {
         .catch(err => {
           console.log('error');
           var errorMsg = err.response.data.non_field_errors
+          console.log(err.response);
           this.setState({hasError: true, error: errorMsg});
           //TODO: Ugly hack to make error render with correct size
           this.setState({error: errorMsg})
@@ -128,7 +129,7 @@ class LoginForm extends React.Component {
   constructor(props){
     super(props);
 
-    this.state = {username: '', password: ''};
+    this.state = {email: '', password: ''};
   }
 
   onChange = (type, e) =>{
@@ -149,10 +150,11 @@ class LoginForm extends React.Component {
         <TextField
           autoFocus
           style={{width: '100%'}}
-          label='Username'
-          name='username'
-          value={this.state.username}
-          onChange={e => this.onChange('username', e)}
+          label='Email'
+          name='email'
+          type='email'
+          value={this.state.email}
+          onChange={e => this.onChange('email', e)}
           onFocus={this.focusAll}
         >
         </TextField>
@@ -175,7 +177,7 @@ class RegistrationForm extends React.Component {
   constructor(props){
     super(props);
 
-    this.state = {username: '', name: '', email:'', password: ''};
+    this.state = {email: '', name: '', email:'', password: ''};
   }
 
   onChange = (type, e) =>{
@@ -197,16 +199,8 @@ class RegistrationForm extends React.Component {
           autoFocus
           style={{width: '100%'}}
           label='Username'
-          name='username'
-          value={this.state.username}
-          onChange={e => this.onChange('username', e)}
-          onFocus={this.focusAll}
-        >
-        </TextField>
-        <TextField
-          style={{width: '100%'}}
-          label='Email'
           name='email'
+          type='email'
           value={this.state.email}
           onChange={e => this.onChange('email', e)}
           onFocus={this.focusAll}
@@ -256,8 +250,8 @@ class RegistrationForm extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  logIn: (username, password) => 
-    dispatch(logIn(username, password)),
+  logIn: (email, password) => 
+    dispatch(logIn(email, password)),
 });
 
 const mapStateToProps = state => ({

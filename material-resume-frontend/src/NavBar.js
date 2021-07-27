@@ -114,7 +114,7 @@ class AccountMenuUNC extends React.Component {
           >
             <div style={{ padding: '8px', minWidth: '240px'}}>
               <AccountComponent 
-                user={this.props.user} 
+                user={user} 
                 location={this.props.location}
                 closeCallback={this.closeCallback}
                 logOut={this.props.logOut}
@@ -182,6 +182,7 @@ class AccountMenuLoggedIn extends React.Component {
   }
   render(){
     var UserImage = this.props.user.image
+    console.log(this.props.user)
     if(!UserImage){
       UserImage = 
         <Theme

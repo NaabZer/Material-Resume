@@ -29,11 +29,11 @@ export const resetUser = () => ({
   type: USER_RESET
 })
 
-export function logIn(username, password){
+export function logIn(email, password){
   return dispatch => {
-    dispatch(submitLogIn(username, password))
+    dispatch(submitLogIn(email, password))
     return api.post('api-token-auth/',
-                  JSON.stringify({'username': username, 'password': password}))
+                  JSON.stringify({'email': email, 'password': password}))
       .then(response => response.data)
       .then(json => {
         const token = json['token']
