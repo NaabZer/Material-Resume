@@ -27,10 +27,12 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+AUTH_USER_MODEL = 'material_resume_backend.User'
 
 # Application definition
 
 INSTALLED_APPS = [
+    'material_resume_backend',
     'resume_components.apps.ResumeComponentsConfig',
     'resume_entries.apps.ResumeEntriesConfig',
     'django.contrib.admin',
@@ -39,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
+    'cuser',
     'rest_framework.authtoken',
     'corsheaders',
 ]

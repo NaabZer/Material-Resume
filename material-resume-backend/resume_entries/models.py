@@ -1,16 +1,19 @@
 from django.db import models
+from django.conf import settings
 
 # Create your models here.
 
 
 class Language(models.Model):
-    user = models.ForeignKey('auth.user', related_name='languages',
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             related_name='languages',
                              on_delete=models.CASCADE)
     language = models.CharField(max_length=2, default='en')
 
 
 class Experience(models.Model):
-    owner = models.ForeignKey('auth.user', related_name='experiences',
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL,
+                              related_name='experiences',
                               on_delete=models.CASCADE)
     pass
 
@@ -27,7 +30,8 @@ class ExperienceEntry(models.Model):
 
 
 class Text(models.Model):
-    owner = models.ForeignKey('auth.user', related_name='texts',
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL,
+                              related_name='texts',
                               on_delete=models.CASCADE)
     pass
 
