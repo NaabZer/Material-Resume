@@ -25,7 +25,7 @@ function App() {
         </Switch>
 
         {background && <Route path="/user/login" children={<LoginModal />} />}
-        {background && <Route path="/user/register" children={<LoginModal register/>} />}
+        {background && <Route path="/user/register" children={<LoginModal is_register/>} />}
 
       </DrawerAppContent>
     </div>

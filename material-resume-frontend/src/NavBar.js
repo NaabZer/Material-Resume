@@ -182,7 +182,6 @@ class AccountMenuLoggedIn extends React.Component {
   }
   render(){
     var UserImage = this.props.user.image
-    console.log(this.props.user)
     if(!UserImage){
       UserImage = 
         <Theme

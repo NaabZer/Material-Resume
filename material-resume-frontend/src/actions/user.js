@@ -31,9 +31,35 @@ export const resetUser = () => ({
 
 export function logIn(email, password){
   return dispatch => {
-    dispatch(submitLogIn(email, password))
+    dispatch(submitLogIn())
     return api.post('api-token-auth/',
                   JSON.stringify({'email': email, 'password': password}))
+      .then(response => response.data)
+      .then(json => {
+        const token = json['token']
+        api.defaults.headers.common['Authorization'] = 'Token ' + token;
+
+        dispatch(setToken(token))
+
+        api.get('user/')
+          .then(response => response.data)
+          .then(json => dispatch(logInSuccess(json)))
+      })
+      .catch(error=> {
+        dispatch(logInFail(error))
+        throw error
+      })
+  }
+}
+
+export function register(args){
+  return dispatch => {
+    dispatch(submitLogIn())
+    if(args.password !== args.password2){
+      throw new Error("passwords doesn't match");
+    }
+    return api.post('user/signup',
+                  JSON.stringify(args))
       .then(response => response.data)
       .then(json => {
         const token = json['token']
