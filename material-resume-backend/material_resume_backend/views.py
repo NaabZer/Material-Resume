@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate
 from django.http import JsonResponse
 from rest_framework.authtoken.models import Token
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
@@ -12,19 +12,25 @@ from material_resume_backend.serializers import (
         )
 
 
-def signup(request):
-    if request.method == 'POST':
-        form = SignUpForm(request.POST)
-        print(form.errors.as_data())
-        if form.is_valid():
-            form.save()
-            email = form.cleaned_data.get('email')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(email=email, password=raw_password)
-            token, _ = Token.objects.get_or_create(user=user)
-            return JsonResponse({'token': token.key})
-        else:
-            return JsonResponse(form.errors.get_json_data(), status=400)
+class SignupViewSet(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        # Create user
+        serializer = UserSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        # Get token
+        email = serializer.validated_data['email']
+        raw_password = serializer.validated_data['password']
+        user = authenticate(email=email, password=raw_password)
+        token, _ = Token.objects.get_or_create(user=user)
+        content = {
+            'token': token.key,
+        }
+
+        return Response(content)
 
 
 class GetUser(APIView):

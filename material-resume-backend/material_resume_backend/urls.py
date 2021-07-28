@@ -27,5 +27,5 @@ urlpatterns = [
     path('api-token-auth/', core_views.ObtainAuthToken.as_view()),
     path('api-auth/', include('rest_framework.urls')),
     path('user/', core_views.GetUser.as_view()),
-    path('user/signup', core_views.signup, name='signup'),
+    path('user/signup', core_views.SignupViewSet.as_view(), name='signup'),
 ]
