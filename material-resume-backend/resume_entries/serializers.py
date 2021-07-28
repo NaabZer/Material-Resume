@@ -5,8 +5,7 @@ from .models import Experience, ExperienceEntry, Text, TextEntry
 class ExperienceEntrySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = ExperienceEntry
-        fields = ['id', 'lang', 'title', 'location',
-                  'start', 'end', 'description']
+        fields = ['id', 'lang', 'title', 'location', 'description']
 
 
 class ExperienceSerializer(serializers.HyperlinkedModelSerializer):
@@ -14,7 +13,7 @@ class ExperienceSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Experience
-        fields = ['url', 'id', 'entries']
+        fields = ['url', 'id', 'start', 'end', 'entries']
 
     def create(self, validated_data):
         experience = Experience.objects.create(**validated_data)

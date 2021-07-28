@@ -24,53 +24,47 @@ const initialState = {
   experience:{
     initial:{
       id: 'initial',
+      dateStart: "2020-03-01",
+      dateEnd: "2020-08-01",
       sv:{
         title: "Titel",
         location: "Arbetsplats",
-        dateStart: "Mar 2020",
-        dateEnd: "Aug 2020",
         description: "Jobba jobba på ett företag"
       },
       en:{
         title: "Title",
         location: "Location",
-        dateStart: "Mar 2020",
-        dateEnd: "Aug 2020",
         description: "Here is a job description"
       }
 
     },
     1: {
       id: 1,
+      dateStart: "2020-04-01",
+      dateEnd: "2020-06-01",
       sv:{
         title: "Webbutvecklare",
         location: "Linköpings universitet",
-        dateStart: "Apr 2020",
-        dateEnd: "Jun 2020",
-        description: "Developed a drag and drop resume creator with material design, for the course TDDD27"
+        description: "Utvecklade en and drop cv skapare med material design, i kursen TDDD27"
       },
       en:{
         title: "Web developer",
         location: "Linköpings University",
-        dateStart: "Apr 2020",
-        dateEnd: "Jun 2020",
         description: "Developed a drag and drop resume creator with material design, for the course TDDD27"
       }
     },
     2: {
       id: 2,
+      dateStart: "2020-04-01",
+      dateEnd: "2020-07-01",
       sv:{
         title: "Datavetare",
         location: "Coolt företag",
-        dateStart: "Apr 2020",
-        dateEnd: "Jun 2020",
-        description: "Machine learning is very cool!"
+        description: "Machine learning är väldigt coolt!"
       },
       en:{
         title: "Data scientist",
         location: "Cool company",
-        dateStart: "Apr 2020",
-        dateEnd: "Jun 2020",
         description: "Machine learning is very cool!"
       }
     }

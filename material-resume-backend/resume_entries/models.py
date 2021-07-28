@@ -15,6 +15,8 @@ class Experience(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL,
                               related_name='experiences',
                               on_delete=models.CASCADE)
+    start = models.DateField(blank=True, null=True)
+    end = models.DateField(blank=True, null=True)
     pass
 
 
@@ -24,8 +26,6 @@ class ExperienceEntry(models.Model):
     lang = models.CharField(max_length=2, default='en')
     title = models.TextField(blank=True, null=True)
     location = models.TextField(blank=True, null=True)
-    start = models.DateField(blank=True, null=True)
-    end = models.DateField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
 
 

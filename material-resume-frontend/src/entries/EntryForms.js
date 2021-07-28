@@ -97,7 +97,7 @@ class WorkForm extends React.Component {
           type='date'
           label='Start Date'
           name='dateStart'
-          value={this.state[this.props.lang].dateStart}
+          value={this.state.dateStart}
           onChange={e => this.onChange('dateStart', e)}
           onFocus={this.focusAll}
         >
@@ -107,7 +107,7 @@ class WorkForm extends React.Component {
           type='date'
           label='End Date'
           name='dateEnd'
-          value={this.state[this.props.lang].dateEnd}
+          value={this.state.dateEnd}
           onChange={e => this.onChange('dateEnd', e)}
           onFocus={this.focusAll}
         >
