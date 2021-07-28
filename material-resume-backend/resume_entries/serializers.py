@@ -9,21 +9,22 @@ class ExperienceEntrySerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ExperienceSerializer(serializers.HyperlinkedModelSerializer):
-    entries = ExperienceEntrySerializer(many=True, read_only=True)
+    entries = ExperienceEntrySerializer(many=True)
 
     class Meta:
         model = Experience
         fields = ['url', 'id', 'start', 'end', 'entries']
 
     def create(self, validated_data):
+        entries_data = validated_data.pop('entries')
         experience = Experience.objects.create(**validated_data)
+        print(entries_data)
 
-        owner_langs = validated_data['owner'].languages.all()
         entries_list = []
-        for language in owner_langs:
+        for entry_data in entries_data:
             entry = ExperienceEntry.objects.create(
-                    lang=language.language,
-                    experience=experience
+                    experience=experience,
+                    **entry_data
                     )
             entries_list.append(entry)
         experience.entries.set(entries_list)
