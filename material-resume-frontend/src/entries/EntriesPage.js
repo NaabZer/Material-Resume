@@ -47,10 +47,13 @@ class EntriesPage extends React.Component {
 
   render(){
     const entryType = this.props.match.params.type
+    if(!this.props.entries[entryType].fetched){
+      this.props.loadEntries(entryType);
+    }
 
     const entries = this.props.entries[entryType];
     const entryElems = Object.keys(entries).flatMap((key, index) =>{
-      if (key === 'initial'){
+      if (key === 'initial' || key === 'fetched'){
         return null
       } else{
         return(
@@ -99,13 +102,6 @@ class EntriesPage extends React.Component {
                 New {entryType}
               </Button>
             </Link>
-            <Button
-              raised
-              style={{width: 'calc(100% - 16px)', height: '48px', margin: '8px'}}
-              onClick={(e) => this.props.loadEntries(entryType)}
-            >
-              Load
-            </Button>
             {entryElems}
           </div>
         </Card>

@@ -31,10 +31,11 @@ class LoginModal extends React.Component {
     if(this.props.is_register){
       this.props.register(values)
         .then(response => {
+          // close modal
           this.replaceBack(e);
         })
         .catch(err => {
-          console.log('error');
+          console.log(err);
           var errorMsg = err.response.data.non_field_errors
           console.log(err.response);
           this.setState({hasError: true, error: errorMsg});
@@ -45,11 +46,10 @@ class LoginModal extends React.Component {
       this.props.logIn(values.email, values.password)
         .then(response => {
           // close modal
-          console.log('success');
           this.replaceBack(e);
         })
         .catch(err => {
-          console.log('error');
+          console.log(err);
           var errorMsg = err.response.data.non_field_errors
           console.log(err.response);
           this.setState({hasError: true, error: errorMsg});

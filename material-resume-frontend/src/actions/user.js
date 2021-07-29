@@ -1,4 +1,5 @@
 import api from '../api';
+import { entryReset } from './entries';
 
 export const USER_LOG_IN = "LOG_IN"
 export const USER_SET_TOKEN = "SET_TOKEN"
@@ -43,7 +44,10 @@ export function logIn(email, password){
 
         api.get('user/')
           .then(response => response.data)
-          .then(json => dispatch(logInSuccess(json)))
+          .then(json => {
+            dispatch(logInSuccess(json))
+            dispatch(entryReset())
+          })
       })
       .catch(error=> {
         dispatch(logInFail(error))
@@ -69,7 +73,10 @@ export function register(args){
 
         api.get('user/')
           .then(response => response.data)
-          .then(json => dispatch(logInSuccess(json)))
+          .then(json => {
+            dispatch(logInSuccess(json))
+            dispatch(entryReset())
+          })
       })
       .catch(error=> {
         dispatch(logInFail(error))
@@ -80,6 +87,8 @@ export function register(args){
 
 export function logOut(){
   return dispatch => {
+    api.defaults.headers.common['Authorization'] = ''
     dispatch(resetUser());
+    dispatch(entryReset())
   }
 }

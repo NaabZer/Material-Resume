@@ -1,5 +1,6 @@
 import {
   ENTRY_TRANSACTION_START,
+  ENTRY_RESET,
   ENTRY_LOAD_SUCCESS,
   ENTRY_CREATE_SUCCESS,
   ENTRY_EDIT_SUCCESS,
@@ -11,11 +12,8 @@ const initialState = {
   isFetching: false,
   error: false,
   errorObject: null,
-  max_ids:{
-    text: 1,
-    work: 2,
-  },
   text:{
+    fetched: false,
     initial:{
       id: 'initial',
       entries:{
@@ -23,15 +21,9 @@ const initialState = {
         en: {'text': "Example Text"},
       }
     },
-    1:{
-      id: 1,
-      entries:{
-        sv: {"text": "Arbetserfarenhet"},
-        en: {"text": "Work experience"},
-      }
-    },
   },
   experience:{
+    fetched: false,
     initial:{
       id: 'initial',
       start: "2020-03-01",
@@ -49,41 +41,7 @@ const initialState = {
         }
       }
     },
-    1: {
-      id: 1,
-      start: "2020-04-01",
-      end: "2020-06-01",
-      entries: {
-        sv:{
-          title: "Webbutvecklare",
-          location: "Linköpings universitet",
-          description: "Utvecklade en and drop cv skapare med material design, i kursen TDDD27"
-        },
-        en:{
-          title: "Web developer",
-          location: "Linköpings University",
-          description: "Developed a drag and drop resume creator with material design, for the course TDDD27"
-        }
-      }
-    },
-    2: {
-      id: 2,
-      start: "2020-04-01",
-      end: "2020-07-01",
-      entries: {
-        sv:{
-          title: "Datavetare",
-          location: "Coolt företag",
-          description: "Machine learning är väldigt coolt!"
-        },
-        en:{
-          title: "Data scientist",
-          location: "Cool company",
-          description: "Machine learning is very cool!"
-        }
-      }
-    }
-}
+  }
 }
 
 export function entries(state = initialState, action){
@@ -94,11 +52,15 @@ export function entries(state = initialState, action){
         isFetching: true,
       });
     }
+    case ENTRY_RESET: return Object.assign({}, state, initialState);
     case ENTRY_LOAD_SUCCESS: {
       let {entryType, entries} = action;
       return Object.assign({}, state, {
         ...state,
-        [entryType]: {...entries, 'initial': state[entryType]['initial']}
+        [entryType]: {
+          ...entries,
+          'initial': state[entryType]['initial'],
+          fetched: true}
       });
     }
     case ENTRY_CREATE_SUCCESS: {

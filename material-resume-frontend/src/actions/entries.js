@@ -2,6 +2,7 @@ import api from '../api';
 
 export const ENTRY_TRANSACTION_START = "ENTRY_TRANSACTION_START"
 export const ENTRY_LOAD_SUCCESS = "ENTRY_LOAD_SUCCESS"
+export const ENTRY_RESET = "ENTRY_RESET"
 export const ENTRY_CREATE_SUCCESS = "ENTRY_CREATE_SUCCESS"
 export const ENTRY_EDIT_SUCCESS = "ENTRY_EDIT_SUCCESS"
 export const ENTRY_REMOVE_SUCCESS = "ENTRY_REMOVE_SUCCESS"
@@ -10,6 +11,10 @@ export const ENTRY_TRANSACTION_FAIL = "ENTRY_START_TRANSACTION"
 export const entryTransactionStart = () => ({
   type: ENTRY_TRANSACTION_START,
 })
+
+export const entryReset = () => ({
+  type: ENTRY_RESET
+});
 
 export const loadEntrySuccess = (entryType, entries) => ({
   type: ENTRY_LOAD_SUCCESS,
