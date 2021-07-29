@@ -22,7 +22,7 @@ class TextForm extends React.Component {
   }
 
   onChange = (e) =>{
-    this.setState({[this.props.lang]: e.currentTarget.value});
+    this.setState({[this.props.lang]:{...this.state[this.props.lang], 'text': e.currentTarget.value}});
   }
 
   getValues = () =>{
@@ -41,7 +41,7 @@ class TextForm extends React.Component {
           style={{width: '100%'}}
           label='Text'
           name='text'
-          value={this.state[this.props.lang]}
+          value={this.state[this.props.lang].text}
           onChange={e => this.onChange(e)}
           onFocus={this.focusAll}
         >

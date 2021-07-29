@@ -19,15 +19,15 @@ const initialState = {
     initial:{
       id: 'initial',
       entries:{
-        sv: "Exempeltext",
-        en: "Example Text",
+        sv: {'text': "Exempeltext"},
+        en: {'text': "Example Text"},
       }
     },
     1:{
       id: 1,
       entries:{
-      sv: "Arbetserfarenhet",
-      en: "Work experience",
+        sv: {"text": "Arbetserfarenhet"},
+        en: {"text": "Work experience"},
       }
     },
   },

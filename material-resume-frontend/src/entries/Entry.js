@@ -29,7 +29,7 @@ class Entry extends React.Component {
     if(this.props.type === 'experience'){
       titleText = entry.title + ' - ' + entry.location
     } else{
-      titleText = entry
+      titleText = entry.text
     }
 
 

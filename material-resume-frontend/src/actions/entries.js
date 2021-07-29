@@ -39,7 +39,7 @@ export const removeEntrySuccess = (entryId, entryType) => ({
 export function loadEntries(entryType){
   return dispatch => {
     dispatch(entryTransactionStart);
-    api.get('entries/experiences/')
+    api.get('entries/' + entryType + 's/')
       .then(response => response.data)
       .then(json => {
         const refactored_json = Object.assign({}, ...json.map(json_e => {

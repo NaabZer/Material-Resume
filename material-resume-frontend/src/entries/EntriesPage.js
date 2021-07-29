@@ -102,7 +102,7 @@ class EntriesPage extends React.Component {
             <Button
               raised
               style={{width: 'calc(100% - 16px)', height: '48px', margin: '8px'}}
-              onClick={(e) => this.props.loadEntries('experience')}
+              onClick={(e) => this.props.loadEntries(entryType)}
             >
               Load
             </Button>
