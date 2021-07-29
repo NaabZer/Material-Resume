@@ -7,18 +7,28 @@ from material_resume_backend.permissions import IsOwner
 
 
 class ExperienceViewSet(viewsets.ModelViewSet):
-    queryset = Experience.objects.all()
     serializer_class = ExperienceSerializer
     permission_classes = [IsOwner]
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 
+    def get_queryset(self):
+        user = self.request.user
+        if(not user.id):
+            return None
+        return Experience.objects.filter(owner=user)
+
 
 class TextViewSet(viewsets.ModelViewSet):
-    queryset = Text.objects.all()
     serializer_class = TextSerializer
     permission_classes = [IsOwner]
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
+
+    def get_queryset(self):
+        user = self.request.user
+        if(not user.id):
+            return None
+        return Experience.objects.filter(owner=user)
