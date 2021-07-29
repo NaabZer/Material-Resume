@@ -6,7 +6,7 @@ import { TabBar, Tab } from '@rmwc/tabs';
 import { Card, CardPrimaryAction} from "@rmwc/card";
 import { Button } from '@rmwc/button';
 
-import { editEntry, removeEntry } from '../actions/entries';
+import { editEntrySuccess, removeEntrySuccess } from '../actions/entries';
 
 import './Entry.scss';
 
@@ -23,7 +23,7 @@ class Entry extends React.Component {
   }
 
   render(){
-    const entry = this.props.entries[this.props.type][this.props.id][this.props.lang]
+    const entry = this.props.entries[this.props.type][this.props.id]['entries'][this.props.lang]
 
     var titleText = '';
     if(this.props.type === 'experience'){
@@ -92,10 +92,10 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  editEntry: (entryId, entryType, values) => 
-    dispatch(editEntry(entryId, entryType, values)),
-  removeEntry: (entryId, entryType) => 
-    dispatch(removeEntry(entryId, entryType))
+  editEntrySuccess: (entryId, entryType, values) => 
+    dispatch(editEntrySuccess(entryId, entryType, values)),
+  removeEntrySuccess: (entryId, entryType) => 
+    dispatch(removeEntrySuccess(entryId, entryType))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Entry);

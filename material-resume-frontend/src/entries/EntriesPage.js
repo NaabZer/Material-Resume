@@ -7,7 +7,7 @@ import { Card } from "@rmwc/card";
 import { Button } from '@rmwc/button';
 
 import Entry from './Entry';
-import { createEntry } from '../actions/entries';
+import { loadEntries } from '../actions/entries';
 import EntryModal from './EntryModal';
 
 var urljoin = require('url-join');
@@ -99,6 +99,13 @@ class EntriesPage extends React.Component {
                 New {entryType}
               </Button>
             </Link>
+            <Button
+              raised
+              style={{width: 'calc(100% - 16px)', height: '48px', margin: '8px'}}
+              onClick={(e) => this.props.loadEntries('experience')}
+            >
+              Load
+            </Button>
             {entryElems}
           </div>
         </Card>
@@ -111,8 +118,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  createEntry: (entryType, values) => 
-    dispatch(createEntry(entryType, values)),
+  loadEntries: (entryType) => 
+    dispatch(loadEntries(entryType)),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(EntriesPage));
