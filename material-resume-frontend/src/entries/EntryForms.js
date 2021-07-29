@@ -22,7 +22,13 @@ class TextForm extends React.Component {
   }
 
   onChange = (e) =>{
-    this.setState({[this.props.lang]:{...this.state[this.props.lang], 'text': e.currentTarget.value}});
+    this.setState({
+      'entries':
+      {
+        ...this.state.entries,
+        [this.props.lang]:{'text': e.currentTarget.value}
+      }
+    });
   }
 
   getValues = () =>{
@@ -41,7 +47,7 @@ class TextForm extends React.Component {
           style={{width: '100%'}}
           label='Text'
           name='text'
-          value={this.state[this.props.lang].text}
+          value={this.state.entries[this.props.lang].text}
           onChange={e => this.onChange(e)}
           onFocus={this.focusAll}
         >
@@ -59,7 +65,17 @@ class WorkForm extends React.Component {
   }
 
   onChange = (type, e) =>{
-    this.setState({[this.props.lang]:{...this.state[this.props.lang], [type]: e.currentTarget.value}});
+    if(type === "start" || type === "end"){
+      this.setState({[type]:  e.currentTarget.value});
+    } else{
+      this.setState({
+        'entries':
+        {
+          ...this.state.entries,
+          [this.props.lang]:{...this.state.entries[this.props.lang], [type]: e.currentTarget.value}
+        }
+      });
+    }
   }
 
   getValues = () =>{
@@ -78,7 +94,7 @@ class WorkForm extends React.Component {
           style={{width: '100%'}}
           label='Title'
           name='title'
-          value={this.state[this.props.lang].title}
+          value={this.state.entries[this.props.lang].title}
           onChange={e => this.onChange('title', e)}
           onFocus={this.focusAll}
         >
@@ -87,7 +103,7 @@ class WorkForm extends React.Component {
           style={{width: '100%'}}
           label='Location'
           name='location'
-          value={this.state[this.props.lang].location}
+          value={this.state.entries[this.props.lang].location}
           onChange={e => this.onChange('location', e)}
           onFocus={this.focusAll}
         >
@@ -96,9 +112,9 @@ class WorkForm extends React.Component {
           style={{width: '100%'}}
           type='date'
           label='Start Date'
-          name='dateStart'
-          value={this.state.dateStart}
-          onChange={e => this.onChange('dateStart', e)}
+          name='start'
+          value={this.state.start}
+          onChange={e => this.onChange('start', e)}
           onFocus={this.focusAll}
         >
         </TextField>
@@ -106,9 +122,9 @@ class WorkForm extends React.Component {
           style={{width: '100%'}}
           type='date'
           label='End Date'
-          name='dateEnd'
-          value={this.state.dateEnd}
-          onChange={e => this.onChange('dateEnd', e)}
+          name='end'
+          value={this.state.end}
+          onChange={e => this.onChange('end', e)}
           onFocus={this.focusAll}
         >
         </TextField>
@@ -117,7 +133,7 @@ class WorkForm extends React.Component {
           style={{width: '100%', marginTop:'16px'}}
           label='Description'
           name='description'
-          value={this.state[this.props.lang].description}
+          value={this.state.entries[this.props.lang].description}
           onChange={e => this.onChange('description', e)}
           onFocus={this.focusAll}
         >

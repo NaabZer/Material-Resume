@@ -87,7 +87,7 @@ class EntryModal extends React.Component {
         <form onSubmit={(e) => this.submit(e)}>
           <Form
             ref={this.formRef}
-            entry={this.props.entries[type][id]['entries']}
+            entry={this.props.entries[type][id]}
             lang={this.state.lang}
           />
           <div

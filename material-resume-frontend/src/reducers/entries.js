@@ -34,8 +34,8 @@ const initialState = {
   experience:{
     initial:{
       id: 'initial',
-      dateStart: "2020-03-01",
-      dateEnd: "2020-08-01",
+      start: "2020-03-01",
+      end: "2020-08-01",
       entries:{
         sv:{
           title: "Titel",
@@ -51,8 +51,8 @@ const initialState = {
     },
     1: {
       id: 1,
-      dateStart: "2020-04-01",
-      dateEnd: "2020-06-01",
+      start: "2020-04-01",
+      end: "2020-06-01",
       entries: {
         sv:{
           title: "Webbutvecklare",
@@ -68,8 +68,8 @@ const initialState = {
     },
     2: {
       id: 2,
-      dateStart: "2020-04-01",
-      dateEnd: "2020-07-01",
+      start: "2020-04-01",
+      end: "2020-07-01",
       entries: {
         sv:{
           title: "Datavetare",
@@ -103,20 +103,12 @@ export function entries(state = initialState, action){
     }
     case ENTRY_CREATE_SUCCESS: {
       let {entryType, values} = action;
-      let id = state.max_ids[entryType] + 1;
 
       return Object.assign({}, state, {
         ...state,
-        max_ids: {
-          [entryType]: id,
-          ...state.max_id
-        },
         [entryType]: {
-          [id]: {
-            id: id,
-            ...values
-          },
-          ...state[entryType]
+          ...state[entryType],
+          ...values
         },
       });
     }

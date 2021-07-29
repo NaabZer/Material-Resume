@@ -36,17 +36,21 @@ export const removeEntrySuccess = (entryId, entryType) => ({
   entryType
 })
 
+function refactorJsonWithLang(json){
+  const refactored_json = Object.assign({}, ...json.map(json_e => {
+    let entries = Object.assign({}, ...json_e.entries.map((x) => ({[x.lang]: x})));
+    return {[json_e.id]: {...json_e, entries}}
+  }));
+  return refactored_json
+}
+
 export function loadEntries(entryType){
   return dispatch => {
     dispatch(entryTransactionStart);
     api.get('entries/' + entryType + 's/')
       .then(response => response.data)
       .then(json => {
-        const refactored_json = Object.assign({}, ...json.map(json_e => {
-          let entries = Object.assign({}, ...json_e.entries.map((x) => ({[x.lang]: x})));
-          return {[json_e.id]: {...json_e, entries}}
-        }));
-        dispatch(loadEntrySuccess(entryType, refactored_json));
+        dispatch(loadEntrySuccess(entryType, refactorJsonWithLang(json)));
       })
       .catch(err => {
       });
@@ -55,5 +59,22 @@ export function loadEntries(entryType){
 
 export function createEntry(entryType, values){
   return dispatch => {
+    dispatch(entryTransactionStart);
+    console.log(values);
+
+    var entries_with_lang = Object.keys(values.entries).flatMap((key, index) =>{
+      return {lang: key, ...values.entries[key]}
+    });
+    const refactored_values = {...values, 'entries': entries_with_lang}
+    console.log(refactored_values);
+
+    api.post('entries/' + entryType + 's/', JSON.stringify(refactored_values))
+      .then(response => response.data)
+      .then(json => {
+        dispatch(createEntrySuccess(entryType, refactorJsonWithLang([json])))
+      })
+      .catch(err =>{
+        console.log(err);
+      });
   };
 };
