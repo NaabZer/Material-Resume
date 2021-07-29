@@ -31,4 +31,4 @@ class TextViewSet(viewsets.ModelViewSet):
         user = self.request.user
         if(not user.id):
             return None
-        return Experience.objects.filter(owner=user)
+        return Text.objects.filter(owner=user)
