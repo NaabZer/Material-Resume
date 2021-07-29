@@ -31,6 +31,17 @@ class ExperienceSerializer(serializers.HyperlinkedModelSerializer):
 
         return experience
 
+    def update(self, instance, validated_data):
+        entries_data = validated_data.pop('entries')
+
+        for entry_data in entries_data:
+            entry = ExperienceEntry.objects.get(lang=entry_data.get('lang'),
+                                                experience=instance)
+            ExperienceEntrySerializer().update(entry, entry_data)
+
+        return super(ExperienceSerializer, self).update(instance,
+                                                        validated_data)
+
 
 class TextEntrySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -60,3 +71,13 @@ class TextSerializer(serializers.HyperlinkedModelSerializer):
         text_obj.save()
 
         return text_obj
+
+    def update(self, instance, validated_data):
+        entries_data = validated_data.pop('entries')
+
+        for entry_data in entries_data:
+            entry = TextEntry.objects.get(lang=entry_data.get('lang'),
+                                          text_obj=instance)
+            TextEntrySerializer().update(entry, entry_data)
+
+        return super(TextSerializer, self).update(instance, validated_data)
