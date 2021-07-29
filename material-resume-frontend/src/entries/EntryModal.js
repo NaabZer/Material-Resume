@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 import Modal from '../Modal';
 import { getEntryFormFromType } from './EntryForms';
 
-import { editEntrySuccess, createEntry} from '../actions/entries';
+import { editEntry, createEntry} from '../actions/entries';
 
 import { Typography } from '@rmwc/typography';
 import { Select } from '@rmwc/select';
@@ -27,12 +27,12 @@ class EntryModal extends React.Component {
 
   submit = (e) =>{
     e.preventDefault();
-    const {id, ...values} = this.formRef.current.getValues();
+    const values = this.formRef.current.getValues();
     console.log(values)
     if(this.props.match.params.entryid){
       // If edit
       
-      this.props.editEntrySuccess(this.props.match.params.entryid,
+      this.props.editEntry(this.props.match.params.entryid,
                            this.props.match.params.type,
                            values)
     } else{
@@ -126,8 +126,8 @@ const mapStateToProps = (state, props) => {
 const mapDispatchToProps = dispatch => ({
   createEntry: (entryType, values) => 
     dispatch(createEntry(entryType, values)),
-  editEntrySuccess: (entryId, entryType, values) => 
-    dispatch(editEntrySuccess(entryId, entryType, values)),
+  editEntry: (entryId, entryType, values) => 
+    dispatch(editEntry(entryId, entryType, values)),
 });
 
 

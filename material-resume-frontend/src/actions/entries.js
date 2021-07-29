@@ -91,3 +91,26 @@ export function removeEntry(entryId, entryType){
       });
   }
 }
+
+export function editEntry(entryId, entryType, values){
+  return dispatch => {
+    dispatch(entryTransactionStart);
+
+    var entries_with_lang = Object.keys(values.entries).flatMap((key, index) =>{
+      return {lang: key, ...values.entries[key]}
+    });
+    const refactored_values = {...values, 'entries': entries_with_lang}
+    console.log(refactored_values)
+
+    api.patch('entries/' + entryType + 's/' + entryId, JSON.stringify(refactored_values))
+      .then(response => response.data)
+      .then(json => {
+        console.log(json)
+        console.log(refactorJsonWithLang([json]))
+        dispatch(editEntrySuccess(entryId, entryType, refactorJsonWithLang([json])))
+      })
+      .catch(err =>{
+        console.log(err.response);
+      });
+  }
+}

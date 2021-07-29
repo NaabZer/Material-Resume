@@ -5,6 +5,12 @@ let api_instance =  axios.create({
   headers: {
     post:{
       'Content-Type': 'application/json'
+    },
+    patch:{
+      'Content-Type': 'application/json'
+    },
+    put:{
+      'Content-Type': 'application/json'
     }
   },
   baseURL: 'http://localhost:8000'

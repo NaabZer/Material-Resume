@@ -26,7 +26,8 @@ class TextForm extends React.Component {
       'entries':
       {
         ...this.state.entries,
-        [this.props.lang]:{'text': e.currentTarget.value}
+        [this.props.lang]:{...this.state.entries[this.props.lang],
+                           'text': e.currentTarget.value}
       }
     });
   }

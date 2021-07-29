@@ -118,10 +118,7 @@ export function entries(state = initialState, action){
         ...state,
         [entryType]: {
           ...state[entryType],
-          [id]: {
-            id: id,
-            ...values
-          },
+          ...values
         },
       });
     }
