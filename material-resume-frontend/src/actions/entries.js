@@ -60,13 +60,11 @@ export function loadEntries(entryType){
 export function createEntry(entryType, values){
   return dispatch => {
     dispatch(entryTransactionStart);
-    console.log(values);
 
     var entries_with_lang = Object.keys(values.entries).flatMap((key, index) =>{
       return {lang: key, ...values.entries[key]}
     });
     const refactored_values = {...values, 'entries': entries_with_lang}
-    console.log(refactored_values);
 
     api.post('entries/' + entryType + 's/', JSON.stringify(refactored_values))
       .then(response => response.data)
@@ -78,3 +76,18 @@ export function createEntry(entryType, values){
       });
   };
 };
+
+export function removeEntry(entryId, entryType){
+  return dispatch => {
+    dispatch(entryTransactionStart)
+
+    api.delete('entries/' + entryType + 's/' + entryId)
+      .then(response => response.data)
+      .then(json => {
+        dispatch(removeEntrySuccess(entryId, entryType));
+      })
+      .catch(err => {
+        console.log(err)
+      });
+  }
+}

@@ -6,7 +6,7 @@ import { TabBar, Tab } from '@rmwc/tabs';
 import { Card, CardPrimaryAction} from "@rmwc/card";
 import { Button } from '@rmwc/button';
 
-import { editEntrySuccess, removeEntrySuccess } from '../actions/entries';
+import { editEntrySuccess, removeEntry } from '../actions/entries';
 
 import './Entry.scss';
 
@@ -94,8 +94,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   editEntrySuccess: (entryId, entryType, values) => 
     dispatch(editEntrySuccess(entryId, entryType, values)),
-  removeEntrySuccess: (entryId, entryType) => 
-    dispatch(removeEntrySuccess(entryId, entryType))
+  removeEntry: (entryId, entryType) => 
+    dispatch(removeEntry(entryId, entryType))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Entry);
