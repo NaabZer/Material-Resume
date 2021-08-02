@@ -25,9 +25,10 @@ class CardComponent extends React.Component {
   
   render(){
     const {data} = this.props;
+    const classNames = 'card-component mdc-elevation-transition mdc-elevation--z' + this.props.elevation;
     return (
       <Card 
-        className='card-component'
+        className={classNames}
       >
         <Typography use='headline6'>{data.entries.en.title}</Typography>
         <div className='card-location-date'>

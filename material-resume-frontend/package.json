@@ -18,6 +18,7 @@
     "@rmwc/button": "^6.0.14",
     "@rmwc/card": "^6.0.14",
     "@rmwc/drawer": "^6.1.4",
+    "@rmwc/elevation": "^6.1.4",
     "@rmwc/icon-button": "^6.0.14",
     "@rmwc/list": "^6.1.4",
     "@rmwc/select": "^6.1.0",

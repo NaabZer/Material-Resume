@@ -9,6 +9,7 @@ import { startDrag, endDrag } from '../../actions/dragAndDrop';
 import { deleteComponent } from '../../actions/components';
 import { getComponentFromType } from './ComponentFactory';
 import { withRouterAndRef } from '../../utility/utilityFunctions';
+import { Elevation } from "@rmwc/elevation"; 
 
 import { IconButton } from '@rmwc/icon-button';
 import '../../stylesheets/components/draggable-component.scss';
@@ -16,7 +17,7 @@ import '../../stylesheets/components/draggable-component.scss';
 class DraggableComponent extends React.Component {
   constructor(props){
     super(props)
-    this.state = {x: 0, y: 0, w: 0, h: 0, resizing: false}
+    this.state = {x: 0, y: 0, w: 0, h: 0, resizing: false, z: 4}
     this.ref = React.createRef();
   }
 
@@ -52,11 +53,13 @@ class DraggableComponent extends React.Component {
       }
       this.props.ondropcallback(this, e, data)
     }
+    this.setState({z: 4})
   }
 
   onDragStart = (e, data) => {
     e.stopPropagation();
     const rect = this.ref.current.getBoundingClientRect();
+    this.setState({z: 12})
     this.props.startDrag(this.props.componenttype, this.props.componentid, rect.width,
       rect.height, data.x - rect.x, data.y - rect.y);
   }
@@ -111,17 +114,12 @@ class DraggableComponent extends React.Component {
       ...style, transform: "translate("+this.state.x+"px, "+this.state.y+"px)",
       width:  "calc(100% + " + this.state.w + "px)",
       height: "calc(100% + " + this.state.h + "px)",
+      zIndex: this.state.z,
     }
 
     const InnerComponentType = getComponentFromType(this.props.componenttype);
     const settings = this.props.settings || InnerComponentType.defaultSettings
-    const InnerComponent = 
-      <InnerComponentType
-        settings={settings} 
-        ondropcallback={this.onDrop}
-        componentid={this.props.componentid}
-        ref={forwardedRef}
-      />;
+    //const InnerComponent = 
 
     return (
       <DraggableCore
@@ -129,7 +127,7 @@ class DraggableComponent extends React.Component {
         onStop={this.onDrop}
         onDrag={this.onDrag}
         cancel=".react-resizable-handle, .mdc-icon-button"
-        >
+      >
         <Resizable
           onResize={this.onResize}
           onResizeStop={this.onResizeStop}
@@ -137,32 +135,38 @@ class DraggableComponent extends React.Component {
           width={100}
           height={100}
         >
-          <div
-            style={new_style}
-            className={classNames}
-            ref={this.ref}
-            {...props}
-          >
-            <div className='draggable-component-buttons'>
-              <IconButton
-                className='draggable-component-close'
-                onClick={() => this.props.deleteComponent(this.props.componentid)}
-                icon='close'
-              />
-              <Link
-                style={{color: 'black', decoration: 'none'}}
-                to={{
-                  pathname:"/creator/component/" + this.props.componentid + "/settings",
-                }}
-              >
+            <div
+              style={new_style}
+              className={classNames}
+              ref={this.ref}
+              {...props}
+            >
+              <div className='draggable-component-buttons'>
                 <IconButton
-                  className='draggable-component-settings'
-                  icon='settings'
+                  className='draggable-component-close'
+                  onClick={() => this.props.deleteComponent(this.props.componentid)}
+                  icon='close'
                 />
-              </Link>
+                <Link
+                  style={{color: 'black', decoration: 'none'}}
+                  to={{
+                    pathname:"/creator/component/" + this.props.componentid + "/settings",
+                  }}
+                >
+                  <IconButton
+                    className='draggable-component-settings'
+                    icon='settings'
+                  />
+                </Link>
+              </div>
+              <InnerComponentType
+                settings={settings} 
+                ondropcallback={this.onDrop}
+                componentid={this.props.componentid}
+                elevation={this.state.z}
+                ref={forwardedRef}
+              />
             </div>
-            {InnerComponent}
-          </div>
         </Resizable>
       </DraggableCore>
     );
