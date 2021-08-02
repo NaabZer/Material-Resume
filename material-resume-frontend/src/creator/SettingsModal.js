@@ -13,7 +13,6 @@ class SettingsModal extends React.Component {
   constructor(props){
     super(props)
 
-    this.state = {open: false}
     this.formRef = React.createRef();
   }
 

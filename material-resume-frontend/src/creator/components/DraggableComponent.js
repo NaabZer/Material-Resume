@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { DraggableCore } from 'react-draggable';
 import { Resizable } from 'react-resizable';
 import { connect } from 'react-redux';
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { startDrag, endDrag } from '../../actions/dragAndDrop';
 import { deleteComponent } from '../../actions/components';
@@ -142,18 +142,17 @@ class DraggableComponent extends React.Component {
             ref={this.ref}
             {...props}
           >
-            <NavLink
+            <Link
               style={{color: 'black', decoration: 'none'}}
               to={{
                 pathname:"/creator/component/" + this.props.componentid + "/settings",
-                background: this.props.location
               }}
             >
               <IconButton
                 className='draggable-component-settings'
                 icon='settings'
               />
-            </NavLink>
+            </Link>
             <IconButton
               className='draggable-component-close'
               onClick={() => this.props.deleteComponent(this.props.componentid)}

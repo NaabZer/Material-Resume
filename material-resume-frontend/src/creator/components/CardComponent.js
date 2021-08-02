@@ -76,7 +76,6 @@ export class CardComponentSettingsForm extends React.Component {
   }
 
   render(){
-    console.log(this.props.entries.experience)
     const options = Object.entries(this.props.entries.experience.entries).map(([key, entry]) => {
       return(
       <option key={key} value={entry.id}>

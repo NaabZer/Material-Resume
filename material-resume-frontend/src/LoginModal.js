@@ -86,7 +86,7 @@ class LoginModal extends React.Component {
       <React.Fragment>
         <Modal 
           open={true}
-          backgroundClickCallback={this.back}
+          backgroundClickCallback={this.replaceBack}
         >
           <Typography
             use="headline4"
