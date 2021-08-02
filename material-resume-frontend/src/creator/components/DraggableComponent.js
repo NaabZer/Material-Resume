@@ -95,6 +95,7 @@ class DraggableComponent extends React.Component {
            startDrag, endDrag, className, editable, onresizestopcallback,
            componenttype, deleteComponent, forwardedRef, ...props } = this.props;
     var classNames = className || "";
+    classNames += " draggable-component";
 
     if(editable === true){
       classNames += " draggable-component-editable";
@@ -142,22 +143,24 @@ class DraggableComponent extends React.Component {
             ref={this.ref}
             {...props}
           >
-            <Link
-              style={{color: 'black', decoration: 'none'}}
-              to={{
-                pathname:"/creator/component/" + this.props.componentid + "/settings",
-              }}
-            >
+            <div className='draggable-component-buttons'>
               <IconButton
-                className='draggable-component-settings'
-                icon='settings'
+                className='draggable-component-close'
+                onClick={() => this.props.deleteComponent(this.props.componentid)}
+                icon='close'
               />
-            </Link>
-            <IconButton
-              className='draggable-component-close'
-              onClick={() => this.props.deleteComponent(this.props.componentid)}
-              icon='close'
-            />
+              <Link
+                style={{color: 'black', decoration: 'none'}}
+                to={{
+                  pathname:"/creator/component/" + this.props.componentid + "/settings",
+                }}
+              >
+                <IconButton
+                  className='draggable-component-settings'
+                  icon='settings'
+                />
+              </Link>
+            </div>
             {InnerComponent}
           </div>
         </Resizable>

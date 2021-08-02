@@ -4,16 +4,6 @@
     > .react-resizable-handle{
         display: none;
     }
-
-    > .mdc-icon-button{
-        display: none;
-    }
-
-    > a {
-        > .mdc-icon-button{
-            display: none;
-        }
-    }
 }
 
 .draggable-component-editable {
@@ -21,29 +11,13 @@
         display: none;
     }
 
-    > .mdc-icon-button{
-        display: none;
-    }
-
-    > a {
-        > .mdc-icon-button{
-            display: none;
-        }
-    }
-
     &:hover{
         > .react-resizable-handle{
             display: inherit;
         }
-        
-        > .mdc-icon-button{
-            display: inherit;
-        }
 
-        > a {
-            > .mdc-icon-button{
-                display: inherit;
-            }
+        > .draggable-component-buttons{
+            width: 16px;
         }
     }
 
@@ -55,30 +29,38 @@
 
 }
 
+.draggable-component-buttons{
+    position: absolute !important;
+    top: 0;
+    left: 100%;
+    float: right;
+    border-radius: 0px 5px 5px 0px;
+
+    background-color: lightgray;
+    width: 0px;
+    overflow: hidden;
+    transition: width 0.15s ease-in;
+}
+
+.draggable-component{
+}
+
 .mdc-icon-button {
     // TODO: Fix ripples being really wrong 
     &.draggable-component-close{
-        position: absolute !important;
-        top: 0px;
-        right: 12px;
-        z-index: 100;
         font-size: 12px !important;
         width: 12px;
         height: 12px;
-        padding: 6px;
+        padding: 2px;
 
 
     }
     
     &.draggable-component-settings{
-        position: absolute !important;
-        top: 0px;
-        right: 32px;
-        z-index: 100;
         font-size: 12px !important;
         width: 12px;
         height: 12px;
-        padding: 6px;
+        padding: 2px;
 
         //@include mdc-icon-button-size(12px);
 
