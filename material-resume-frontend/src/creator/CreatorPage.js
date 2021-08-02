@@ -58,7 +58,7 @@ class CreatorPage extends React.Component {
   render(){
     console.log('inside creatorpage')
 
-    let background = this.props.location.state && this.props.location.state.background;
+    let background = this.props.location.background
     console.log(background);
 
     this.pages = [];

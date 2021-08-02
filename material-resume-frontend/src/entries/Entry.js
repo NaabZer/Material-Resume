@@ -23,7 +23,7 @@ class Entry extends React.Component {
   }
 
   render(){
-    const entry = this.props.entries[this.props.type][this.props.id]['entries'][this.props.lang]
+    const entry = this.props.entries[this.props.type]['entries'][this.props.id]['entries'][this.props.lang]
 
     var titleText = '';
     if(this.props.type === 'experience'){

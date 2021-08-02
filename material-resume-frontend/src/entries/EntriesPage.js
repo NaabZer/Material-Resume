@@ -51,7 +51,7 @@ class EntriesPage extends React.Component {
       this.props.loadEntries(entryType);
     }
 
-    const entries = this.props.entries[entryType];
+    const entries = this.props.entries[entryType]['entries'];
     const entryElems = Object.keys(entries).flatMap((key, index) =>{
       if (key === 'initial' || key === 'fetched'){
         return null

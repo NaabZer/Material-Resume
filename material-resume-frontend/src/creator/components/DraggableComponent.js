@@ -146,7 +146,7 @@ class DraggableComponent extends React.Component {
               style={{color: 'black', decoration: 'none'}}
               to={{
                 pathname:"/creator/component/" + this.props.componentid + "/settings",
-                state: {background: this.props.location}
+                background: this.props.location
               }}
             >
               <IconButton

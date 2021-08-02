@@ -11,7 +11,7 @@ import { Typography } from '@rmwc/typography';
 
 class CardComponent extends React.Component {
   static defaultSettings = {
-    dataSource: 'initial'
+    componentid: 'sample'
   }
 
   static propTypes = {
@@ -29,16 +29,16 @@ class CardComponent extends React.Component {
       <Card 
         className='card-component'
       >
-        <Typography use='headline6'>{data.en.title}</Typography>
+        <Typography use='headline6'>{data.entries.en.title}</Typography>
         <div className='card-location-date'>
-          <Typography use='body2'>{data.en.location}</Typography>
+          <Typography use='body2'>{data.entries.en.location}</Typography>
           <div className='card-date-text'>
-            <Typography use='body2'>{data.en.dateStart + "-"}</Typography>
-            <Typography use='body2'>{data.en.dateEnd}</Typography>
+            <Typography use='body2'>{data.start + "-"}</Typography>
+            <Typography use='body2'>{data.end}</Typography>
           </div>
         </div>
         <Typography use='body1'>
-          {data.en.description}
+          {data.entries.en.description}
         </Typography>
       </Card>
     )
@@ -46,10 +46,16 @@ class CardComponent extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
-  const dataSource = props.settings.dataSource;
-  return({ 
-    data: state.entries.experience[dataSource]
-  });
+  const componentid = props.settings.componentid;
+  if(componentid === 'sample'){
+    return({ 
+      data: state.entries.experience[componentid]
+    });
+  } else{
+    return({ 
+      data: state.entries.experience.entries[componentid]
+    });
+  }
 }
 
 export default connect(mapStateToProps, null, null, {forwardRef: true})(CardComponent);
@@ -71,10 +77,10 @@ export class CardComponentSettingsForm extends React.Component {
 
   render(){
     console.log(this.props.entries.experience)
-    const options = Object.entries(this.props.entries.experience).map(([key, entry]) => {
+    const options = Object.entries(this.props.entries.experience.entries).map(([key, entry]) => {
       return(
       <option key={key} value={entry.id}>
-        {entry.en.title + " - " + entry.en.location}
+        {entry.entries.en.title + " - " + entry.entries.en.location}
       </option>
     )});
 
@@ -86,9 +92,9 @@ export class CardComponentSettingsForm extends React.Component {
         <Select 
           style={{width: '100%'}}
           label='Data source'
-          name='dataSource'
-          value={this.state.dataSource}
-          onChange={e => this.onChange('dataSource', e)}
+          name='componentid'
+          value={this.state.componentid}
+          onChange={e => this.onChange('componentid', e)}
         >
           {options}
         </Select>

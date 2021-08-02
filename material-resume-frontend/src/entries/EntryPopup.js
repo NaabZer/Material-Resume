@@ -13,7 +13,7 @@ class EntryPopup extends React.Component {
   }
 
   render(){
-    const entry = this.props.entries[this.props.type][this.props.id]
+    const entry = this.props.entries[this.props.type]['entries'][this.props.id]
 
     var expandedContent = Object.keys(entry).map((key, index) =>{
       return (
@@ -48,4 +48,4 @@ const mapDispatchToProps = dispatch => ({
     dispatch(removeEntry(entryId, entryType))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Entry);
+export default connect(mapStateToProps, mapDispatchToProps)(EntryPopup);

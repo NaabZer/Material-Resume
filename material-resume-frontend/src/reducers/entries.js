@@ -17,15 +17,40 @@ const initialState = {
     initial:{
       id: 'initial',
       entries:{
-        sv: {'text': "Exempeltext"},
-        en: {'text': "Example Text"},
+        sv: {'text': ""},
+        en: {'text': ""},
       }
     },
+    sample:{
+      id: 'sample',
+      entries:{
+        sv: {'text': "Exempeltext"},
+        en: {'text': "Sampletext"},
+      }
+    },
+    entries:{}
   },
   experience:{
     fetched: false,
     initial:{
       id: 'initial',
+      start: "",
+      end: "",
+      entries:{
+        sv:{
+          title: "",
+          location: "",
+          description: ""
+        },
+        en:{
+          title: "",
+          location: "",
+          description: ""
+        }
+      }
+    },
+    sample:{
+      id: 'sample',
       start: "2020-03-01",
       end: "2020-08-01",
       entries:{
@@ -41,6 +66,7 @@ const initialState = {
         }
       }
     },
+    entries:{}
   }
 }
 
@@ -58,9 +84,12 @@ export function entries(state = initialState, action){
       return Object.assign({}, state, {
         ...state,
         [entryType]: {
-          ...entries,
-          'initial': state[entryType]['initial'],
-          fetched: true}
+          ...state[entryType],
+          fetched: true,
+          'entries': {
+            ...entries,
+          }
+        }
       });
     }
     case ENTRY_CREATE_SUCCESS: {
@@ -69,8 +98,10 @@ export function entries(state = initialState, action){
       return Object.assign({}, state, {
         ...state,
         [entryType]: {
-          ...state[entryType],
-          ...values
+          'entries':{
+            ...state[entryType]['entries'],
+            ...values
+          }
         },
       });
     }
@@ -79,18 +110,22 @@ export function entries(state = initialState, action){
       return Object.assign({}, state, {
         ...state,
         [entryType]: {
-          ...state[entryType],
-          ...values
+          'entries':{
+            ...state[entryType]['entries'],
+            ...values
+          }
         },
       });
     }
     case ENTRY_REMOVE_SUCCESS: {
       let {id, entryType} = action;
-      const {[id]:_ , ...newState} = state[entryType];
+      const {[id]:_ , ...newState} = state[entryType]['entries'];
       return Object.assign({}, state, {
         ...state,
         [entryType]: {
-          ...newState
+          'entries':{
+            ...newState
+          }
         },
       });
     }

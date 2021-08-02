@@ -39,6 +39,7 @@ class TextForm extends React.Component {
   focusAll = (event) => event.target.select();
 
   render(){
+    console.log(this.props.entry)
     return(
       <div
         style={{width: '100%'}}
