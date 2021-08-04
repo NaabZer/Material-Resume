@@ -35,8 +35,6 @@ class Component(models.Model):
     row = models.IntegerField()
     width = models.IntegerField(default=1)
     height = models.IntegerField(default=1)
-    resume = models.ForeignKey(Resume, related_name='components',
-                               on_delete=models.CASCADE)
     inside_component = models.ForeignKey('self', on_delete=models.CASCADE,
                                          related_name='child_components',
                                          blank=True, null=True)
