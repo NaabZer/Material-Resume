@@ -49,6 +49,15 @@ function refactorJsonWithLang(json){
   return refactored_json
 }
 
+const entryTypes = ['text', 'experience'];
+export function loadAllEntries(){
+  return dispatch => {
+    entryTypes.forEach(entryType => {
+      dispatch(loadEntries(entryType));
+    });
+  }
+}
+
 export function loadEntries(entryType){
   return dispatch => {
     dispatch(entryTransactionStart);

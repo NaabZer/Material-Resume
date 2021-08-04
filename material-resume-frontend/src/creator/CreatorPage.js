@@ -3,8 +3,11 @@ import { connect } from 'react-redux';
 import { Route, withRouter } from 'react-router-dom';
 
 import { Button } from '@rmwc/button';
+import { CircularProgress } from '@rmwc/circular-progress';
+
 
 import { addComponent, moveComponent, resizeComponent, addPage } from '../actions/components';
+import { loadAllEntries } from '../actions/entries';
 import SettingsModal from './SettingsModal';
 
 import ComponentSelector from './ComponentSelector';
@@ -55,33 +58,35 @@ class CreatorPage extends React.Component {
     } 
   }
 
+  componentDidUpdate(prevProps, prevState, snapshot){
+  }
+
   render(){
+    //Start load of entries
+    if(!this.props.entries.isFetching && (!this.props.entries.text.fetched ||
+       !this.props.entries.experience.fetched)){
+      this.props.loadAllEntries();
+    }
 
-    let background = this.props.location.state && this.props.location.state.background
-
-    this.pages = [];
-    const pages = this.props.pages.map( (id, i) => {
-      this.pages.push(React.createRef());
-      return(
-        <ResumePage 
-          key={id}
-          componentdropcallback={(c, e, d) => this.onDrop(c, e, d, 1)}
-          pageid={i}
-          componentid={id}
-          ref={this.pages[i]} 
-        />
-      );
-    });
-
-    return (
-      <div>
-        <Route exact path='/creator/component/:id/settings'> 
-          <SettingsModal/>
-        </Route>
-        <ComponentSelector
-          componentdropcallback={(c, e, d) => this.onDrop(c, e, d, 0)}
-          style={{position: 'sticky', top: '0px'}}
-        />
+    var loaded = true;
+    const entries = this.props.entries;
+    loaded = loaded && !entries.isFetching && entries.text.fetched && entries.experience.fetched;
+    let page_content;
+    if(loaded){
+      this.pages = [];
+      const pages = this.props.pages.map( (id, i) => {
+        this.pages.push(React.createRef());
+        return(
+          <ResumePage 
+            key={id}
+            componentdropcallback={(c, e, d) => this.onDrop(c, e, d, 1)}
+            pageid={i}
+            componentid={id}
+            ref={this.pages[i]} 
+          />
+        );
+      });
+      page_content = 
         <div
           style={{display: 'flex', flexDirection:'column', alignItems: 'center'}}
         >
@@ -94,13 +99,33 @@ class CreatorPage extends React.Component {
             Add page
           </Button>
         </div>
+    }else{
+      page_content =
+        <div
+          style={{display: 'flex', flexDirection:'column', alignItems: 'center'}}
+        >
+          <CircularProgress size={52}/>
+        </div>
+    }
+
+    return (
+      <div>
+        <Route exact path='/creator/component/:id/settings'> 
+          <SettingsModal/>
+        </Route>
+        <ComponentSelector
+          componentdropcallback={(c, e, d) => this.onDrop(c, e, d, 0)}
+          style={{position: 'sticky', top: '0px'}}
+        />
+        {page_content}
       </div>
     )
   }
 }
 const mapStateToProps = state => ({
   pages: state.components.pages,
-  drag: state.dragAndDrop
+  drag: state.dragAndDrop,
+  entries: state.entries
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -109,7 +134,8 @@ const mapDispatchToProps = dispatch => ({
   movecomponent: (id, containerId, row, col) => 
     dispatch(moveComponent(id, containerId, row, col)),
   resizeComponent: (id, width, height) => dispatch(resizeComponent(id, width, height)),
-  addPage: () => dispatch(addPage())
+  addPage: () => dispatch(addPage()),
+  loadAllEntries: () => dispatch(loadAllEntries()),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CreatorPage));
