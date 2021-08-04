@@ -6,3 +6,9 @@ class ResumeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Resume
         fields = ['id', 'name', 'pages']
+
+
+class ResumeListSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Resume
+        fields = ['id', 'name']
