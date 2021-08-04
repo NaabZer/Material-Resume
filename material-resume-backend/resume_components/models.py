@@ -1,11 +1,15 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.conf import settings
 
 # Create your models here.
 
 
 class Resume(models.Model):
     name = models.CharField(max_length=32)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL,
+                              related_name='resumes',
+                              on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
