@@ -1,5 +1,5 @@
 import React from 'react';
-import CreatorPage from './creator/CreatorPage';
+import ResumePage from './creator/ResumePage.js';
 import EntriesPage from './entries/EntriesPage';
 import StartPage from './StartPage';
 import NavBar from './NavBar';
@@ -17,7 +17,7 @@ function App() {
       <DrawerAppContent>
         <Switch location={background || location}>
           <Route exact path='/' component={StartPage} />
-          <Route path='/creator' component={CreatorPage} />
+          <Route path='/resumes' component={ResumePage} />
           <Route exact path='/entries'>
             <Redirect to='/entries/experience'/>
           </Route>

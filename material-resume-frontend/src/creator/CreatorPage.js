@@ -11,7 +11,7 @@ import { loadAllEntries } from '../actions/entries';
 import SettingsModal from './SettingsModal';
 
 import ComponentSelector from './ComponentSelector';
-import ResumePage from './ResumePage';
+import Page from './components/Page';
 
 class CreatorPage extends React.Component {
   constructor(props){
@@ -77,7 +77,7 @@ class CreatorPage extends React.Component {
       const pages = this.props.pages.map( (id, i) => {
         this.pages.push(React.createRef());
         return(
-          <ResumePage 
+          <Page 
             key={id}
             componentdropcallback={(c, e, d) => this.onDrop(c, e, d, 1)}
             pageid={i}
