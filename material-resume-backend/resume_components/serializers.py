@@ -2,6 +2,13 @@ from rest_framework import serializers
 from .models import Resume, Page, Component, SettingsRow
 
 
+class SettingsRowSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = SettingsRow
+        fields = ['id', 'url', 'setting', 'value', 'resume',
+                  'component', 'page']
+
+
 class RecursiveField(serializers.Serializer):
     def to_representation(self, value):
         serializer = self.parent.parent.__class__(value, context=self.context)
@@ -10,28 +17,32 @@ class RecursiveField(serializers.Serializer):
 
 class ComponentSerializer(serializers.HyperlinkedModelSerializer):
     child_components = RecursiveField(many=True)
+    settings = SettingsRowSerializer(many=True)
 
     class Meta:
         model = Component
         fields = ['id', 'url', 'inside_page', 'inside_component',
                   'component_type', 'row', 'col', 'height', 'width',
-                  'child_components']
+                  'settings', 'child_components']
 
 
 class PageSerializer(serializers.HyperlinkedModelSerializer):
     child_components = ComponentSerializer(many=True)
+    settings = SettingsRowSerializer(many=True)
 
     class Meta:
         model = Page
-        fields = ['id', 'url', 'resume', 'page_num', 'child_components']
+        fields = ['id', 'url', 'resume', 'page_num', 'settings',
+                  'child_components']
 
 
 class ResumeSerializer(serializers.HyperlinkedModelSerializer):
     pages = PageSerializer(many=True)
+    settings = SettingsRowSerializer(many=True)
 
     class Meta:
         model = Resume
-        fields = ['id', 'url', 'name', 'pages']
+        fields = ['id', 'url', 'name', 'pages', 'settings']
 
 
 class ResumeListSerializer(serializers.HyperlinkedModelSerializer):

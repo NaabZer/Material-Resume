@@ -1,8 +1,7 @@
 from rest_framework import viewsets
-from .models import Resume, Page, Component
+from .models import Resume, Page, Component, SettingsRow
 from .serializers import ResumeSerializer, ResumeListSerializer, PageSerializer
-from .serializers import ComponentSerializer
-from material_resume_backend.permissions import IsOwner
+from .serializers import ComponentSerializer, SettingsRowSerializer
 from .permissions import IsResumeOwner
 
 
@@ -54,3 +53,14 @@ class ComponentViewSet(viewsets.ModelViewSet):
         if(not user.id):
             return None
         return Component.objects.all()
+
+
+class SettingsRowViewSet(viewsets.ModelViewSet):
+    serializer_class = SettingsRowSerializer
+    permission_classes = [IsResumeOwner]
+
+    def get_queryset(self):
+        user = self.request.user
+        if(not user.id):
+            return None
+        return SettingsRow.objects.all()

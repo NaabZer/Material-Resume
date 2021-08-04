@@ -1,5 +1,5 @@
 from rest_framework import permissions
-from .models import Page, Resume, Component
+from .models import Page, Resume, Component, SettingsRow
 
 
 def is_resume_owner(obj, user):
@@ -28,5 +28,12 @@ class IsResumeOwner(permissions.BasePermission):
             return is_page_owner(obj, request.user)
         if(isinstance(obj, Component)):
             return is_component_owner(obj, request.user)
+        if(isinstance(obj, SettingsRow)):
+            if(obj.resume):
+                return is_resume_owner(obj.resume, request.user)
+            if(obj.page):
+                return is_page_owner(obj.page, request.user)
+            if(obj.component):
+                return is_component_owner(obj.component, request.user)
 
         return False
