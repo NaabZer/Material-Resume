@@ -110,7 +110,7 @@ class CreatorPage extends React.Component {
 
     return (
       <div>
-        <Route exact path='/creator/component/:id/settings'> 
+        <Route exact path='/resumes/creator/component/:id/settings'> 
           <SettingsModal/>
         </Route>
         <ComponentSelector

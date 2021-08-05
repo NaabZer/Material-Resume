@@ -1,6 +1,7 @@
 import {
   RESUME_START_TRANSACTION,
   RESUME_LOAD_SUCCESS,
+  RESUME_NEW_SUCCESS,
   RESUME_FAIL,
   RESUME_RESET,
 } from '../actions/resumes';
@@ -26,6 +27,16 @@ export function resumes(state = initialState, action){
       return Object.assign({}, state, {
         ...state,
         resumes: values
+      });
+    }
+    case RESUME_NEW_SUCCESS: {
+      let {values} = action;
+      return Object.assign({}, state, {
+        ...state,
+        resumes: [
+          ...state.resumes,
+          values
+        ]
       });
     }
     case RESUME_FAIL: {

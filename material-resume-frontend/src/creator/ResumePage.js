@@ -1,20 +1,21 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Switch, Route, withRouter, Link, useLocation } from 'react-router-dom';
+import { Switch, Route, withRouter, Link } from 'react-router-dom';
 
 import { Card, CardPrimaryAction } from "@rmwc/card";
 import { Button } from '@rmwc/button';
 
 import { loadResumes } from '../actions/resumes';
+import CreatorPage from './CreatorPage';
+import ResumeModal from './ResumeModal';
 
 class EntriesPageRouterUNC extends React.Component {
   render(){
     let location = this.props.location;
-    console.log(location)
-    console.log('render')
     return(
       <Switch location={location}>
-        <Route exact path='/resumes' component={EntriesPage} />
+        <Route path='/resumes/creator/:id' component={CreatorPage} />
+        <Route path='/resumes' component={EntriesPage} />
       </Switch>
     )
   }
@@ -27,7 +28,7 @@ class ResumeEntry extends React.Component {
     return(
       <Card className='entry'>
         <CardPrimaryAction
-          onClick={() => null}
+          onClick={() => this.props.history.push("/resumes/creator/"+ this.props.id)}
         >
           <div className='entry-main-content'>
             <div className='entry-name'>
@@ -44,13 +45,19 @@ class EntriesPageUNC extends React.Component {
   render(){
     const resumes = this.props.resumes.resumes.map(resume => {
       return(
-        <ResumeEntry key={resume.id} id={resume.id} name={resume.name} />
+        <ResumeEntry 
+          key={resume.id} 
+          id={resume.id} 
+          name={resume.name} 
+          history={this.props.history}
+        />
         );
     })
 
     return (
       <div
       >
+        <Route exact path='/resumes/new' component={ResumeModal} />
         <Card
           style={{width: '60vw', margin: '8px auto'}}
         >
@@ -60,7 +67,7 @@ class EntriesPageUNC extends React.Component {
             <Link
               style={{color: 'white', textDecoration: 'none'}}
               to={{
-                pathname:"/resume/new",
+                pathname:"/resumes/new",
               }}
             >
               <Button
