@@ -34,7 +34,7 @@ class Page extends React.Component {
             rows={settings.rows}
             columns={settings.cols}
             gap={settings.gap}
-            componentid={componentid}
+            componentid={"p" + componentid}
             style={{
               width: 'calc(100% - 2*'+settings.gap+")",
               height: 'calc(100% - 2*'+settings.gap+")",

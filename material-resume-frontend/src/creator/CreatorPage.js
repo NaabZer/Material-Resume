@@ -6,7 +6,7 @@ import { Button } from '@rmwc/button';
 import { CircularProgress } from '@rmwc/circular-progress';
 
 
-import { addComponent, moveComponent, resizeComponent, addPage } from '../actions/components';
+import { addComponent, moveComponent, resizeComponent, addPage, loadComponents } from '../actions/components';
 import { loadAllEntries } from '../actions/entries';
 import SettingsModal from './SettingsModal';
 
@@ -56,9 +56,6 @@ class CreatorPage extends React.Component {
         this.props.resizeComponent(data.id, width, height);
       }
     } 
-  }
-
-  componentDidUpdate(prevProps, prevState, snapshot){
   }
 
   render(){
@@ -117,6 +114,12 @@ class CreatorPage extends React.Component {
           componentdropcallback={(c, e, d) => this.onDrop(c, e, d, 0)}
           style={{position: 'sticky', top: '0px'}}
         />
+        <Button
+          raised
+          onClick = {() => this.props.loadComponents(this.props.match.params.id)}
+        >
+          Load Resume
+        </Button>
         {page_content}
       </div>
     )
@@ -136,6 +139,7 @@ const mapDispatchToProps = dispatch => ({
   resizeComponent: (id, width, height) => dispatch(resizeComponent(id, width, height)),
   addPage: () => dispatch(addPage()),
   loadAllEntries: () => dispatch(loadAllEntries()),
+  loadComponents: (id) => dispatch(loadComponents(id)),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CreatorPage));

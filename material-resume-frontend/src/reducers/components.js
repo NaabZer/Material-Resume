@@ -1,4 +1,6 @@
 import {
+  COMPONENT_TRANSACTION_START,
+  COMPONENT_LOAD_SUCCESS,
   COMPONENT_ADD,
   COMPONENT_DELETE,
   COMPONENT_RESIZE,
@@ -27,6 +29,14 @@ const initialState = {
 
 export function components(state = initialState, action){
   switch(action.type){
+    case COMPONENT_LOAD_SUCCESS: {
+      let {values} = action;
+      console.log(values);
+      return Object.assign({}, state, {
+        'pageSettings': state.pageSettings,
+        ...values
+      });
+    }
     case COMPONENT_ADD: {
       let {id, componentType, containerId, col, row, width, height} = action;
 
