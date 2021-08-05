@@ -76,7 +76,7 @@ class NavDrawer extends React.Component {
               </Link>
               <Link
                 style={{color: 'white', textDecoration: 'none'}}
-                to="/creator"
+                to="/resumes"
               >
                 <ListItem>Resume Creator</ListItem>
               </Link>
