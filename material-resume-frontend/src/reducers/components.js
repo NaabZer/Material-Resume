@@ -84,10 +84,12 @@ export function components(state = initialState, action){
 
       var gridState = state.grids;
       const old_container_id = state.components[id].containerId;
+      console.log(old_container_id)
       if(old_container_id !== containerId){
         const old_id_grid = state.grids[old_container_id].filter( l_id => {
           return l_id !== id
         });
+        console.log(containerId)
         const new_id_grid = state.grids[containerId].concat([Number(id)]);
         gridState = {
           ...gridState,
@@ -142,9 +144,9 @@ export function components(state = initialState, action){
         ...state,
         grids:{
           ...state.grids,
-          [id]: []
+          ["p" + id]: []
         },
-        pages: [...state.pages, id]
+        pages: [...state.pages, "p" + id]
       });
     }
     case SETTINGS_CHANGE: {

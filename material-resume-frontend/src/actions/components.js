@@ -67,7 +67,7 @@ export const changeSettings = (id, settings) => ({
   id, settings
 })
 
-function flattenComponents(componentList){
+function flattenComponents(componentList, parentId){
   var components = {}
   var componentSettings = {}
   var grids = {}
@@ -80,6 +80,7 @@ function flattenComponents(componentList){
       'col': component.col,
       'width': component.width,
       'height': component.height,
+      'containerId': parentId,
     }
 
     components = {...components, [component.id]: componentObj}
@@ -91,7 +92,7 @@ function flattenComponents(componentList){
     });
     componentSettings = {...componentSettings, [component.id]: componentSetting}
 
-    const flatComp = flattenComponents(component.child_components)
+    const flatComp = flattenComponents(component.child_components, component.id)
     components = {...components, ...flatComp.components}
     componentSettings = {...componentSettings, ...flatComp.componentSettings}
     grids = {...grids, ...flatComp.grids}
@@ -109,9 +110,9 @@ function flattenComponentStructure(pageList){
   var grids = {}
 
   pageList.forEach(page => {
-    pages = [...pages, page.id]
+    pages = [...pages, "p" + page.id]
 
-    const flatComp = flattenComponents(page.child_components)
+    const flatComp = flattenComponents(page.child_components, "p" + page.id)
     components = {...components, ...flatComp.components}
     componentSettings = {...componentSettings, ...flatComp.componentSettings}
     grids = {...grids, ...flatComp.grids}

@@ -7,6 +7,15 @@ import { Card } from "@rmwc/card";
 import DragAndDropGrid from '../DragAndDropGrid';
 
 class Page extends React.Component {
+  constructor(props){
+    super(props)
+
+    this.childGrids = []
+    this.rows = props.rows
+    this.cols = props.columns
+    this.divRef = React.createRef();
+  }
+
   static propTypes = {
     componentdropcallback: PropTypes.func.isRequired,
     pageid: PropTypes.number.isRequired,
@@ -34,7 +43,7 @@ class Page extends React.Component {
             rows={settings.rows}
             columns={settings.cols}
             gap={settings.gap}
-            componentid={"p" + componentid}
+            componentid={componentid}
             style={{
               width: 'calc(100% - 2*'+settings.gap+")",
               height: 'calc(100% - 2*'+settings.gap+")",
