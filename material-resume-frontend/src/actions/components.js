@@ -30,10 +30,10 @@ export const componentFail = (error) => ({
   error
 })
 
-let nextCompId = 0;
+let nextCompId = -1;
 export const addComponent = (componentType, containerId, col, row, width, height) => ({
   type: COMPONENT_ADD,
-  id: Number(nextCompId++),
+  id: Number(nextCompId--),
   componentType, containerId, col, row, width, height
 })
 
@@ -54,7 +54,7 @@ export const deleteComponent = (id) => ({
 
 export const addPage = () => ({
   type: PAGE_ADD,
-  id: Number(nextCompId++)
+  id: Number(nextCompId--)
 })
 
 export const removePage = id => ({
@@ -171,6 +171,10 @@ function nestComponent(grid, reduxComponents){
       'height': components[componentId].height,
       'width': components[componentId].width,
       'child_components': children,
+    }
+
+    if(componentId >= 0){
+      compObject.id = componentId;
     }
     list.push(compObject);
   });
