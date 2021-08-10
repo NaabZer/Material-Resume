@@ -150,7 +150,7 @@ class DraggableComponent extends React.Component {
                 <Link
                   style={{color: 'black', decoration: 'none'}}
                   to={{
-                    pathname:"/creator/component/" + this.props.componentid + "/settings",
+                    pathname:"/resumes/creator/component/" + this.props.componentid + "/settings",
                   }}
                 >
                   <IconButton
