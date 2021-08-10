@@ -137,3 +137,72 @@ export function loadComponents(resumeId){
       });
   }
 }
+
+function settingsObjToList(id, componentSettings){
+  if(id in componentSettings){
+    return Object.keys(componentSettings[id]).reduce((acc, key) => {
+      const settingsObj = {
+        'setting': key,
+        'value': componentSettings[id][key]
+      }
+      return [...acc, settingsObj];
+    }, [])
+  }
+  return [];
+}
+
+function nestComponent(grid, reduxComponents){
+  var { components, componentSettings, grids} = reduxComponents
+  var list = []
+
+  grid.forEach(componentId => {
+    var children = [];
+    if( componentId in grids){
+      children = nestComponent(grids[componentId], reduxComponents);
+    } else {
+      children = [];
+    }
+
+    var compObject = {
+      'settings': settingsObjToList(componentId, componentSettings),
+      'component_type': components[componentId].componentType,
+      'row': components[componentId].row,
+      'col': components[componentId].col,
+      'height': components[componentId].height,
+      'width': components[componentId].width,
+      'child_components': children,
+    }
+    list.push(compObject);
+  });
+
+  return list;
+}
+
+function nestComponentStructure(reduxComponents){
+  var { componentSettings, grids, pages} = reduxComponents;
+  var object = {
+    'pages': [],
+    'settings': []
+  }
+
+  pages.forEach(pageId => {
+    //TODO: add page_num
+    const children = nestComponent(grids[pageId], reduxComponents);
+
+    var pageObject = {
+      'settings': settingsObjToList(pageId, componentSettings),
+      'child_components': children,
+    }
+
+
+    object.pages.push(pageObject);
+  });
+  return object;
+};
+
+export function saveResume(resumeId, reduxComponents){
+  return dispatch => {
+    const nestedComponents = nestComponentStructure(reduxComponents)
+    console.log(nestedComponents);
+  }
+}

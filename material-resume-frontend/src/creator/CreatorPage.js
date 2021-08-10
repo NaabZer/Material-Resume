@@ -6,7 +6,14 @@ import { Button } from '@rmwc/button';
 import { CircularProgress } from '@rmwc/circular-progress';
 
 
-import { addComponent, moveComponent, resizeComponent, addPage, loadComponents } from '../actions/components';
+import { 
+  addComponent,
+  moveComponent,
+  resizeComponent,
+  addPage,
+  loadComponents,
+  saveResume,
+} from '../actions/components';
 import { loadAllEntries } from '../actions/entries';
 import SettingsModal from './SettingsModal';
 
@@ -120,6 +127,12 @@ class CreatorPage extends React.Component {
         >
           Load Resume
         </Button>
+        <Button
+          raised
+          onClick = {() => this.props.saveResume(this.props.match.params.id, this.props.components)}
+        >
+          Save Resume
+        </Button>
         {page_content}
       </div>
     )
@@ -128,7 +141,8 @@ class CreatorPage extends React.Component {
 const mapStateToProps = state => ({
   pages: state.components.pages,
   drag: state.dragAndDrop,
-  entries: state.entries
+  entries: state.entries,
+  components: state.components
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -140,6 +154,7 @@ const mapDispatchToProps = dispatch => ({
   addPage: () => dispatch(addPage()),
   loadAllEntries: () => dispatch(loadAllEntries()),
   loadComponents: (id) => dispatch(loadComponents(id)),
+  saveResume: (resumeId, reduxComponents) => dispatch(saveResume(resumeId, reduxComponents)),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CreatorPage));
