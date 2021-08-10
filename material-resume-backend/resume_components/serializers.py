@@ -27,10 +27,9 @@ class ComponentSerializer(serializers.HyperlinkedModelSerializer):
         settings_data = validated_data.pop('settings')
 
         for child_data in children_data:
-            print('----')
-            print(child_data)
             child = Component.objects.get(pk=child_data.get('id'))
-            print(child)
+            child_data['inside_page'] = None
+            child_data['inside_component'] = instance
             ComponentSerializer().update(child, child_data)
 
         """
@@ -58,10 +57,9 @@ class PageSerializer(serializers.HyperlinkedModelSerializer):
         settings_data = validated_data.pop('settings')
 
         for child_data in children_data:
-            print('####')
-            print(child_data)
             child = Component.objects.get(pk=child_data.get('id'))
-            print(child)
+            child_data['inside_page'] = instance
+            child_data['inside_component'] = None
             ComponentSerializer().update(child, child_data)
 
         """
@@ -89,6 +87,7 @@ class ResumeSerializer(serializers.HyperlinkedModelSerializer):
 
         for page_data in pages_data:
             page = Page.objects.get(pk=page_data.get('id'))
+            page_data['resume'] = instance
             PageSerializer().update(page, page_data)
 
         """
