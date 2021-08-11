@@ -51,7 +51,6 @@ export function components(state = initialState, action){
   switch(action.type){
     case COMPONENT_LOAD_SUCCESS: {
       let {values} = action;
-      console.log(values);
       return Object.assign({}, state, {
         'pageSettings': state.pageSettings,
         ...values
@@ -68,22 +67,14 @@ export function components(state = initialState, action){
       }
 
       const settings = getComponentFromType(componentType).defaultSettings;
-      const isGrid = getIsGridFromType(componentType);
 
       var gridsState = null;
       // Add grid if new component is a grid
-      if(isGrid){
-        gridsState={
-          ...state.grids,
-          [id]: [],
-          [containerId]: gridVal
-        }
-      } else{
-        gridsState={
-          ...state.grids,
-          [containerId]: gridVal
-        }
+      gridsState={
+        ...state.grids,
+        [containerId]: gridVal
       }
+     
 
       return Object.assign({}, state, {
         components: {
@@ -104,14 +95,32 @@ export function components(state = initialState, action){
 
       var gridState = state.grids;
       const old_container_id = state.components[id].containerId;
-      if(old_container_id !== containerId){
-        const old_id_grid = state.grids[old_container_id].filter( l_id => {
-          return l_id !== id
-        });
-        const new_id_grid = state.grids[containerId].concat([Number(id)]);
+
+      // Create grid if it doesn't exist
+      if(!(containerId in state.grids)){
         gridState = {
           ...gridState,
-          [old_container_id]: old_id_grid,
+          [containerId]: []
+        }
+      }
+
+      if(old_container_id !== containerId){
+        const old_id_grid = gridState[old_container_id].filter( l_id => {
+          return l_id !== id
+        });
+        // Remove grid if empty
+        if(old_id_grid.length === 0){
+          delete gridState[old_container_id]
+        } else{
+          gridState = {
+            ...gridState,
+            [old_container_id]: old_id_grid,
+          }
+        }
+
+        const new_id_grid = gridState[containerId].concat([Number(id)]);
+        gridState = {
+          ...gridState,
           [containerId]: new_id_grid
         }
       }
