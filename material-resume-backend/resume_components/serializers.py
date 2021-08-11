@@ -85,6 +85,30 @@ class PageSerializer(serializers.HyperlinkedModelSerializer):
                   'child_components']
         extra_kwargs = {'id': {'read_only': False, 'required': False}}
 
+    def create(self, validated_data):
+        settings_data = validated_data.pop('settings')
+        children_data = validated_data.pop('child_components')
+        page = Page.objects.create(**validated_data)
+
+        for child_data in children_data:
+            if 'id' in child_data:
+                child = Component.objects.get(pk=child_data.get('id'))
+                child_data['inside_page'] = page
+                child_data['inside_component'] = None
+                ComponentSerializer().update(child, child_data)
+            else:
+                child_data['inside_page'] = page
+                ComponentSerializer().create(child_data)
+
+        settings_list = []
+        for setting_data in settings_data:
+            setting = SettingsRow.objects.create(page=page,
+                                                 **setting_data)
+            settings_list.append(setting)
+        page.settings.set(settings_list)
+
+        return page
+
     def update(self, instance, validated_data):
         children_data = validated_data.pop('child_components')
         settings_data = validated_data.pop('settings')
@@ -127,9 +151,13 @@ class ResumeSerializer(serializers.HyperlinkedModelSerializer):
         settings_data = validated_data.pop('settings')
 
         for page_data in pages_data:
-            page = Page.objects.get(pk=page_data.get('id'))
-            page_data['resume'] = instance
-            PageSerializer().update(page, page_data)
+            if 'id' in page_data:
+                page = Page.objects.get(pk=page_data.get('id'))
+                page_data['resume'] = instance
+                PageSerializer().update(page, page_data)
+            else:
+                page_data['resume'] = instance
+                PageSerializer().create(page_data)
 
         for setting_data in settings_data:
             setting = SettingsRow.objects.filter(
