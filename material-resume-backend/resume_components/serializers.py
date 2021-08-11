@@ -8,7 +8,7 @@ class SettingsRowSerializer(serializers.HyperlinkedModelSerializer):
         model = SettingsRow
         fields = ['id', 'url', 'setting', 'value', 'resume',
                   'component', 'page']
-        extra_kwargs = {'id': {'read_only': False}}
+        extra_kwargs = {'id': {'read_only': False, 'required': False}}
 
 
 class ComponentSerializer(serializers.HyperlinkedModelSerializer):
@@ -20,17 +20,45 @@ class ComponentSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['id', 'url', 'inside_page', 'inside_component',
                   'component_type', 'row', 'col', 'height', 'width',
                   'settings', 'child_components']
-        extra_kwargs = {'id': {'read_only': False}}
+        extra_kwargs = {'id': {'read_only': False, 'required': False}}
+
+    def create(self, validated_data):
+        settings_data = validated_data.pop('settings')
+        children_data = validated_data.pop('child_components')
+        component = Component.objects.create(**validated_data)
+
+        for child_data in children_data:
+            if 'id' in child_data:
+                child = Component.objects.get(pk=child_data.get('id'))
+                child_data['inside_page'] = None
+                child_data['inside_component'] = component
+                ComponentSerializer().update(child, child_data)
+            else:
+                child_data['inside_component'] = component
+                ComponentSerializer().create(child_data)
+
+        settings_list = []
+        for setting_data in settings_data:
+            setting = SettingsRow.objects.create(component=component,
+                                                 **setting_data)
+            settings_list.append(setting)
+        component.settings.set(settings_list)
+
+        return component
 
     def update(self, instance, validated_data):
         children_data = validated_data.pop('child_components')
         settings_data = validated_data.pop('settings')
 
         for child_data in children_data:
-            child = Component.objects.get(pk=child_data.get('id'))
-            child_data['inside_page'] = None
-            child_data['inside_component'] = instance
-            ComponentSerializer().update(child, child_data)
+            if 'id' in child_data:
+                child = Component.objects.get(pk=child_data.get('id'))
+                child_data['inside_page'] = None
+                child_data['inside_component'] = instance
+                ComponentSerializer().update(child, child_data)
+            else:
+                Component.objects.create(inside_component=instance,
+                                         **child_data)
 
         for setting_data in settings_data:
             setting = SettingsRow.objects.filter(
@@ -53,19 +81,23 @@ class PageSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Page
-        fields = ['id', 'url', 'resume', 'page_num', 'settings',
+        fields = ['url', 'id', 'resume', 'page_num', 'settings',
                   'child_components']
-        extra_kwargs = {'id': {'read_only': False}}
+        extra_kwargs = {'id': {'read_only': False, 'required': False}}
 
     def update(self, instance, validated_data):
         children_data = validated_data.pop('child_components')
         settings_data = validated_data.pop('settings')
 
         for child_data in children_data:
-            child = Component.objects.get(pk=child_data.get('id'))
-            child_data['inside_page'] = instance
-            child_data['inside_component'] = None
-            ComponentSerializer().update(child, child_data)
+            if 'id' in child_data:
+                child = Component.objects.get(pk=child_data.get('id'))
+                child_data['inside_page'] = instance
+                child_data['inside_component'] = None
+                ComponentSerializer().update(child, child_data)
+            else:
+                child_data['inside_page'] = instance
+                ComponentSerializer().create(child_data)
 
         for setting_data in settings_data:
             setting = SettingsRow.objects.filter(
@@ -91,7 +123,6 @@ class ResumeSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['id', 'url', 'name', 'pages', 'settings']
 
     def update(self, instance, validated_data):
-        print(validated_data)
         pages_data = validated_data.pop('pages')
         settings_data = validated_data.pop('settings')
 
