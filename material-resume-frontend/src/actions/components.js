@@ -6,6 +6,7 @@ import {
 
 export const COMPONENT_TRANSACTION_START = "COMPONENT_TRANSACTION_START"
 export const COMPONENT_LOAD_SUCCESS = "COMPONENT_LOAD_SUCCESS"
+export const COMPONENT_SAVE_SUCCESS = "COMPONENT_SAVE_SUCCESS"
 export const COMPONENT_FAIL = "COMPONENT_FAIL"
 export const COMPONENT_ADD = "COMPONENT_ADD"
 export const COMPONENT_MOVE = "COMPONENT_MOVE"
@@ -23,6 +24,10 @@ export const componentTransactionStart = () => ({
 export const componentLoadSuccess = (values) => ({
   type: COMPONENT_LOAD_SUCCESS,
   values
+})
+
+export const componentSaveSuccess = () => ({
+  type: COMPONENT_SAVE_SUCCESS,
 })
 
 export const componentFail = (error) => ({
@@ -85,10 +90,12 @@ function flattenComponents(componentList, parentId){
 
     components = {...components, [component.id]: componentObj}
     child_ids.push(component.id)
-    var componentSetting = getComponentFromType(component.component_type).defaultSettings;
+    let componentSetting = Object.assign({},getComponentFromType(component.component_type).defaultSettings);
 
     component.settings.forEach(setting => {
+      console.log(componentSetting)
       componentSetting[setting.setting] = setting.value;
+      console.log(componentSetting)
     });
     componentSettings = {...componentSettings, [component.id]: componentSetting}
 
@@ -133,7 +140,7 @@ export function loadComponents(resumeId){
         dispatch(componentLoadSuccess(values));
       })
       .catch(error => {
-        console.log(error)
+        dispatch(componentFail(error))
       });
   }
 }
@@ -189,15 +196,20 @@ function nestComponentStructure(reduxComponents){
     'settings': []
   }
 
-  pages.forEach(pageId => {
+  pages.forEach((pageId, i) => {
     //TODO: add page_num
     const children = nestComponent(grids[pageId], reduxComponents);
 
     var pageObject = {
       'settings': settingsObjToList(pageId, componentSettings),
       'child_components': children,
+      'page_num': i,
     }
 
+    console.log(pageId.substring(1) * 1)
+    if(pageId.substring(1) * 1 >= 0){
+      pageObject.id = pageId.substring(1) * 1;
+    }
 
     object.pages.push(pageObject);
   });
@@ -206,7 +218,16 @@ function nestComponentStructure(reduxComponents){
 
 export function saveResume(resumeId, reduxComponents){
   return dispatch => {
+    dispatch(componentTransactionStart);
     const nestedComponents = nestComponentStructure(reduxComponents)
-    console.log(nestedComponents);
+
+    api.patch('components/resume/' + resumeId, JSON.stringify(nestedComponents))
+      .then(response => response.data)
+      .then(json => {
+        dispatch(componentSaveSuccess())
+      })
+      .catch(error => {
+        dispatch(componentFail(error))
+      });
   }
 }

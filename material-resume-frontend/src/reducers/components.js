@@ -1,6 +1,8 @@
 import {
   COMPONENT_TRANSACTION_START,
+  COMPONENT_SAVE_SUCCESS,
   COMPONENT_LOAD_SUCCESS,
+  COMPONENT_FAIL,
   COMPONENT_ADD,
   COMPONENT_DELETE,
   COMPONENT_RESIZE,
@@ -12,10 +14,12 @@ import {
 
 import { 
   getComponentFromType,
-  getIsGridFromType 
 } from '../creator/components/ComponentFactory';
 
 const initialState = {
+  error: false,
+  errorObj: null,
+  loading: false,
   components: {},
   grids: {},
   componentSettings: {},
@@ -49,11 +53,30 @@ function toIntIfPossible(str){
 
 export function components(state = initialState, action){
   switch(action.type){
+    case COMPONENT_TRANSACTION_START: {
+      return Object.assign({}, state, {
+        loading: true
+      });
+    }
     case COMPONENT_LOAD_SUCCESS: {
       let {values} = action;
       return Object.assign({}, state, {
-        'pageSettings': state.pageSettings,
+        loading: false,
+        pageSettings: state.pageSettings,
         ...values
+      });
+    }
+    case COMPONENT_SAVE_SUCCESS: {
+      return Object.assign({}, state, {
+        loading: false
+      });
+    }
+    case COMPONENT_FAIL: {
+      let {error} = action;
+      return Object.assign({}, state, {
+        error: true,
+        errorObj: error,
+        loading: false
       });
     }
     case COMPONENT_ADD: {
