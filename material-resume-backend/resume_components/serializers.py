@@ -32,11 +32,16 @@ class ComponentSerializer(serializers.HyperlinkedModelSerializer):
             child_data['inside_component'] = instance
             ComponentSerializer().update(child, child_data)
 
-        """
         for setting_data in settings_data:
-            setting = SettingsRow.objects.get(pk=setting_data.get('id'))
-            SettingsRowSerializer().update(setting, setting_data)
-        """
+            setting = SettingsRow.objects.filter(
+                    setting=setting_data.get('setting'),
+                    component=instance).first()
+            if(setting):
+                SettingsRowSerializer().update(setting, setting_data)
+            else:
+                SettingsRow.objects.create(component=instance,
+                                           setting=setting_data.get('setting'),
+                                           value=setting_data.get('value'))
 
         return super(ComponentSerializer, self).update(instance,
                                                        validated_data)
@@ -62,11 +67,16 @@ class PageSerializer(serializers.HyperlinkedModelSerializer):
             child_data['inside_component'] = None
             ComponentSerializer().update(child, child_data)
 
-        """
         for setting_data in settings_data:
-            setting = SettingsRow.objects.get(pk=setting_data.get('id'))
-            SettingsRowSerializer().update(setting, setting_data)
-        """
+            setting = SettingsRow.objects.filter(
+                    setting=setting_data.get('setting'),
+                    page=instance).first()
+            if(setting):
+                SettingsRowSerializer().update(setting, setting_data)
+            else:
+                SettingsRow.objects.create(component=instance,
+                                           setting=setting_data.get('setting'),
+                                           value=setting_data.get('value'))
 
         return super(PageSerializer, self).update(instance,
                                                   validated_data)
@@ -90,11 +100,16 @@ class ResumeSerializer(serializers.HyperlinkedModelSerializer):
             page_data['resume'] = instance
             PageSerializer().update(page, page_data)
 
-        """
         for setting_data in settings_data:
-            setting = SettingsRow.objects.get(pk=setting_data.get('id'))
-            SettingsRowSerializer().update(setting, setting_data)
-        """
+            setting = SettingsRow.objects.filter(
+                    setting=setting_data.get('setting'),
+                    resume=instance).first()
+            if(setting):
+                SettingsRowSerializer().update(setting, setting_data)
+            else:
+                SettingsRow.objects.create(component=instance,
+                                           setting=setting_data.get('setting'),
+                                           value=setting_data.get('value'))
 
         return super(ResumeSerializer, self).update(instance,
                                                     validated_data)
