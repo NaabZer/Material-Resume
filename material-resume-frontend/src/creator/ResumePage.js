@@ -5,7 +5,7 @@ import { Switch, Route, withRouter, Link } from 'react-router-dom';
 import { Card, CardPrimaryAction } from "@rmwc/card";
 import { Button } from '@rmwc/button';
 
-import { loadResumes } from '../actions/resumes';
+import { loadResumes, deleteResume } from '../actions/resumes';
 import CreatorPage from './CreatorPage';
 import ResumeModal from './ResumeModal';
 
@@ -24,6 +24,10 @@ class EntriesPageRouterUNC extends React.Component {
 export default withRouter(EntriesPageRouterUNC);
 
 class ResumeEntry extends React.Component {
+  deleteResume = (e) => {
+    e.stopPropagation();
+    this.props.deleteResume(this.props.id)
+  }
   render(){
     return(
       <Card className='entry'>
@@ -34,6 +38,13 @@ class ResumeEntry extends React.Component {
             <div className='entry-name'>
               {this.props.name}
             </div>
+            <Button
+              raised
+              danger
+              onClick={this.deleteResume}
+            >
+              remove
+            </Button>
           </div>
         </CardPrimaryAction>
       </Card>
@@ -50,6 +61,7 @@ class EntriesPageUNC extends React.Component {
           id={resume.id} 
           name={resume.name} 
           history={this.props.history}
+          deleteResume={this.props.deleteResume}
         />
         );
     })
@@ -97,7 +109,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   loadResumes: () => dispatch(loadResumes()),
-
+  deleteResume: (id) => dispatch(deleteResume(id)),
 });
 
 export const EntriesPage = withRouter(connect(mapStateToProps, mapDispatchToProps)(EntriesPageUNC));

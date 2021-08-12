@@ -2,6 +2,7 @@ import {
   RESUME_START_TRANSACTION,
   RESUME_LOAD_SUCCESS,
   RESUME_NEW_SUCCESS,
+  RESUME_DELETE_SUCCESS,
   RESUME_FAIL,
   RESUME_RESET,
 } from '../actions/resumes';
@@ -37,6 +38,15 @@ export function resumes(state = initialState, action){
           ...state.resumes,
           values
         ]
+      });
+    }
+    case RESUME_DELETE_SUCCESS: {
+      let {id} = action;
+      let newResumes = state.resumes.filter(obj => {
+        return obj.id !== id;
+      })
+      return Object.assign({}, state, {
+        resumes: newResumes
       });
     }
     case RESUME_FAIL: {
