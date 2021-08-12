@@ -3,8 +3,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { Card } from "@rmwc/card";
+import { Button } from '@rmwc/button';
 
 import DragAndDropGrid from '../DragAndDropGrid';
+
+import { removePage } from '../../actions/components';
 
 class Page extends React.Component {
   constructor(props){
@@ -29,6 +32,12 @@ class Page extends React.Component {
         <h2>
           Page {pageid+1}
         </h2>
+        <Button
+          raised
+          onClick={() => this.props.removePage(componentid)}
+        >
+          Remove Page
+        </Button>
         <Card
           outlined
           className='mdc-elevation--z4'
@@ -59,8 +68,11 @@ const mapStateToProps = state => ({
   settings: state.components.pageSettings,
 });
 
+const mapDispatchToProps = dispatch => ({
+  removePage: (id) => dispatch(removePage(id)),
+});
 
 const forwardedPage = React.forwardRef((props, ref) =>{
   return <Page {...props} forwardedRef={ref} />
 });
-export default connect(mapStateToProps, null, null, {forwardRef: true})(forwardedPage);
+export default connect(mapStateToProps, mapDispatchToProps, null, {forwardRef: true})(forwardedPage);

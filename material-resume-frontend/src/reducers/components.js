@@ -34,11 +34,11 @@ const initialState = {
 }
 
 function getAllInnerIds(parentId, state){
-  var ids = []
+  let ids = []
   if (parentId in state.grids) {
     state.grids[parentId].forEach(child => {
       ids.push(child)
-      var innerIds = getAllInnerIds(child, state)
+      let innerIds = getAllInnerIds(child, state)
       ids = [...ids, ...innerIds]
     })
   }
@@ -97,7 +97,7 @@ export function components(state = initialState, action){
     case COMPONENT_ADD: {
       let {id, componentType, containerId, col, row, width, height} = action;
 
-      var gridVal = null;
+      let gridVal = null;
       if(containerId in state.grids){
         gridVal = [...state.grids[containerId], id]
       } else{
@@ -106,7 +106,7 @@ export function components(state = initialState, action){
 
       const settings = getComponentFromType(componentType).defaultSettings;
 
-      var gridsState = null;
+      let gridsState = null;
       // Add grid if new component is a grid
       gridsState={
         ...state.grids,
@@ -131,7 +131,7 @@ export function components(state = initialState, action){
     case COMPONENT_MOVE: {
       let {id, containerId, col, row} = action;
 
-      var gridState = state.grids;
+      let gridState = state.grids;
       const old_container_id = state.components[id].containerId;
 
       // Create grid if it doesn't exist
@@ -188,7 +188,7 @@ export function components(state = initialState, action){
     case COMPONENT_DELETE: {
       let {id} = action;
       const containerId = state.components[id].containerId;
-      var removeIds = getAllInnerIds(id, state);
+      let removeIds = getAllInnerIds(id, state);
       removeIds.push(id);
       
       const newComponents = Object.keys(state.components).map(toIntIfPossible)
@@ -205,7 +205,7 @@ export function components(state = initialState, action){
           return obj;
         }, {});
 
-      var newGrids = Object.keys(state.grids).map(toIntIfPossible)
+      let newGrids = Object.keys(state.grids).map(toIntIfPossible)
         .filter(key => !removeIds.includes(key))
         .reduce((obj, key) => {
           obj[key] = state.grids[key];
@@ -240,6 +240,55 @@ export function components(state = initialState, action){
           ["p" + id]: []
         },
         pages: [...state.pages, "p" + id]
+      });
+    }
+    case PAGE_REMOVE: {
+      let {id} = action;
+      let removeIds = getAllInnerIds(id, state);
+      
+      const newComponents = Object.keys(state.components).map(toIntIfPossible)
+        .filter(key => !removeIds.includes(key))
+        .reduce((obj, key) => {
+          obj[key] = state.components[key];
+          return obj;
+        }, {});
+
+      const newSettings = Object.keys(state.componentSettings).map(toIntIfPossible)
+        .filter(key => !removeIds.includes(key))
+        .reduce((obj, key) => {
+          obj[key] = state.componentSettings[key];
+          return obj;
+        }, {});
+
+      removeIds.push(id);
+      const newGrids = Object.keys(state.grids).map(toIntIfPossible)
+        .filter(key => !removeIds.includes(key))
+        .reduce((obj, key) => {
+          obj[key] = state.grids[key];
+          return obj;
+        }, {});
+
+      console.log(id)
+      const newPages = state.pages.filter(key => (key !== id))
+
+      const removedComponents = state.removedComponents;
+      removeIds.forEach(id => {
+        if(idAndPageIdToInt(id) > 0){
+          removedComponents.push(id);
+        }
+      });
+
+      console.log(removedComponents)
+      console.log(newSettings)
+      console.log(newComponents)
+      console.log(newGrids)
+      console.log(newPages)
+      return Object.assign({}, state, {
+        removedComponents: removedComponents,
+        componentSettings: newSettings,
+        components: newComponents,
+        grids: newGrids,
+        pages: newPages,
       });
     }
     case SETTINGS_CHANGE: {
