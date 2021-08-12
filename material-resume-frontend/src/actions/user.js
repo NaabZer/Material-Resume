@@ -1,3 +1,4 @@
+import axios from 'axios';
 import api from '../api';
 import { entryReset } from './entries';
 
@@ -39,7 +40,7 @@ export function logIn(email, password){
       .then(json => {
         const token = json['token']
         api.defaults.headers.common['Authorization'] = 'Token ' + token;
-
+        axios.defaults.headers.common['Authorization'] = 'Token ' + token;
         dispatch(setToken(token))
 
         api.get('user/')

@@ -4,6 +4,7 @@ import './material-components.scss';
 import './index.scss';
 import './stylesheets/main.scss';
 import './stylesheets/components/drag-and-drop-grid.scss';
+import axios from 'axios';
 import App from './App';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
@@ -18,6 +19,7 @@ const store = createStore(
   reducer,
   applyMiddleware(logger, thunkMiddleware)
 )
+axios.defaults.baseURL = 'http://localhost:8000';
 
 ReactDOM.render(
   <Provider store={store}>

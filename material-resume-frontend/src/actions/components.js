@@ -1,4 +1,5 @@
 import api from '../api';
+import axios from 'axios';
 
 import { 
   getComponentFromType
@@ -7,6 +8,7 @@ import {
 export const COMPONENT_TRANSACTION_START = "COMPONENT_TRANSACTION_START"
 export const COMPONENT_LOAD_SUCCESS = "COMPONENT_LOAD_SUCCESS"
 export const COMPONENT_SAVE_SUCCESS = "COMPONENT_SAVE_SUCCESS"
+export const COMPONENT_REMOVE_SUCCESS = "COMPONENT_REMOVE_SUCCESS"
 export const COMPONENT_FAIL = "COMPONENT_FAIL"
 export const COMPONENT_ADD = "COMPONENT_ADD"
 export const COMPONENT_MOVE = "COMPONENT_MOVE"
@@ -28,6 +30,10 @@ export const componentLoadSuccess = (values) => ({
 
 export const componentSaveSuccess = () => ({
   type: COMPONENT_SAVE_SUCCESS,
+})
+
+export const componentRemoveSuccess = () => ({
+  type: COMPONENT_REMOVE_SUCCESS,
 })
 
 export const componentFail = (error) => ({
@@ -71,6 +77,18 @@ export const changeSettings = (id, settings) => ({
   type: SETTINGS_CHANGE,
   id, settings
 })
+
+function isPageId(id){
+  return ("" + id)[0] === 'p';
+}
+
+function idAndPageIdToInt(id){
+  if(isPageId(id)){
+    return id.substr(1) * 1
+  } else{
+    return id * 1
+  }
+}
 
 function flattenComponents(componentList, parentId){
   var components = {}
@@ -220,14 +238,42 @@ export function saveResume(resumeId, reduxComponents){
   return dispatch => {
     dispatch(componentTransactionStart);
     const nestedComponents = nestComponentStructure(reduxComponents)
+    let deleteCalls = [];
+    console.log('before array')
+    reduxComponents.removedComponents.forEach(id => {
+      if(isPageId(id)){
+        deleteCalls.push(axios.delete('components/page/' + idAndPageIdToInt(id)))
+      } else{
+        deleteCalls.push(axios.delete('components/component/' + idAndPageIdToInt(id)))
+      }
+    })
+    console.log('begore calls')
 
-    api.patch('components/resume/' + resumeId, JSON.stringify(nestedComponents))
-      .then(response => response.data)
-      .then(json => {
-        dispatch(componentSaveSuccess())
+    if(deleteCalls.length > 0){
+    axios.all(deleteCalls)
+      .then(axios.spread((...responses) => {
+        dispatch(componentRemoveSuccess());
+        api.patch('components/resume/' + resumeId, JSON.stringify(nestedComponents))
+          .then(response => response.data)
+          .then(json => {
+            dispatch(componentSaveSuccess())
+          })
+          .catch(error => {
+            dispatch(componentFail(error))
+          });
+      }))
+      .catch(errors => {
+        console.log(errors)
       })
-      .catch(error => {
-        dispatch(componentFail(error))
-      });
+    } else {
+      api.patch('components/resume/' + resumeId, JSON.stringify(nestedComponents))
+        .then(response => response.data)
+        .then(json => {
+          dispatch(componentSaveSuccess())
+        })
+        .catch(error => {
+          dispatch(componentFail(error))
+        });
+    }
   }
 }

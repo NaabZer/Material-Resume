@@ -2,6 +2,7 @@ import {
   COMPONENT_TRANSACTION_START,
   COMPONENT_SAVE_SUCCESS,
   COMPONENT_LOAD_SUCCESS,
+  COMPONENT_REMOVE_SUCCESS,
   COMPONENT_FAIL,
   COMPONENT_ADD,
   COMPONENT_DELETE,
@@ -17,6 +18,7 @@ import {
 } from '../creator/components/ComponentFactory';
 
 const initialState = {
+  removedComponents: [], // List of components to remove on save
   error: false,
   errorObj: null,
   loading: false,
@@ -51,6 +53,14 @@ function toIntIfPossible(str){
   }
 }
 
+function idAndPageIdToInt(id){
+  if(("" + id)[0] === 'p'){
+    return id.substr(1) * 1
+  } else{
+    return id * 1
+  }
+}
+
 export function components(state = initialState, action){
   switch(action.type){
     case COMPONENT_TRANSACTION_START: {
@@ -69,6 +79,11 @@ export function components(state = initialState, action){
     case COMPONENT_SAVE_SUCCESS: {
       return Object.assign({}, state, {
         loading: false
+      });
+    }
+    case COMPONENT_REMOVE_SUCCESS: {
+      return Object.assign({}, state, {
+        removedComponents: [],
       });
     }
     case COMPONENT_FAIL: {
@@ -175,7 +190,7 @@ export function components(state = initialState, action){
       const containerId = state.components[id].containerId;
       var removeIds = getAllInnerIds(id, state);
       removeIds.push(id);
-      //const {[id]:_ , ...newComponents} = state.components;
+      
       const newComponents = Object.keys(state.components).map(toIntIfPossible)
         .filter(key => !removeIds.includes(key))
         .reduce((obj, key) => {
@@ -200,10 +215,17 @@ export function components(state = initialState, action){
       const newGrid = state.grids[containerId].filter(val => {
         return val !== id;
       });
-
       newGrids = {...newGrids, [containerId]: newGrid}
+
+      let removedComponents = state.removedComponents;
+      removeIds.forEach(id => {
+        if(idAndPageIdToInt(id) > 0){
+          removedComponents.push(id);
+        }
+      });
+
       return Object.assign({}, state, {
-        ...state,
+        removedComponents: removedComponents,
         componentSettings: newSettings,
         components: newComponents,
         grids: newGrids,
