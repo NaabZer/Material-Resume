@@ -4,12 +4,15 @@ import ColoredArea, { ColoredAreaSettingsForm } from './ColoredArea';
 export const COMPONENT_CARD = "C_CARD"
 export const COMPONENT_COLORED_AREA = "C_COL_A"
 
-export const componentList = [
+export const ExperienceList = [
   COMPONENT_CARD,
-  COMPONENT_COLORED_AREA
 ]
 
-export const containerList = [
+export const TextList = [
+]
+
+export const ContainerList = [
+  COMPONENT_COLORED_AREA,
 ]
 
 export function getComponentFromType(type){
