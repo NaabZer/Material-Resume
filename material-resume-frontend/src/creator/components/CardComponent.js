@@ -8,10 +8,13 @@ import { Card } from "@rmwc/card";
 import { Select } from '@rmwc/select';
 import { Typography } from '@rmwc/typography';
 
+import { DATE_TYPES, DATE_LONG_MONTH, formatDate } from '../../utility/DateFormats';
+
 
 class CardComponent extends React.Component {
   static defaultSettings = {
-    componentid: 'sample'
+    componentid: 'sample',
+    dateFormat: DATE_LONG_MONTH
   }
 
   static propTypes = {
@@ -32,10 +35,24 @@ class CardComponent extends React.Component {
       >
         <Typography use='headline6'>{data.entries.en.title}</Typography>
         <div className='card-location-date'>
-          <Typography use='body2'>{data.entries.en.location}</Typography>
+          <Typography 
+            use='subtitle2'
+            theme="textSecondaryOnBackground"
+          >
+            {data.entries.en.location}
+          </Typography>
           <div className='card-date-text'>
-            <Typography use='body2'>{data.start + "-"}</Typography>
-            <Typography use='body2'>{data.end}</Typography>
+            <Typography use='subtitle2'>
+              {formatDate(data.start, this.props.settings.dateFormat)}
+            </Typography>
+            <div className='card-date-divider'>
+               - 
+            </div>
+            <Typography use='subtitle2'>
+              {formatDate(data.end, this.props.settings.dateFormat)}
+            </Typography>
+            <div className='card-date-divider'>
+            </div>
           </div>
         </div>
         <Typography use='body1'>
@@ -77,12 +94,20 @@ export class CardComponentSettingsForm extends React.Component {
   }
 
   render(){
-    const options = Object.entries(this.props.entries.experience.entries).map(([key, entry]) => {
+    const experiences = Object.entries(this.props.entries.experience.entries).map(([key, entry]) => {
       return(
       <option key={key} value={entry.id}>
         {entry.entries.en.title + " - " + entry.entries.en.location}
       </option>
     )});
+
+    const dateFormats = DATE_TYPES.map(type => {
+      return(
+        <option key={type} value={type}>
+          {formatDate(new Date(), type)}
+        </option>
+      )
+    });
 
 
     return(
@@ -96,7 +121,16 @@ export class CardComponentSettingsForm extends React.Component {
           value={this.state.componentid}
           onChange={e => this.onChange('componentid', e)}
         >
-          {options}
+          {experiences}
+        </Select>
+        <Select 
+          style={{width: '100%'}}
+          label='Date Format'
+          name='dateFormat'
+          value={this.state.dateFormat}
+          onChange={e => this.onChange('dateFormat', e)}
+        >
+          {dateFormats}
         </Select>
       </div>
     );
