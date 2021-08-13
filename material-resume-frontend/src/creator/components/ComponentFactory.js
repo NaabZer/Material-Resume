@@ -1,5 +1,5 @@
 import CardComponent, { CardComponentSettingsForm } from './CardComponent';
-import ColoredArea from './ColoredArea';
+import ColoredArea, { ColoredAreaSettingsForm } from './ColoredArea';
 
 export const COMPONENT_CARD = "C_CARD"
 export const COMPONENT_COLORED_AREA = "C_COL_A"
@@ -36,6 +36,8 @@ export function getSettingsFormFromType(type){
   switch(type){
     case COMPONENT_CARD:
       return CardComponentSettingsForm;
+    case COMPONENT_COLORED_AREA:
+      return ColoredAreaSettingsForm;
     default:
       return null;
   }

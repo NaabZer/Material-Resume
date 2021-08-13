@@ -40,12 +40,15 @@ class DraggableComponent extends React.Component {
 
   onDrop = (e, data, data2) => {
     if(this.props.dragAndDrop.componentId !== this.props.componentid){
+      console.log('enddrag')
       this.props.endDrag();
     }
     if(typeof(data2) !== 'undefined'){
+      console.log('not undefined')
       // If there are only two parameters, this is the original draggable elements drop function
       this.props.ondropcallback(e, data, data2)
     } else{
+      console.log('else')
       // If there are three elements, this is the function passed down through DragAndDropGrid
       // from CreatorPage, that handles dropping items.
       if('componentid' in this.props){

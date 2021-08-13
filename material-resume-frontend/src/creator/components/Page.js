@@ -14,8 +14,6 @@ class Page extends React.Component {
     super(props)
 
     this.childGrids = []
-    this.rows = props.rows
-    this.cols = props.columns
     this.divRef = React.createRef();
   }
 

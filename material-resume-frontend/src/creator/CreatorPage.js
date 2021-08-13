@@ -43,8 +43,8 @@ class CreatorPage extends React.Component {
       const child = childRef.current;
       if(child.props.isgrid){
         const [elem, childCol, childRow] = child.getDeepestGridElemAndPos(x, y, excludedIds)
-        if(elem !== null && childRow >= 0 && childRow < elem.rows &&
-          childCol >= 0 && childCol < elem.cols){
+        if(elem !== null && childRow >= 0 && childRow < elem.props.rows &&
+          childCol >= 0 && childCol < elem.props.columns){
           childE = elem;
           col = childCol;
           row = childRow;

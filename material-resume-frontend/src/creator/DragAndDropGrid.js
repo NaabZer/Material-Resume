@@ -13,8 +13,6 @@ class DragAndDropGrid extends React.Component {
     super(props)
 
     this.childGrids = []
-    this.rows = props.rows
-    this.cols = props.columns
     this.divRef = React.createRef();
   }
 
@@ -31,8 +29,8 @@ class DragAndDropGrid extends React.Component {
 
   getGridPosition = (x, y) =>{
     const rect = this.divRef.current.getBoundingClientRect();
-    const colSize = rect.width/this.cols
-    const rowSize = rect.height/this.rows;
+    const colSize = rect.width/this.props.columns
+    const rowSize = rect.height/this.props.rows;
     const relativeX = x - rect.x;
     const relativeY = y - rect.y;
     const col = Math.round(relativeX/colSize)
@@ -51,8 +49,8 @@ class DragAndDropGrid extends React.Component {
       if(child && child.props.isgrid){
         const [elem, childCol, childRow] = child.getDeepestGridElemAndPos(x, y, excludeIds)
         if(elem !== null && !excludeIds.includes(elem.props.componentid) && 
-            childRow >= 0 && childRow < this.rows &&
-            childCol >= 0 && childCol < this.cols){
+            childRow >= 0 && childRow < this.props.rows &&
+            childCol >= 0 && childCol < this.props.columns){
           childE = elem;
           row = childRow;
           col = childCol;
@@ -65,8 +63,8 @@ class DragAndDropGrid extends React.Component {
       return [childE, col, row];
     } else{
       const [col, row] = this.getGridPosition(x, y);
-      if(!excludeIds.includes(this.props.componentid) && row >= 0 && row < this.rows &&
-         col >= 0 && col < this.cols){
+      if(!excludeIds.includes(this.props.componentid) && row >= 0 && row < this.props.rows &&
+         col >= 0 && col < this.props.columns){
         return [this, col, row];
       } else{
         return [null, null, null];
@@ -76,10 +74,10 @@ class DragAndDropGrid extends React.Component {
 
   getClosestRowColSize = (width, height) => {
     const rect = this.divRef.current.getBoundingClientRect();
-    const colSize = rect.width/this.cols
-    const rowSize = rect.height/this.rows;
-    const closestCol = Math.min(this.cols, Math.max(1, Math.round(width/colSize)));
-    const closestRow = Math.min(this.rows, Math.max(1, Math.round(height/rowSize)));
+    const colSize = rect.width/this.props.columns
+    const rowSize = rect.height/this.props.rows;
+    const closestCol = Math.min(this.props.columns, Math.max(1, Math.round(width/colSize)));
+    const closestRow = Math.min(this.props.rows, Math.max(1, Math.round(height/rowSize)));
 
     return [closestCol, closestRow];
   }
@@ -131,8 +129,8 @@ class DragAndDropGrid extends React.Component {
       )
     })
 
-    const rowStyle = "minmax(0, 1fr) ".repeat(this.rows);
-    const colStyle = "minmax(0, 1fr) ".repeat(this.cols);
+    const rowStyle = "minmax(0, 1fr) ".repeat(this.props.rows);
+    const colStyle = "minmax(0, 1fr) ".repeat(this.props.columns);
     const {grids, components, isgrid, style, addcomponent, resizeComponent,
       componentdragcallback, componentdropcallback, gap, drag, dispatch,
       ...props} = this.props
