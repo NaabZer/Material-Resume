@@ -4,10 +4,13 @@ import { Typography } from '@rmwc/typography';
 
 export default class SliderInput extends React.Component {
   onChange = e => {
+    // Create a mock e.currentevent.target to sent back
+    let newE = {currentTarget: {value: e.currentTarget.value}};
     if(this.props.suffix) {
-      e.currentTarget.value = e.currentTarget.value + this.props.suffix
+      newE.currentTarget.value = e.currentTarget.value + this.props.suffix
     } 
-    this.props.onChange(e)
+    console.log(newE.currentTarget.value)
+    this.props.onChange(newE)
   }
   render(){
     let {onChange, onInput, value, label, suffix, ...rest} = this.props;
