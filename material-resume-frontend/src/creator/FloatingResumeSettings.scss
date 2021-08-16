@@ -19,8 +19,8 @@
         .floating-resume-setting{
             .floating-resume-setting-text{
                 width: 140px;
+                color: var(--mdc-theme-on-primary);
             }
-
         }
     }
 
@@ -30,6 +30,7 @@
     display: flex;
     align-items: center;
     cursor: pointer;
+    transition: background 0.15s linear;
 
     &:hover{
         background: var(--mdc-theme-text-icon-on-background)
@@ -45,6 +46,9 @@
 }
 
 .floating-resume-setting-text{
-    transition: width 0.2s ease-in;
+    transition-property: color, width;
+    transition-duration: 0.2s;
+    transition-timing-function: cubic-bezier(.87,.2,.32,.96);
+    color: rgba(0, 0, 0, 0);
     width: 0px;
 }
