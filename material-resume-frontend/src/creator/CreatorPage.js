@@ -16,6 +16,7 @@ import {
 } from '../actions/components';
 import { loadAllEntries } from '../actions/entries';
 import SettingsModal from './SettingsModal';
+import FloatingResumeSettings from './FloatingResumeSettings.js';
 
 import ComponentSelector from './ComponentSelector';
 import Page from './components/Page';
@@ -136,12 +137,7 @@ class CreatorPage extends React.Component {
           componentdropcallback={(c, e, d) => this.onDrop(c, e, d, 0)}
           style={{position: 'sticky', top: '0px'}}
         />
-        <Button
-          raised
-          onClick = {() => this.props.loadComponents(this.props.match.params.id)}
-        >
-          Load Resume
-        </Button>
+        <FloatingResumeSettings/>
         <Button
           raised
           onClick = {() => this.props.saveResume(this.props.match.params.id, this.props.components)}
