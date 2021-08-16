@@ -51,8 +51,8 @@ const initialState = {
     },
     sample:{
       id: 'sample',
-      start: new Date("2020-03-01"),
-      end: new Date("2020-08-01"),
+      start: "2020-03-01",
+      end: "2020-08-01",
       entries:{
         sv:{
           title: "Titel",

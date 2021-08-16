@@ -10,22 +10,27 @@ export const DATE_TYPES = [
 
 
 export function formatDate(date, type, locale='sv'){
+  // TODO: add proper error handling
+  let usedDate = date
+  if(typeof(date) === 'string'){
+    usedDate = new Date(date);
+  }
   switch(type){
     case DATE_LONG_MONTH: {
       let options = {year: 'numeric', month: 'long'}
-      return date.toLocaleDateString(locale, options)
+      return usedDate.toLocaleDateString(locale, options)
     }
     case DATE_SHORT_MONTH: {
       let options = {year: 'numeric', month: 'short'}
-      return date.toLocaleDateString(locale, options)
+      return usedDate.toLocaleDateString(locale, options)
     }
     case DATE_NUM_MONTH: {
       let options = {year: 'numeric', month: 'numeric'}
-      return date.toLocaleDateString(locale, options)
+      return usedDate.toLocaleDateString(locale, options)
     }
     default: {
       let options = {year: 'numeric', month: 'long'}
-      return date.toLocaleDateString(locale, options)
+      return usedDate.toLocaleDateString(locale, options)
     }
   }
 }
