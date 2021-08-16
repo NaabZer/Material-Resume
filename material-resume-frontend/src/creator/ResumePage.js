@@ -6,6 +6,7 @@ import { Card, CardPrimaryAction } from "@rmwc/card";
 import { Button } from '@rmwc/button';
 
 import { loadResumes, deleteResume } from '../actions/resumes';
+import { componentReset } from '../actions/components';
 import CreatorPage from './CreatorPage';
 import ResumeModal from './ResumeModal';
 
@@ -28,11 +29,12 @@ class ResumeEntry extends React.Component {
     e.stopPropagation();
     this.props.deleteResume(this.props.id)
   }
+
   render(){
     return(
       <Card className='entry'>
         <CardPrimaryAction
-          onClick={() => this.props.history.push("/resumes/creator/"+ this.props.id)}
+          onClick={() => this.props.openResumeCallback(this.props.id)}
         >
           <div className='entry-main-content'>
             <div className='entry-name'>
@@ -53,6 +55,13 @@ class ResumeEntry extends React.Component {
 }
 
 class EntriesPageUNC extends React.Component {
+  openResumeCallback = (id) => {
+    if(id !== this.props.fetchedResume*1){
+      this.props.componentReset();
+    }
+    this.props.history.push("/resumes/creator/" + id)
+  }
+  
   render(){
     const resumes = this.props.resumes.resumes.map(resume => {
       return(
@@ -62,6 +71,7 @@ class EntriesPageUNC extends React.Component {
           name={resume.name} 
           history={this.props.history}
           deleteResume={this.props.deleteResume}
+          openResumeCallback={this.openResumeCallback}
         />
         );
     })
@@ -104,12 +114,14 @@ class EntriesPageUNC extends React.Component {
   }
 }
 const mapStateToProps = state => ({
-  resumes: state.resumes
+  resumes: state.resumes,
+  fetchedResume: state.components.fetched
 });
 
 const mapDispatchToProps = dispatch => ({
   loadResumes: () => dispatch(loadResumes()),
   deleteResume: (id) => dispatch(deleteResume(id)),
+  componentReset: () => dispatch(componentReset()),
 });
 
 export const EntriesPage = withRouter(connect(mapStateToProps, mapDispatchToProps)(EntriesPageUNC));

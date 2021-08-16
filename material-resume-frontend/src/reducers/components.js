@@ -4,6 +4,7 @@ import {
   COMPONENT_LOAD_SUCCESS,
   COMPONENT_REMOVE_SUCCESS,
   COMPONENT_FAIL,
+  COMPONENT_RESET,
   COMPONENT_ADD,
   COMPONENT_DELETE,
   COMPONENT_RESIZE,
@@ -23,6 +24,7 @@ const initialState = {
   errorObj: null,
   loading: false,
   components: {},
+  fetched: 0,
   grids: {},
   componentSettings: {},
   pages: [],
@@ -65,13 +67,15 @@ export function components(state = initialState, action){
   switch(action.type){
     case COMPONENT_TRANSACTION_START: {
       return Object.assign({}, state, {
-        loading: true
+        loading: true,
+        fetched: 0,
       });
     }
     case COMPONENT_LOAD_SUCCESS: {
-      let {values} = action;
+      let {values, resumeId} = action;
       return Object.assign({}, state, {
         loading: false,
+        fetched: resumeId,
         pageSettings: state.pageSettings,
         ...values
       });
@@ -93,6 +97,9 @@ export function components(state = initialState, action){
         errorObj: error,
         loading: false
       });
+    }
+    case COMPONENT_RESET: {
+      return initialState
     }
     case COMPONENT_ADD: {
       let {id, componentType, containerId, col, row, width, height} = action;

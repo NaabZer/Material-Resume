@@ -123,6 +123,9 @@ export class CardComponentSettingsForm extends React.Component {
         >
           {experiences}
         </Select>
+        <div
+          style={{paddingTop: '16px'}}
+        />
         <Select 
           style={{width: '100%'}}
           label='Date Format'

@@ -10,6 +10,7 @@ export const COMPONENT_LOAD_SUCCESS = "COMPONENT_LOAD_SUCCESS"
 export const COMPONENT_SAVE_SUCCESS = "COMPONENT_SAVE_SUCCESS"
 export const COMPONENT_REMOVE_SUCCESS = "COMPONENT_REMOVE_SUCCESS"
 export const COMPONENT_FAIL = "COMPONENT_FAIL"
+export const COMPONENT_RESET = "COMPONENT_RESET"
 export const COMPONENT_ADD = "COMPONENT_ADD"
 export const COMPONENT_MOVE = "COMPONENT_MOVE"
 export const COMPONENT_RESIZE = "COMPONENT_RESIZE"
@@ -23,9 +24,9 @@ export const componentTransactionStart = () => ({
   type: COMPONENT_TRANSACTION_START
 })
 
-export const componentLoadSuccess = (values) => ({
+export const componentLoadSuccess = (values, resumeId) => ({
   type: COMPONENT_LOAD_SUCCESS,
-  values
+  values, resumeId
 })
 
 export const componentSaveSuccess = () => ({
@@ -39,6 +40,10 @@ export const componentRemoveSuccess = () => ({
 export const componentFail = (error) => ({
   type: COMPONENT_FAIL,
   error
+})
+
+export const componentReset = () => ({
+  type: COMPONENT_RESET
 })
 
 let nextCompId = -1;
@@ -111,9 +116,7 @@ function flattenComponents(componentList, parentId){
     let componentSetting = Object.assign({},getComponentFromType(component.component_type).defaultSettings);
 
     component.settings.forEach(setting => {
-      console.log(componentSetting)
       componentSetting[setting.setting] = setting.value;
-      console.log(componentSetting)
     });
     componentSettings = {...componentSettings, [component.id]: componentSetting}
 
@@ -155,7 +158,7 @@ export function loadComponents(resumeId){
       .then(response => response.data)
       .then(json => {
         const values = flattenComponentStructure(json.pages)
-        dispatch(componentLoadSuccess(values));
+        dispatch(componentLoadSuccess(values, resumeId));
       })
       .catch(error => {
         dispatch(componentFail(error))

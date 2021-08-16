@@ -68,13 +68,21 @@ class CreatorPage extends React.Component {
   render(){
     //Start load of entries
     if(!this.props.entries.isFetching && (!this.props.entries.text.fetched ||
-       !this.props.entries.experience.fetched)){
+       !this.props.entries.experience.fetched) && !this.props.entries.error){
       this.props.loadAllEntries();
     }
 
-    var loaded = true;
+    //Start load of components
+    if(!this.props.components.loading && this.props.components.fetched === 0 && 
+    !this.props.components.error){
+      this.props.loadComponents(this.props.match.params.id);
+    }
+
+    let loaded = true;
     const entries = this.props.entries;
     loaded = loaded && !entries.isFetching && entries.text.fetched && entries.experience.fetched;
+    loaded = loaded && !this.props.components.loading && this.props.components.fetched !== 0;
+    const error = this.props.components.error || entries.error;
     let page_content;
     if(loaded){
       this.pages = [];
@@ -103,7 +111,14 @@ class CreatorPage extends React.Component {
             Add page
           </Button>
         </div>
-    }else{
+    }else if(error){
+      page_content =
+        <div
+          style={{display: 'flex', flexDirection:'column', alignItems: 'center'}}
+        >
+          ERROR
+        </div>
+    } else {
       page_content =
         <div
           style={{display: 'flex', flexDirection:'column', alignItems: 'center'}}
