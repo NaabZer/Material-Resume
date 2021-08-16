@@ -23,7 +23,7 @@ function App(props) {
       <div className="App">
         <NavBar/>
         <DrawerAppContent>
-          <Switch location={background || location}>
+          <Switch location={background || location}> 
             <Route exact path='/' component={StartPage} />
             <Route path='/resumes' component={ResumePage} />
             <Route exact path='/entries'>

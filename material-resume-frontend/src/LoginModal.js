@@ -35,6 +35,7 @@ class LoginModal extends React.Component {
           this.replaceBack(e);
         })
         .catch(err => {
+          //TODO: handle errors on fields
           console.log(err);
           var errorMsg = err.response.data.non_field_errors
           console.log(err.response);

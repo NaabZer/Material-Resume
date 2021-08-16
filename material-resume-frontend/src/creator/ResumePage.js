@@ -77,8 +77,7 @@ class EntriesPageUNC extends React.Component {
     })
 
     return (
-      <div
-      >
+      <div >
         <Route exact path='/resumes/new' component={ResumeModal} />
         <Card
           style={{width: '60vw', margin: '8px auto'}}

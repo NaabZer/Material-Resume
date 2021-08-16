@@ -13,5 +13,7 @@ code {
 }
 
 .App{
-  color: var(--mdc-theme-on-surface)
+  color: var(--mdc-theme-on-surface);
+  background-color: var(--mdc-theme-background);
+  min-height: 100vh;
 }

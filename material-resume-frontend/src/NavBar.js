@@ -61,7 +61,10 @@ class NavDrawer extends React.Component {
   render(){
     return(
       <React.Fragment>
-        <Drawer dismissible open={this.props.open}>
+        <Drawer 
+          dismissible open={this.props.open}
+          style={{backgroundColor: 'var(--mdc-theme-background)'}}
+        >
           <DrawerHeader>
             <DrawerTitle>Material Resume Creator</DrawerTitle>
             <DrawerSubtitle>Navigation</DrawerSubtitle>
@@ -69,13 +72,13 @@ class NavDrawer extends React.Component {
           <DrawerContent>
             <List>
               <Link
-                style={{color: 'white', textDecoration: 'none'}}
+                style={{textDecoration: 'none'}}
                 to="/entries/experience"
               >
                 <ListItem>Entries</ListItem>
               </Link>
               <Link
-                style={{color: 'white', textDecoration: 'none'}}
+                style={{textDecoration: 'none'}}
                 to="/resumes"
               >
                 <ListItem>Resume Creator</ListItem>
