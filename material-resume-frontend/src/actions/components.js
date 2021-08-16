@@ -96,10 +96,10 @@ function idAndPageIdToInt(id){
 }
 
 function flattenComponents(componentList, parentId){
-  var components = {}
-  var componentSettings = {}
-  var grids = {}
-  var child_ids = []
+  let components = {}
+  let componentSettings = {}
+  let grids = {}
+  let child_ids = []
 
   componentList.forEach(component =>{
     const componentObj = {
@@ -132,10 +132,10 @@ function flattenComponents(componentList, parentId){
 }
 
 function flattenComponentStructure(pageList){
-  var components = {}
-  var pages = []
-  var componentSettings = {}
-  var grids = {}
+  let components = {}
+  let pages = []
+  let componentSettings = {}
+  let grids = {}
 
   pageList.forEach(page => {
     pages = [...pages, "p" + page.id]
@@ -148,12 +148,13 @@ function flattenComponentStructure(pageList){
       grids = {...grids, ["p" + page.id]: flatComp.child_ids}
     }
   })
+
   return {components, pages, componentSettings, grids}
 }
 
 export function loadComponents(resumeId){
   return dispatch => {
-    dispatch(componentTransactionStart);
+    dispatch(componentTransactionStart());
     api.get('components/resume/' + resumeId)
       .then(response => response.data)
       .then(json => {
@@ -180,18 +181,18 @@ function settingsObjToList(id, componentSettings){
 }
 
 function nestComponent(grid, reduxComponents){
-  var { components, componentSettings, grids} = reduxComponents
-  var list = []
+  let { components, componentSettings, grids} = reduxComponents
+  let list = []
 
   grid.forEach(componentId => {
-    var children = [];
+    let children = [];
     if( componentId in grids){
       children = nestComponent(grids[componentId], reduxComponents);
     } else {
       children = [];
     }
 
-    var compObject = {
+    let compObject = {
       'settings': settingsObjToList(componentId, componentSettings),
       'component_type': components[componentId].componentType,
       'row': components[componentId].row,
@@ -211,8 +212,8 @@ function nestComponent(grid, reduxComponents){
 }
 
 function nestComponentStructure(reduxComponents){
-  var { componentSettings, grids, pages} = reduxComponents;
-  var object = {
+  let { componentSettings, grids, pages} = reduxComponents;
+  let object = {
     'pages': [],
     'settings': []
   }
@@ -221,7 +222,7 @@ function nestComponentStructure(reduxComponents){
     //TODO: add page_num
     const children = nestComponent(grids[pageId], reduxComponents);
 
-    var pageObject = {
+    let pageObject = {
       'settings': settingsObjToList(pageId, componentSettings),
       'child_components': children,
       'page_num': i,

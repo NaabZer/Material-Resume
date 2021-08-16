@@ -74,7 +74,6 @@ export function entries(state = initialState, action){
   switch(action.type){
     case ENTRY_TRANSACTION_START: {
       return Object.assign({}, state, {
-        ...state,
         isFetching: true,
       });
     }
@@ -82,7 +81,7 @@ export function entries(state = initialState, action){
     case ENTRY_LOAD_SUCCESS: {
       let {entryType, entries} = action;
       return Object.assign({}, state, {
-        ...state,
+        isFetching: false,
         [entryType]: {
           ...state[entryType],
           fetched: true,
@@ -96,7 +95,7 @@ export function entries(state = initialState, action){
       let {entryType, values} = action;
 
       return Object.assign({}, state, {
-        ...state,
+        isFetching: false,
         [entryType]: {
           'entries':{
             ...state[entryType]['entries'],
@@ -108,7 +107,7 @@ export function entries(state = initialState, action){
     case ENTRY_EDIT_SUCCESS: {
       let {id, entryType, values} = action;
       return Object.assign({}, state, {
-        ...state,
+        isFetching: false,
         [entryType]: {
           'entries':{
             ...state[entryType]['entries'],
@@ -121,7 +120,7 @@ export function entries(state = initialState, action){
       let {id, entryType} = action;
       const {[id]:_ , ...newState} = state[entryType]['entries'];
       return Object.assign({}, state, {
-        ...state,
+        isFetching: false,
         [entryType]: {
           'entries':{
             ...newState
