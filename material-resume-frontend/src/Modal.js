@@ -17,7 +17,7 @@ export default class Modal extends React.Component {
     return(
       <div
         style={{display: open ? "inherit" : "none"}}
-        className='modal-container'
+        className={(open ? 'modal-container-show': 'model-container-hidden')  + ' modal-container'}
       >
         <div 
           className="modal-background"
