@@ -130,7 +130,7 @@ class PageSerializer(serializers.HyperlinkedModelSerializer):
             if(setting):
                 SettingsRowSerializer().update(setting, setting_data)
             else:
-                SettingsRow.objects.create(component=instance,
+                SettingsRow.objects.create(page=instance,
                                            setting=setting_data.get('setting'),
                                            value=setting_data.get('value'))
 
@@ -166,7 +166,7 @@ class ResumeSerializer(serializers.HyperlinkedModelSerializer):
             if(setting):
                 SettingsRowSerializer().update(setting, setting_data)
             else:
-                SettingsRow.objects.create(component=instance,
+                SettingsRow.objects.create(resume=instance,
                                            setting=setting_data.get('setting'),
                                            value=setting_data.get('value'))
 
