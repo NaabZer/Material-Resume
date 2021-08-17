@@ -71,7 +71,6 @@ export function components(state = initialState, action){
     case COMPONENT_TRANSACTION_START: {
       return Object.assign({}, state, {
         loading: true,
-        fetched: 0,
       });
     }
     case COMPONENT_LOAD_SUCCESS: {

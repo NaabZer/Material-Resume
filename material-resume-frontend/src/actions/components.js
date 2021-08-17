@@ -270,7 +270,7 @@ function nestComponentStructure(reduxComponents){
 
 export function saveResume(resumeId, reduxComponents){
   return dispatch => {
-    dispatch(componentTransactionStart);
+    dispatch(componentTransactionStart());
     const nestedComponents = nestComponentStructure(reduxComponents)
     let deleteCalls = [];
     reduxComponents.removedComponents.forEach(id => {

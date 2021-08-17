@@ -46,6 +46,10 @@
     }
 }
 
+.floating-resume-setting-disabled{
+    color: var(--mdc-theme-text-disabled-on-dark)
+}
+
 .floating-resume-setting-text{
     transition-property: color, width;
     transition-duration: 0.2s;

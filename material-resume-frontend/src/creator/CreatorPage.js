@@ -12,7 +12,6 @@ import {
   resizeComponent,
   addPage,
   loadComponents,
-  saveResume,
 } from '../actions/components';
 import { loadAllEntries } from '../actions/entries';
 import SettingsModal from './SettingsModal';
@@ -83,7 +82,7 @@ class CreatorPage extends React.Component {
     let loaded = true;
     const entries = this.props.entries;
     loaded = loaded && !entries.isFetching && entries.text.fetched && entries.experience.fetched;
-    loaded = loaded && !this.props.components.loading && this.props.components.fetched !== 0;
+    loaded = loaded && this.props.components.fetched !== 0;
     const error = this.props.components.error || entries.error;
     let page_content;
     if(loaded){
@@ -142,12 +141,6 @@ class CreatorPage extends React.Component {
           style={{position: 'sticky', top: '0px'}}
         />
         <FloatingResumeSettings/>
-        <Button
-          raised
-          onClick = {() => this.props.saveResume(this.props.match.params.id, this.props.components)}
-        >
-          Save Resume
-        </Button>
         {page_content}
       </div>
     )
@@ -169,7 +162,6 @@ const mapDispatchToProps = dispatch => ({
   addPage: () => dispatch(addPage()),
   loadAllEntries: () => dispatch(loadAllEntries()),
   loadComponents: (id) => dispatch(loadComponents(id)),
-  saveResume: (resumeId, reduxComponents) => dispatch(saveResume(resumeId, reduxComponents)),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CreatorPage));

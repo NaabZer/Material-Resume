@@ -8,9 +8,22 @@ import './FloatingResumeSettings.scss';
 import { Icon } from '@rmwc/icon';
 import '@rmwc/icon/styles';
 import { Typography } from '@rmwc/typography';
+import { CircularProgress } from '@rmwc/circular-progress';
+
+import { saveResume } from '../actions/components';
 
 class FloatingResumeSettings extends React.Component {
+
+  clickSave = (e) => {
+    console.log('clickclack')
+    e.preventDefault()
+    e.stopPropagation()
+    this.props.saveResume(this.props.match.params.id, this.props.components)
+  }
+
   render(){
+    let loading = this.props.components.loading;
+    let loadingTheme = loading ? 'text-disabled-on-dark' : 'on-primary'
     return (
       <div
         className='floating-resume-settings'
@@ -53,14 +66,29 @@ class FloatingResumeSettings extends React.Component {
             Settings
           </Typography>
         </div>
-        <div className='floating-resume-setting'>
-          <Icon icon="save"/>
-          <Typography
-            use='headline4'
+        <div 
+          className={'floating-resume-setting ' + (loading ? 'floating-resume-setting-disabled':"")}
+          onClick = {this.clickSave}
+        >
+          <Icon 
+            icon="save"
+          />
+          <div
             className='floating-resume-setting-text'
+            style={{display: 'flex', justifyContent: 'space-between', flexWrap: 'nowrap', alignItems: 'center'}}
           >
-            Save
-          </Typography>
+            <Typography
+              use='headline4'
+              theme={loadingTheme}
+            >
+              Save
+            </Typography>
+            <CircularProgress
+              style={{marginRight: '12px', display: loading ? 'inherit': 'none'}}
+              size='medium'
+              theme={loadingTheme}
+            />
+          </div>
         </div>
       </div>
     )
@@ -68,9 +96,11 @@ class FloatingResumeSettings extends React.Component {
 }
 
 const mapStateToProps = state => ({
+  components: state.components
 });
 
 const mapDispatchToProps = dispatch => ({
+  saveResume: (resumeId, reduxComponents) => dispatch(saveResume(resumeId, reduxComponents)),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(FloatingResumeSettings));
