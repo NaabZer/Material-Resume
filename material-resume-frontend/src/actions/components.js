@@ -5,6 +5,8 @@ import {
   getComponentFromType
 } from '../creator/components/ComponentFactory';
 
+import { THEME_BASELINE } from '../utility/Themes';
+
 export const COMPONENT_TRANSACTION_START = "COMPONENT_TRANSACTION_START"
 export const COMPONENT_LOAD_SUCCESS = "COMPONENT_LOAD_SUCCESS"
 export const COMPONENT_SAVE_SUCCESS = "COMPONENT_SAVE_SUCCESS"
@@ -17,7 +19,8 @@ export const COMPONENT_RESIZE = "COMPONENT_RESIZE"
 export const COMPONENT_DELETE = "COMPONENT_DELETE"
 export const PAGE_ADD = "PAGE_ADD"
 export const PAGE_REMOVE = "PAGE_REMOVE"
-export const SETTINGS_CHANGE = "SETTINGS_CHANGE"
+export const COMPONENT_SETTINGS_CHANGE = "COMPONENT_SETTINGS_CHANGE"
+export const RESUME_SETTINGS_CHANGE = "RESUME_SETTINGS_CHANGE"
 
 
 export const componentTransactionStart = () => ({
@@ -78,10 +81,19 @@ export const removePage = id => ({
   id
 })
 
-export const changeSettings = (id, settings) => ({
-  type: SETTINGS_CHANGE,
+export const changeComponentSettings = (id, settings) => ({
+  type: COMPONENT_SETTINGS_CHANGE,
   id, settings
 })
+
+export const changeResumeSettings = (settings) => ({
+  type: RESUME_SETTINGS_CHANGE,
+  settings
+})
+
+export const defaultResumeSettings = {
+  theme: THEME_BASELINE
+}
 
 function isPageId(id){
   return ("" + id)[0] === 'p';
@@ -158,7 +170,15 @@ export function loadComponents(resumeId){
     api.get('components/resume/' + resumeId)
       .then(response => response.data)
       .then(json => {
-        const values = flattenComponentStructure(json.pages)
+        let values = flattenComponentStructure(json.pages)
+
+        let resumeSettings = Object.assign({}, defaultResumeSettings);
+        console.log(resumeSettings)
+        json.settings.forEach(setting => {
+          resumeSettings[setting.setting] = setting.value;
+        });
+        values.resumeSettings = resumeSettings;
+        console.log(values.resumeSettings)
         dispatch(componentLoadSuccess(values, resumeId));
       })
       .catch(error => {
@@ -167,7 +187,17 @@ export function loadComponents(resumeId){
   }
 }
 
-function settingsObjToList(id, componentSettings){
+function resumeSettingsObjToList(resumeSettings){
+  return Object.keys(resumeSettings).reduce((acc, key) => {
+    const settingsObj = {
+      'setting': key,
+      'value': resumeSettings[key]
+    }
+    return [...acc, settingsObj];
+  }, [])
+
+}
+function componentSettingsObjToList(id, componentSettings){
   if(id in componentSettings){
     return Object.keys(componentSettings[id]).reduce((acc, key) => {
       const settingsObj = {
@@ -193,7 +223,7 @@ function nestComponent(grid, reduxComponents){
     }
 
     let compObject = {
-      'settings': settingsObjToList(componentId, componentSettings),
+      'settings': componentSettingsObjToList(componentId, componentSettings),
       'component_type': components[componentId].componentType,
       'row': components[componentId].row,
       'col': components[componentId].col,
@@ -212,10 +242,10 @@ function nestComponent(grid, reduxComponents){
 }
 
 function nestComponentStructure(reduxComponents){
-  let { componentSettings, grids, pages} = reduxComponents;
+  let { componentSettings, grids, pages, resumeSettings} = reduxComponents;
   let object = {
     'pages': [],
-    'settings': []
+    'settings': resumeSettingsObjToList(resumeSettings)
   }
 
   pages.forEach((pageId, i) => {
@@ -223,7 +253,7 @@ function nestComponentStructure(reduxComponents){
     const children = nestComponent(grids[pageId], reduxComponents);
 
     let pageObject = {
-      'settings': settingsObjToList(pageId, componentSettings),
+      'settings': componentSettingsObjToList(pageId, componentSettings),
       'child_components': children,
       'page_num': i,
     }
@@ -243,7 +273,6 @@ export function saveResume(resumeId, reduxComponents){
     dispatch(componentTransactionStart);
     const nestedComponents = nestComponentStructure(reduxComponents)
     let deleteCalls = [];
-    console.log('before array')
     reduxComponents.removedComponents.forEach(id => {
       if(isPageId(id)){
         deleteCalls.push(axios.delete('components/page/' + idAndPageIdToInt(id)))
@@ -251,8 +280,6 @@ export function saveResume(resumeId, reduxComponents){
         deleteCalls.push(axios.delete('components/component/' + idAndPageIdToInt(id)))
       }
     })
-    console.log('begore calls')
-
     if(deleteCalls.length > 0){
     axios.all(deleteCalls)
       .then(axios.spread((...responses) => {

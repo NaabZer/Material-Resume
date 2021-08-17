@@ -17,14 +17,34 @@ class FloatingResumeSettings extends React.Component {
       >
         <div className='floating-resume-setting'>
           <Icon icon="language"/>
-          <Typography
-            use='headline4'
+          <div
             className='floating-resume-setting-text'
           >
-            Locale
-          </Typography>
+            <Typography
+              use='headline4'
+            >
+              Locale
+            </Typography>
+            <div
+              style={{display: 'flex', marginTop: '-10px', marginLeft: '4px'}}
+            >
+              <Typography
+                use='caption'
+              >
+                Sv
+              </Typography>
+              <Typography
+                use='caption'
+              >
+                En
+              </Typography>
+            </div>
+          </div>
         </div>
-        <div className='floating-resume-setting'>
+        <div 
+          className='floating-resume-setting'
+          onClick={() => this.props.history.push(this.props.match.params.id + "/settings")}
+        >
           <Icon icon="settings"/>
           <Typography
             use='headline4'

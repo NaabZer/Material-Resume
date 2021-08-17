@@ -16,7 +16,8 @@ import {
 } from '../actions/components';
 import { loadAllEntries } from '../actions/entries';
 import SettingsModal from './SettingsModal';
-import FloatingResumeSettings from './FloatingResumeSettings.js';
+import FloatingResumeSettings from './FloatingResumeSettings';
+import ResumeSettingsModal from './ResumeSettingsModal';
 
 import ComponentSelector from './ComponentSelector';
 import Page from './components/Page';
@@ -132,6 +133,9 @@ class CreatorPage extends React.Component {
       <div>
         <Route exact path='/resumes/creator/component/:id/settings'> 
           <SettingsModal/>
+        </Route>
+        <Route exact path='/resumes/creator/:id/settings'> 
+          <ResumeSettingsModal/>
         </Route>
         <ComponentSelector
           componentdropcallback={(c, e, d) => this.onDrop(c, e, d, 0)}

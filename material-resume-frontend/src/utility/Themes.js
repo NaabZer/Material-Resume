@@ -1,11 +1,25 @@
 export const THEME_BASELINE = 'THEME_BASELINE';
 export const THEME_CRANE = 'THEME_CRANE';
 export const THEME_DARK = 'THEME_DARK';
-export const themes = [
+
+export const THEMES = [
   THEME_BASELINE,
   THEME_CRANE,
   THEME_DARK
 ]
+
+export function getThemeName(theme){
+  switch(theme){
+    case THEME_BASELINE:
+      return 'Base';
+    case THEME_CRANE:
+      return 'Crane';
+    case THEME_DARK:
+      return 'Dark';
+    default:
+      return 'Base';
+  }
+}
 
 export function getThemeOptions(theme){
   switch(theme){

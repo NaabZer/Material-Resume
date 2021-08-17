@@ -11,7 +11,9 @@ import {
   COMPONENT_MOVE,
   PAGE_ADD,
   PAGE_REMOVE,
-  SETTINGS_CHANGE,
+  COMPONENT_SETTINGS_CHANGE,
+  RESUME_SETTINGS_CHANGE,
+  defaultResumeSettings,
 } from '../actions/components';
 
 import { 
@@ -32,7 +34,8 @@ const initialState = {
     cols: 12,
     rows: 12,
     gap: '8px'
-  }
+  },
+  resumeSettings: defaultResumeSettings,
 }
 
 function getAllInnerIds(parentId, state){
@@ -275,7 +278,6 @@ export function components(state = initialState, action){
           return obj;
         }, {});
 
-      console.log(id)
       const newPages = state.pages.filter(key => (key !== id))
 
       const removedComponents = state.removedComponents;
@@ -285,11 +287,6 @@ export function components(state = initialState, action){
         }
       });
 
-      console.log(removedComponents)
-      console.log(newSettings)
-      console.log(newComponents)
-      console.log(newGrids)
-      console.log(newPages)
       return Object.assign({}, state, {
         removedComponents: removedComponents,
         componentSettings: newSettings,
@@ -298,7 +295,7 @@ export function components(state = initialState, action){
         pages: newPages,
       });
     }
-    case SETTINGS_CHANGE: {
+    case COMPONENT_SETTINGS_CHANGE: {
       let {id, settings} = action;
       return Object.assign({}, state,{
         ...state,
@@ -306,6 +303,12 @@ export function components(state = initialState, action){
           ...state.componentSettings,
           [id]: settings
         }
+      });
+    }
+    case RESUME_SETTINGS_CHANGE: {
+      let {settings} = action;
+      return Object.assign({}, state,{
+        resumeSettings: settings
       });
     }
     default:

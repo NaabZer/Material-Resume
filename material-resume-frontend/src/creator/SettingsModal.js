@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 
 import Modal from '../Modal';
 import { getComponentFromType, getSettingsFormFromType } from './components/ComponentFactory';
-import { changeSettings } from '../actions/components';
+import { changeComponentSettings } from '../actions/components';
 
 import { Typography } from '@rmwc/typography';
 
@@ -19,7 +19,7 @@ class SettingsModal extends React.Component {
   back = (e) =>{
     e.preventDefault();
     console.log(this.formRef.current.getSettings());
-    this.props.changeSettings(this.props.match.params.id,
+    this.props.changeComponentSettings(this.props.match.params.id,
                               this.formRef.current.getSettings());
     this.props.history.goBack();
   }
@@ -68,7 +68,7 @@ const mapStateToProps = (state, props) => {
 }
 
 const mapDispatchToProps = dispatch => ({
-  changeSettings: (id, settings) => dispatch(changeSettings(id, settings)),
+  changeComponentSettings: (id, settings) => dispatch(changeComponentSettings(id, settings)),
 });
 
 

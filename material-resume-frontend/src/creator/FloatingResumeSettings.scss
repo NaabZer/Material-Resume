@@ -1,5 +1,6 @@
 .floating-resume-settings{
     position: fixed;
+    z-index: 999;
     right: 0;
     top: 40%;
     background: var(--mdc-theme-primary);

@@ -18,7 +18,7 @@ function App(props) {
 
   return (
     <ThemeProvider
-      options={getThemeOptions((props.resumeSettings && props.resumeSettings.theme) || THEME_BASELINE)}
+      options={getThemeOptions((props.components.resumeSettings && props.components.resumeSettings.theme) || THEME_BASELINE)}
     >
       <div className="App">
         <NavBar/>
@@ -42,7 +42,7 @@ function App(props) {
 }
 
 const mapStateToProps = state => ({
-  resumeSettings: state.components.resumeSettings,
+  components: state.components,
 });
 
 export default connect(mapStateToProps)(App);
