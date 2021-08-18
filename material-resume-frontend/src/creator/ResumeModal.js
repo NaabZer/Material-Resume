@@ -50,7 +50,7 @@ class ResumeModal extends React.Component {
         <Typography
           style={{
             marginTop: '-8px',
-            color: 'gray'
+            color: 'var(--mdc-theme-text-secondary-on-background)'
           }}
           use='body2'
         >
