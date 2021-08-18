@@ -47,7 +47,7 @@ class EntriesPage extends React.Component {
 
   render(){
     const entryType = this.props.match.params.type
-    if(!this.props.entries[entryType].fetched){
+    if(!this.props.entries[entryType].fetched && !this.props.entries.isFetching){
       this.props.loadEntries(entryType);
     }
 
