@@ -41,7 +41,7 @@ class Page extends React.Component {
           open={this.state.deleteOpen}
           text='Remove page?'
           subtitle='Are you sure?'
-          cancelClickCallback={() => this.setState({confirmOpen: false})}
+          cancelClickCallback={() => this.setState({deleteOpen: false})}
           confirmClickCallback={() => this.props.removePage(componentid)}
         />
         <PageModal 
@@ -58,9 +58,7 @@ class Page extends React.Component {
           style={{display: 'flex'}}
         >
           <Card
-            outlined
-            className='mdc-elevation--z8'
-            style={{height: '297mm', width: '210mm'}}
+            className='mdc-elevation--z8 page'
           >
             <DragAndDropGrid 
               {...props}
