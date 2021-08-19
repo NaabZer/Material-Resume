@@ -21,6 +21,7 @@ export const PAGE_ADD = "PAGE_ADD"
 export const PAGE_REMOVE = "PAGE_REMOVE"
 export const COMPONENT_SETTINGS_CHANGE = "COMPONENT_SETTINGS_CHANGE"
 export const RESUME_SETTINGS_CHANGE = "RESUME_SETTINGS_CHANGE"
+export const PAGES_SETTINGS_CHANGE = 'PAGES_SETTINGS_CHANGE'
 
 
 export const componentTransactionStart = () => ({
@@ -84,6 +85,11 @@ export const removePage = id => ({
 export const changeComponentSettings = (id, settings) => ({
   type: COMPONENT_SETTINGS_CHANGE,
   id, settings
+})
+
+export const changePageSettings = (pageid, settings) => ({
+  type: PAGES_SETTINGS_CHANGE,
+  pageid, settings
 })
 
 export const changeResumeSettings = (settings) => ({
@@ -155,9 +161,14 @@ function flattenComponentStructure(pageList){
   let pages = []
   let componentSettings = {}
   let grids = {}
+  let pageSettings = {}
 
   pageList.forEach(page => {
     pages = [...pages, "p" + page.id]
+    pageSettings["p" + page.id] = Object.assign({}, defaultPageSettings)
+    page.settings.forEach(setting => {
+      pageSettings["p" + page.id][setting.setting] = setting.value;
+    });
 
     const flatComp = flattenComponents(page.child_components, "p" + page.id)
     components = {...components, ...flatComp.components}
@@ -168,7 +179,7 @@ function flattenComponentStructure(pageList){
     }
   })
 
-  return {components, pages, componentSettings, grids}
+  return {components, pages, componentSettings, grids, pageSettings}
 }
 
 export function loadComponents(resumeId){
@@ -249,7 +260,7 @@ function nestComponent(grid, reduxComponents){
 }
 
 function nestComponentStructure(reduxComponents){
-  let { componentSettings, grids, pages, resumeSettings} = reduxComponents;
+  let { componentSettings, grids, pages, resumeSettings, pageSettings} = reduxComponents;
   let object = {
     'pages': [],
     'settings': resumeSettingsObjToList(resumeSettings)
@@ -257,15 +268,14 @@ function nestComponentStructure(reduxComponents){
 
   pages.forEach((pageId, i) => {
     //TODO: add page_num
-    const children = nestComponent(grids[pageId], reduxComponents);
 
+    const children = nestComponent(grids[pageId], reduxComponents);
     let pageObject = {
-      'settings': componentSettingsObjToList(pageId, componentSettings),
+      'settings': componentSettingsObjToList(pageId, pageSettings),
       'child_components': children,
       'page_num': i,
     }
 
-    console.log(pageId.substring(1) * 1)
     if(pageId.substring(1) * 1 >= 0){
       pageObject.id = pageId.substring(1) * 1;
     }

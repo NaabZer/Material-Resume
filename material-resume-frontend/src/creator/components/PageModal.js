@@ -19,8 +19,9 @@ class PageModal extends React.Component {
     this.setState({[type]: e.currentTarget.value});
   }
 
-  save = () => {
-
+  confirmClick = e => {
+    e.preventDefault()
+    this.props.confirmClickCallback(this.state)
   }
 
   render(){
@@ -49,7 +50,7 @@ class PageModal extends React.Component {
           value={this.state.cols}
           onChange={e => this.onChange('cols', e)}
           min={1}
-          max={10}
+          max={16}
           discrete
           step={1}
         />
@@ -58,7 +59,7 @@ class PageModal extends React.Component {
           value={this.state.rows}
           onChange={e => this.onChange('rows', e)}
           min={1}
-          max={12}
+          max={16}
           discrete
           step={1}
         />
@@ -66,10 +67,10 @@ class PageModal extends React.Component {
           label='Grid Gap'
           value={this.state.gap}
           onChange={e => this.onChange('gap', e)}
-          min={1}
+          min={0}
           max={20}
           discrete
-          step={1}
+          step={2}
           suffix='px'
         />
         <div
@@ -84,7 +85,7 @@ class PageModal extends React.Component {
           </Button>
           <Button
             raised
-            onClick={this.props.confirmClickCallback}
+            onClick={this.confirmClick}
           >
             Confirm
           </Button>

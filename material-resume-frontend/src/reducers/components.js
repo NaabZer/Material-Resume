@@ -12,6 +12,7 @@ import {
   PAGE_ADD,
   PAGE_REMOVE,
   COMPONENT_SETTINGS_CHANGE,
+  PAGES_SETTINGS_CHANGE,
   RESUME_SETTINGS_CHANGE,
   defaultResumeSettings,
   defaultPageSettings,
@@ -31,7 +32,7 @@ const initialState = {
   grids: {},
   componentSettings: {},
   pages: [],
-  pageSettings: Object.assign({}, defaultPageSettings),
+  pageSettings: {},
   resumeSettings: defaultResumeSettings,
 }
 
@@ -240,12 +241,15 @@ export function components(state = initialState, action){
     case PAGE_ADD: {
       let {id} = action;
       return Object.assign({}, state, {
-        ...state,
         grids:{
           ...state.grids,
           ["p" + id]: []
         },
-        pages: [...state.pages, "p" + id]
+        pages: [...state.pages, "p" + id],
+        pageSettings:{
+          ...state.pageSettings,
+          ["p" + id]: defaultPageSettings,
+        }
       });
     }
     case PAGE_REMOVE: {
@@ -283,12 +287,20 @@ export function components(state = initialState, action){
         }
       });
 
+      const newPageSettings = Object.keys(state.pageSettings)
+        .filter(key => key !== id)
+        .reduce((obj, key) => {
+          obj[key] = state.pageSettings[key];
+          return obj;
+        }, {});
+
       return Object.assign({}, state, {
         removedComponents: removedComponents,
         componentSettings: newSettings,
         components: newComponents,
         grids: newGrids,
         pages: newPages,
+        pageSettings: newPageSettings
       });
     }
     case COMPONENT_SETTINGS_CHANGE: {
@@ -298,6 +310,15 @@ export function components(state = initialState, action){
         componentSettings:{
           ...state.componentSettings,
           [id]: settings
+        }
+      });
+    }
+    case PAGES_SETTINGS_CHANGE: {
+      let {pageid, settings} = action;
+      return Object.assign({}, state,{
+        pageSettings: {
+          ...state.pageSettings,
+          [pageid]: settings,
         }
       });
     }

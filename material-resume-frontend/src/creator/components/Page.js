@@ -11,7 +11,7 @@ import DragAndDropGrid from '../DragAndDropGrid';
 import ConfirmModal from '../../utility/ConfirmModal';
 import PageModal from './PageModal';
 
-import { removePage } from '../../actions/components';
+import { removePage, changePageSettings } from '../../actions/components';
 
 class Page extends React.Component {
   constructor(props){
@@ -26,6 +26,11 @@ class Page extends React.Component {
     componentdropcallback: PropTypes.func.isRequired,
     pageid: PropTypes.number.isRequired,
     componentid: PropTypes.number.isRequired,
+  }
+
+  saveSettings = (settings) => {
+    this.setState({settingsOpen: false})
+    this.props.changePageSettings(this.props.componentid, settings)
   }
 
   render(){
@@ -44,7 +49,7 @@ class Page extends React.Component {
           settings={this.props.settings}
           pagenum = {pageid+1}
           cancelClickCallback={() => this.setState({settingsOpen: false})}
-          confirmClickCallback={() => {}}
+          confirmClickCallback={(settings) => this.saveSettings(settings)}
         />
         <h2>
           Page {pageid+1}
@@ -91,12 +96,13 @@ class Page extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  settings: state.components.pageSettings,
+const mapStateToProps = (state, props) => ({
+  settings: state.components.pageSettings[props.componentid],
 });
 
 const mapDispatchToProps = dispatch => ({
   removePage: (id) => dispatch(removePage(id)),
+  changePageSettings: (id, settings) => dispatch(changePageSettings(id, settings)),
 });
 
 const forwardedPage = React.forwardRef((props, ref) =>{
