@@ -91,8 +91,15 @@ export const changeResumeSettings = (settings) => ({
   settings
 })
 
+
 export const defaultResumeSettings = {
   theme: THEME_BASELINE
+}
+
+export const defaultPageSettings = {
+  cols: 12,
+  rows: 12,
+  gap: '8px'
 }
 
 function isPageId(id){

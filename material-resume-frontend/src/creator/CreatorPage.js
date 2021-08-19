@@ -17,7 +17,6 @@ import { loadAllEntries } from '../actions/entries';
 import SettingsModal from './SettingsModal';
 import FloatingResumeSettings from './FloatingResumeSettings';
 import ResumeSettingsModal from './ResumeSettingsModal';
-import ConfirmModal from '../utility/ConfirmModal';
 
 import ComponentSelector from './ComponentSelector';
 import Page from './components/Page';

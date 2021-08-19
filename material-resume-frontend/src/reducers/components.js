@@ -14,6 +14,7 @@ import {
   COMPONENT_SETTINGS_CHANGE,
   RESUME_SETTINGS_CHANGE,
   defaultResumeSettings,
+  defaultPageSettings,
 } from '../actions/components';
 
 import { 
@@ -30,11 +31,7 @@ const initialState = {
   grids: {},
   componentSettings: {},
   pages: [],
-  pageSettings: {
-    cols: 12,
-    rows: 12,
-    gap: '8px'
-  },
+  pageSettings: Object.assign({}, defaultPageSettings),
   resumeSettings: defaultResumeSettings,
 }
 

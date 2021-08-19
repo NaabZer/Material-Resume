@@ -9,7 +9,6 @@ export default class SliderInput extends React.Component {
     if(this.props.suffix) {
       newE.currentTarget.value = e.currentTarget.value + this.props.suffix
     } 
-    console.log(newE.currentTarget.value)
     this.props.onChange(newE)
   }
   render(){
@@ -28,8 +27,8 @@ export default class SliderInput extends React.Component {
         >
           <Slider
             style={{flexGrow: 4, marginRight: '8px'}}
-            onChange={e => this.onChange(e)}
-            onInput={e => this.onChange(e)}
+            onChange={this.onChange}
+            onInput={this.onChange}
             value={newValue}
             {...rest}
           />

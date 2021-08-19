@@ -9,6 +9,7 @@ import { Icon } from '@rmwc/icon';
 
 import DragAndDropGrid from '../DragAndDropGrid';
 import ConfirmModal from '../../utility/ConfirmModal';
+import PageModal from './PageModal';
 
 import { removePage } from '../../actions/components';
 
@@ -18,7 +19,7 @@ class Page extends React.Component {
 
     this.childGrids = []
     this.divRef = React.createRef();
-    this.state = {confirmOpen: false}
+    this.state = {deleteOpen: false, settingsOpen: false}
   }
 
   static propTypes = {
@@ -32,11 +33,18 @@ class Page extends React.Component {
     return(
       <div>
         <ConfirmModal 
-          open={this.state.confirmOpen}
+          open={this.state.deleteOpen}
           text='Remove page?'
           subtitle='Are you sure?'
           cancelClickCallback={() => this.setState({confirmOpen: false})}
           confirmClickCallback={() => this.props.removePage(componentid)}
+        />
+        <PageModal 
+          open={this.state.settingsOpen}
+          settings={this.props.settings}
+          pagenum = {pageid+1}
+          cancelClickCallback={() => this.setState({settingsOpen: false})}
+          confirmClickCallback={() => {}}
         />
         <h2>
           Page {pageid+1}
@@ -70,10 +78,11 @@ class Page extends React.Component {
           >
             <Icon 
               icon="delete"
-              onClick={() => this.setState({confirmOpen: true})}
+              onClick={() => this.setState({deleteOpen: true})}
             />
             <Icon 
               icon="settings"
+              onClick={() => this.setState({settingsOpen: true})}
             />
           </div>
         </div>
