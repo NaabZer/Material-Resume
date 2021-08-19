@@ -28,6 +28,7 @@ class Component(models.Model):
     class ComponentTypes(models.TextChoices):
         CARD = 'C_CARD', _('Card Component')
         COL_A = 'C_COL_A', _('Colored Area')
+        T_COL_A = 'C_T_COL_A', _('Themed Colored Area')
 
     component_type = models.CharField(
         max_length=32,

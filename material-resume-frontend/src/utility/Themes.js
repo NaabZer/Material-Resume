@@ -2,6 +2,12 @@ export const THEME_BASELINE = 'THEME_BASELINE';
 export const THEME_CRANE = 'THEME_CRANE';
 export const THEME_DARK = 'THEME_DARK';
 
+export const THEME_COLOR_PRIMARY = '--mdc-theme-primary'
+export const THEME_COLOR_SECONDARY = '--mdc-theme-secondary'
+export const THEME_COLOR_ERROR = '--mdc-theme-error'
+export const THEME_COLOR_BACKGROUND = '--mdc-theme-background'
+export const THEME_COLOR_SURFACE = '--mdc-theme-surface'
+
 export const THEMES = [
   THEME_BASELINE,
   THEME_CRANE,
