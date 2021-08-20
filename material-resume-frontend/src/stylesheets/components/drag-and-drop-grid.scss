@@ -3,3 +3,9 @@
     align-items: stretch;
     justify-items: stretch;
 }
+
+.icon-button-on{
+    background: var(--mdc-theme-primary) !important;
+    color: var(--mdc-theme-on-primary) !important;
+    border-radius: 50%
+}

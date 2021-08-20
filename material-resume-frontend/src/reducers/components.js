@@ -22,6 +22,8 @@ import {
   getComponentFromType,
 } from '../creator/components/ComponentFactory';
 
+import { defaultCommonSettings } from '../creator/components/DraggableComponent';
+
 const initialState = {
   removedComponents: [], // List of components to remove on save
   error: false,
@@ -111,7 +113,10 @@ export function components(state = initialState, action){
         gridVal = [id]
       }
 
-      const settings = getComponentFromType(componentType).defaultSettings;
+      const settings = {
+        ...defaultCommonSettings,
+        ...getComponentFromType(componentType).defaultSettings
+      }
 
       let gridsState = null;
       // Add grid if new component is a grid

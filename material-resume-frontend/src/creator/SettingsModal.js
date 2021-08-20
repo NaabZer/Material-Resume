@@ -2,11 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
+import { Typography } from '@rmwc/typography';
+
 import Modal from '../Modal';
 import { getComponentFromType, getSettingsFormFromType } from './components/ComponentFactory';
 import { changeComponentSettings } from '../actions/components';
+import { CommonSettingsForm } from './components/DraggableComponent';
 
-import { Typography } from '@rmwc/typography';
 
 
 class SettingsModal extends React.Component {
@@ -14,13 +16,18 @@ class SettingsModal extends React.Component {
     super(props)
 
     this.formRef = React.createRef();
+    this.commonFormRef = React.createRef();
   }
 
   back = (e) =>{
     e.preventDefault();
     console.log(this.formRef.current.getSettings());
-    this.props.changeComponentSettings(this.props.match.params.id,
-                              this.formRef.current.getSettings());
+    const settings = {
+      ...this.formRef.current.getSettings(),
+      ...this.commonFormRef.current.getSettings()
+    }
+
+    this.props.changeComponentSettings(this.props.match.params.id, settings)
     this.props.history.goBack();
   }
 
@@ -51,6 +58,10 @@ class SettingsModal extends React.Component {
           ref={this.formRef}
           settings={this.props.settings}
           entries={this.props.entries}
+        />
+        <CommonSettingsForm
+          ref={this.commonFormRef}
+          settings={this.props.settings}
         />
       </Modal>
     );

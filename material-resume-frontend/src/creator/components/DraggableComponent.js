@@ -10,8 +10,9 @@ import { deleteComponent } from '../../actions/components';
 import { getComponentFromType } from './ComponentFactory';
 import { withRouterAndRef } from '../../utility/utilityFunctions';
 import { Elevation } from "@rmwc/elevation"; 
-
+import { Typography } from '@rmwc/typography';
 import { IconButton } from '@rmwc/icon-button';
+
 import '../../stylesheets/components/draggable-component.scss';
 
 class DraggableComponent extends React.Component {
@@ -40,15 +41,12 @@ class DraggableComponent extends React.Component {
 
   onDrop = (e, data, data2) => {
     if(this.props.dragAndDrop.componentId !== this.props.componentid){
-      console.log('enddrag')
       this.props.endDrag();
     }
     if(typeof(data2) !== 'undefined'){
-      console.log('not undefined')
       // If there are only two parameters, this is the original draggable elements drop function
       this.props.ondropcallback(e, data, data2)
     } else{
-      console.log('else')
       // If there are three elements, this is the function passed down through DragAndDropGrid
       // from CreatorPage, that handles dropping items.
       if('componentid' in this.props){
@@ -99,7 +97,7 @@ class DraggableComponent extends React.Component {
   render(){
     const {style, ondropcallback, ondragcallback, resizable, 
            startDrag, endDrag, className, editable, onresizestopcallback,
-           componenttype, deleteComponent, forwardedRef, ...props } = this.props;
+           componenttype, deleteComponent, forwardedRef, gap, ...props } = this.props;
     var classNames = className || "";
     classNames += " draggable-component";
 
@@ -113,15 +111,35 @@ class DraggableComponent extends React.Component {
       classNames += " draggable-component-resizing";
     }
 
-    var new_style = {
-      ...style, transform: "translate("+this.state.x+"px, "+this.state.y+"px)",
-      width:  "calc(100% + " + this.state.w + "px)",
-      height: "calc(100% + " + this.state.h + "px)",
-      zIndex: this.state.z,
+    const InnerComponentType = getComponentFromType(this.props.componenttype);
+    const settings = this.props.settings || {
+      ...InnerComponentType.defaultSettings, ...defaultCommonSettings
+    };
+    let leftMargin = 0
+    let topMargin = 0
+    let addedWidth = 0
+    let addedHeight = 0
+    if('ignoreGap' in settings && editable === true){
+      const ignoreLeft = (settings.ignoreGap & 8) > 0;
+      const ignoreTop = (settings.ignoreGap & 4) > 0;
+      const ignoreRight = (settings.ignoreGap & 2) > 0;
+      const ignoreBottom = (settings.ignoreGap & 1) > 0;
+      const gapNum = gap.slice(0, -2)
+      leftMargin = ignoreLeft ? -gapNum + "px" : '0';
+      topMargin = ignoreTop ?  -gapNum + "px" : '0';
+      addedWidth = gapNum * (ignoreLeft + ignoreRight)
+      addedHeight = gapNum * (ignoreTop + ignoreBottom)
     }
 
-    const InnerComponentType = getComponentFromType(this.props.componenttype);
-    const settings = this.props.settings || InnerComponentType.defaultSettings
+    var new_style = {
+      ...style, transform: "translate("+this.state.x+"px, "+this.state.y+"px)",
+      width:  "calc(100% + " + this.state.w + addedWidth + "px)",
+      height: "calc(100% + " + this.state.h + addedHeight + "px)",
+      zIndex: this.state.z,
+      marginTop: topMargin,
+      marginLeft: leftMargin
+    }
+
     //const InnerComponent = 
 
     return (
@@ -194,3 +212,90 @@ const mapDispatchToProps = dispatch => ({
 const forwardedDraggableComponent = withRouterAndRef(DraggableComponent);
 
 export default connect(mapStateToProps, mapDispatchToProps, null, {forwardRef: true})(forwardedDraggableComponent);
+
+export const defaultCommonSettings = {
+  // Binary representation, 1 is true, 0 is false in the order of left, top, right, bottom
+  ignoreGap: 0,
+  elevation: 0,
+}
+
+export class CommonSettingsForm extends React.Component {
+  constructor(props){
+    super(props);
+
+    this.state = this.props.settings;
+  }
+
+  onChange = (type, e) =>{
+    this.setState({[type]: e.currentTarget.value});
+  }
+
+  setGapIgnore = (pos) => {
+    console.log(pos)
+    switch(pos){
+      case 'left':{
+        console.log(this.state.ignoreGap ^ 8)
+        this.setState({ignoreGap: this.state.ignoreGap ^ 8})
+        break;
+      }
+      case 'top':{
+        console.log(this.state.ignoreGap ^ 4)
+        this.setState({ignoreGap: this.state.ignoreGap ^ 4})
+        break;
+      }
+      case 'right':{
+        console.log(this.state.ignoreGap ^ 2)
+        this.setState({ignoreGap: this.state.ignoreGap ^ 2})
+        break;
+      }
+      case 'bottom':{
+        console.log(this.state.ignoreGap ^ 1)
+        this.setState({ignoreGap: this.state.ignoreGap ^ 1})
+        break;
+      }
+      default: break;
+    }
+  }
+
+  getSettings = () =>{
+    return(this.state);
+  }
+
+  render(){
+    return(
+      <div
+        style={{width: '100%'}}
+      >
+        <Typography use='subtitle1'>Ignore grid gap</Typography>
+        <div
+          style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}
+        >
+          <IconButton
+            icon='first_page'
+            className={(this.state.ignoreGap & 8) > 0 ?
+                'mdc-elevation--z4 icon-button-on' : 'icon-button-off'}
+            onClick={() => this.setGapIgnore('left')}
+          />
+          <IconButton
+            icon='vertical_align_top'
+            className={(this.state.ignoreGap & 4) > 0 ?
+                'mdc-elevation--z4 icon-button-on' : 'icon-button-off'}
+            onClick={() => this.setGapIgnore('top')}
+          />
+          <IconButton
+            icon='last_page'
+            className={(this.state.ignoreGap & 2) > 0 ?
+                'mdc-elevation--z4 icon-button-on' : 'icon-button-off'}
+            onClick={() => this.setGapIgnore('right')}
+          />
+          <IconButton
+            icon='vertical_align_bottom'
+            className={(this.state.ignoreGap & 1) > 0 ?
+                'mdc-elevation--z4 icon-button-on' : 'icon-button-off'}
+            onClick={() => this.setGapIgnore('bottom')}
+          />
+        </div>
+      </div>
+    );
+  }
+}

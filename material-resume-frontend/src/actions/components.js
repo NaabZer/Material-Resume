@@ -6,6 +6,7 @@ import {
 } from '../creator/components/ComponentFactory';
 
 import { THEME_BASELINE } from '../utility/Themes';
+import { defaultCommonSettings } from '../creator/components/DraggableComponent';
 
 export const COMPONENT_TRANSACTION_START = "COMPONENT_TRANSACTION_START"
 export const COMPONENT_LOAD_SUCCESS = "COMPONENT_LOAD_SUCCESS"
@@ -138,7 +139,11 @@ function flattenComponents(componentList, parentId){
 
     components = {...components, [component.id]: componentObj}
     child_ids.push(component.id)
-    let componentSetting = Object.assign({},getComponentFromType(component.component_type).defaultSettings);
+    let componentSetting = Object.assign({},
+      {
+        ...defaultCommonSettings,
+        ...getComponentFromType(component.component_type).defaultSettings,
+      });
 
     component.settings.forEach(setting => {
       componentSetting[setting.setting] = setting.value;

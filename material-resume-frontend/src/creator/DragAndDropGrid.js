@@ -100,6 +100,9 @@ class DragAndDropGrid extends React.Component {
 
   render(){
     const grid = this.props.grids[this.props.componentid] || []
+    const {grids, components, isgrid, style, addcomponent, resizeComponent,
+      componentdragcallback, componentdropcallback, gap, drag, dispatch,
+      ...props} = this.props
     this.childGrids = [];
     const children = grid.map(elemId => {
       const elem = this.props.components[elemId]
@@ -116,6 +119,7 @@ class DragAndDropGrid extends React.Component {
 
       return (
         <DraggableComponent
+          gap={gap}
           key={elemId}
           componentid={elemId}
           ondragcallback={e => {}}
@@ -131,9 +135,6 @@ class DragAndDropGrid extends React.Component {
 
     const rowStyle = "minmax(0, 1fr) ".repeat(this.props.rows);
     const colStyle = "minmax(0, 1fr) ".repeat(this.props.columns);
-    const {grids, components, isgrid, style, addcomponent, resizeComponent,
-      componentdragcallback, componentdropcallback, gap, drag, dispatch,
-      ...props} = this.props
     return (
       <div 
         {...props}
