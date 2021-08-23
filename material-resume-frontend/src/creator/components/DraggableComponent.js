@@ -133,8 +133,8 @@ class DraggableComponent extends React.Component {
 
     var new_style = {
       ...style, transform: "translate("+this.state.x+"px, "+this.state.y+"px)",
-      width:  "calc(100% + " + this.state.w + addedWidth + "px)",
-      height: "calc(100% + " + this.state.h + addedHeight + "px)",
+      width:  "calc(100% + " + (this.state.w + addedWidth) + "px)",
+      height: "calc(100% + " + (this.state.h + addedHeight) + "px)",
       zIndex: this.state.z,
       marginTop: topMargin,
       marginLeft: leftMargin
