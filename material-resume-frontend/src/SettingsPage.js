@@ -5,6 +5,7 @@ import { Card } from "@rmwc/card";
 import { Button } from '@rmwc/button';
 import { Typography } from '@rmwc/typography';
 import { Select } from '@rmwc/select';
+import { Checkbox } from '@rmwc/checkbox';
 
 import { THEMES, getThemeName } from './utility/Themes';
 
@@ -56,6 +57,11 @@ class SettingsPage extends React.Component {
             value={user.setting_page_theme}
             onChange={e => this.props.userChangeValue('setting_page_theme', e.currentTarget.value)}
             options={themes}
+          />
+          <Checkbox
+            label="Override website theme with resume theme"
+            checked={user.setting_override_theme}
+            onChange={e => this.props.userChangeValue('setting_override_theme', !user.setting_override_theme)}
           />
           <div
             style={{paddingTop: '16px'}}

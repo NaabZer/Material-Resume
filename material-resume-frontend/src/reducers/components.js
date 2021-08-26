@@ -35,7 +35,7 @@ const initialState = {
   componentSettings: {},
   pages: [],
   pageSettings: {},
-  resumeSettings: defaultResumeSettings,
+  resumeSettings: {}
 }
 
 function getAllInnerIds(parentId, state){

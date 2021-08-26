@@ -18,6 +18,7 @@
     "@rmwc/base": "^6.1.4",
     "@rmwc/button": "^6.0.14",
     "@rmwc/card": "^6.0.14",
+    "@rmwc/checkbox": "^6.1.4",
     "@rmwc/circular-progress": "^6.1.4",
     "@rmwc/drawer": "^6.1.4",
     "@rmwc/elevation": "^6.1.4",

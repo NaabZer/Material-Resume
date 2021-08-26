@@ -4,6 +4,9 @@ import { Route, withRouter } from 'react-router-dom';
 
 import { Button } from '@rmwc/button';
 import { CircularProgress } from '@rmwc/circular-progress';
+import { ThemeProvider } from '@rmwc/theme';
+
+import { THEME_BASELINE, getThemeOptions } from '../utility/Themes';
 
 
 import { 
@@ -86,7 +89,9 @@ class CreatorPage extends React.Component {
     loaded = loaded && this.props.components.fetched !== 0;
     const error = this.props.components.error || entries.error;
     let page_content;
+    let theme = THEME_BASELINE;
     if(loaded){
+      theme = this.props.components.resumeSettings.theme;
       this.pages = [];
       const pages = this.props.pages.map( (id, i) => {
         this.pages.push(React.createRef());
@@ -131,18 +136,22 @@ class CreatorPage extends React.Component {
 
     return (
       <div>
-        <Route exact path='/resumes/creator/component/:id/settings'> 
-          <SettingsModal/>
-        </Route>
-        <Route exact path='/resumes/creator/:id/settings'> 
-          <ResumeSettingsModal/>
-        </Route>
-        <ComponentSelector
-          componentdropcallback={(c, e, d) => this.onDrop(c, e, d, 0)}
-          style={{position: 'sticky', top: '0px'}}
-        />
-        <FloatingResumeSettings/>
-        {page_content}
+        <ThemeProvider
+          options={getThemeOptions(theme)}
+        >
+          <Route exact path='/resumes/creator/component/:id/settings'> 
+            <SettingsModal/>
+          </Route>
+          <Route exact path='/resumes/creator/:id/settings'> 
+            <ResumeSettingsModal/>
+          </Route>
+          <ComponentSelector
+            componentdropcallback={(c, e, d) => this.onDrop(c, e, d, 0)}
+            style={{position: 'sticky', top: '0px'}}
+          />
+          <FloatingResumeSettings/>
+          {page_content}
+        </ThemeProvider>
       </div>
     )
   }

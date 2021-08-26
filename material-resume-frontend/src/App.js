@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { connect } from 'react-redux';
-import { useLocation, Switch, Route, Redirect} from 'react-router-dom';
+import { useLocation, Switch, Route, Redirect, matchPath} from 'react-router-dom';
 import { DrawerAppContent } from '@rmwc/drawer';
 import { ThemeProvider } from '@rmwc/theme';
 
@@ -17,8 +17,11 @@ function App(props) {
   let location = useLocation();
   let background = location.state && location.state.background;
 
+  let backgroundOrLocation = background || location
+  let inCreator = matchPath(backgroundOrLocation.pathname, {path: '/resumes/creator'}) !== null
+
   let theme = THEME_BASELINE
-  if(props.user&& props.user.settings_override_theme && props.components.resumeSettings){
+  if(props.user && props.user.setting_override_theme && props.components.resumeSettings.theme && inCreator){
     theme = props.components.resumeSettings.theme
   } else if(props.user){
     theme = props.user.setting_page_theme

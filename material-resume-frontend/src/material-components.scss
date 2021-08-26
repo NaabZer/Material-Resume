@@ -24,5 +24,7 @@
 @use '@material/theme/mdc-theme';
 @use '@rmwc/theme/theme';
 @use '@material/slider/mdc-slider';
+@use '@material/checkbox/mdc-checkbox';
+@use '@material/form-field/mdc-form-field';
 
 @import '../node_modules/react-resizable/css/styles.css';
