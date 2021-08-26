@@ -57,8 +57,8 @@ class ComponentSerializer(serializers.HyperlinkedModelSerializer):
                 child_data['inside_component'] = instance
                 ComponentSerializer().update(child, child_data)
             else:
-                Component.objects.create(inside_component=instance,
-                                         **child_data)
+                child_data['inside_component'] = instance
+                ComponentSerializer().create(child_data)
 
         for setting_data in settings_data:
             setting = SettingsRow.objects.filter(
