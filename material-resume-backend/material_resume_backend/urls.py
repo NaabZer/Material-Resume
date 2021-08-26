@@ -19,6 +19,13 @@ from rest_framework.authtoken import views
 from material_resume_backend import views as core_views
 from django.views.decorators.csrf import csrf_exempt
 
+user_detail = core_views.UserViewSet.as_view({
+    'get': 'retrieve',
+    'put': 'update',
+    'patch': 'partial_update',
+    'delete': 'destroy'
+})
+
 
 urlpatterns = [
     path('components/', include('resume_components.urls')),
@@ -26,6 +33,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-token-auth/', core_views.ObtainAuthToken.as_view()),
     path('api-auth/', include('rest_framework.urls')),
-    path('user/', core_views.GetUser.as_view()),
+    path('user/<email>', user_detail, name='user-detail'),
     path('user/signup', core_views.SignupViewSet.as_view(), name='signup'),
 ]

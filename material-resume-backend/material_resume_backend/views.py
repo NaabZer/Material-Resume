@@ -3,9 +3,11 @@ from django.http import JsonResponse
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.views import APIView
+from rest_framework import viewsets
 from rest_framework.response import Response
-
+from material_resume_backend.permissions import IsOwner, IsUser
 from material_resume_backend.forms import SignUpForm
+from material_resume_backend.models import User
 from material_resume_backend.serializers import (
         UserSerializer,
         AuthCustomTokenSerializer
@@ -28,9 +30,17 @@ class SignupViewSet(APIView):
         token, _ = Token.objects.get_or_create(user=user)
         content = {
             'token': token.key,
+            'email': email
         }
 
         return Response(content)
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated, IsUser]
+    lookup_field = 'email'
 
 
 class GetUser(APIView):
@@ -50,6 +60,7 @@ class ObtainAuthToken(APIView):
 
         content = {
             'token': token.key,
+            'email': user.email
         }
 
         return Response(content)

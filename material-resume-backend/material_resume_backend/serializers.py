@@ -8,7 +8,8 @@ from .models import User
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['email', 'first_name', 'last_name', 'password']
+        fields = ['email', 'first_name', 'last_name', 'setting_page_theme',
+                  'setting_override_theme', 'password']
         extra_kwargs = {'password': {'write_only': True}}
 
     def validate_password(self, value):
