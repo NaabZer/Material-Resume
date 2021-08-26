@@ -83,6 +83,12 @@ class NavDrawer extends React.Component {
               >
                 <ListItem>Resume Creator</ListItem>
               </Link>
+              <Link
+                style={{textDecoration: 'none'}}
+                to="/settings"
+              >
+                <ListItem>Settings</ListItem>
+              </Link>
             </List>
           </DrawerContent>
         </Drawer>

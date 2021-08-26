@@ -8,6 +8,7 @@ import { ThemeProvider } from '@rmwc/theme';
 import ResumePage from './creator/ResumePage.js';
 import EntriesPage from './entries/EntriesPage';
 import StartPage from './StartPage';
+import SettingsPage from './SettingsPage';
 import NavBar from './NavBar';
 import LoginModal from './LoginModal';
 import { THEME_BASELINE, getThemeOptions } from './utility/Themes';
@@ -16,9 +17,18 @@ function App(props) {
   let location = useLocation();
   let background = location.state && location.state.background;
 
+  let theme = THEME_BASELINE
+  if(props.user&& props.user.settings_override_theme && props.components.resumeSettings){
+    theme = props.components.resumeSettings.theme
+  } else if(props.user){
+    theme = props.user.setting_page_theme
+  }
+  console.log(theme)
+
+
   return (
     <ThemeProvider
-      options={getThemeOptions((props.components.resumeSettings && props.components.resumeSettings.theme) || THEME_BASELINE)}
+      options={getThemeOptions(theme)}
     >
       <div className="App">
         <NavBar/>
@@ -30,6 +40,7 @@ function App(props) {
               <Redirect to='/entries/experience'/>
             </Route>
             <Route path='/entries/:type' component={EntriesPage} />
+            <Route path='/settings' component={SettingsPage} />
           </Switch>
 
           {background && <Route path="/user/login" children={<LoginModal />} />}
@@ -43,6 +54,7 @@ function App(props) {
 
 const mapStateToProps = state => ({
   components: state.components,
+  user: state.user.user,
 });
 
 export default connect(mapStateToProps)(App);
