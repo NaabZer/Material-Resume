@@ -97,6 +97,7 @@ export function entries(state = initialState, action){
       return Object.assign({}, state, {
         isFetching: false,
         [entryType]: {
+          ...state[entryType],
           'entries':{
             ...state[entryType]['entries'],
             ...values
@@ -109,6 +110,7 @@ export function entries(state = initialState, action){
       return Object.assign({}, state, {
         isFetching: false,
         [entryType]: {
+          ...state[entryType],
           'entries':{
             ...state[entryType]['entries'],
             ...values
@@ -122,6 +124,7 @@ export function entries(state = initialState, action){
       return Object.assign({}, state, {
         isFetching: false,
         [entryType]: {
+          ...state[entryType],
           'entries':{
             ...newState
           }
