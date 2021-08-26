@@ -11,6 +11,10 @@ import { THEMES, getThemeName } from './utility/Themes';
 import { userChangeValue, resetUserChanges, saveUser } from './actions/user';
 
 class SettingsPage extends React.Component {
+  componentWillUnmount(){
+    this.props.resetUserChanges()
+  }
+
   render(){
 
     if(!this.props.user.user){
@@ -62,13 +66,6 @@ class SettingsPage extends React.Component {
             onClick={() => this.props.saveUser(user)}
           >
             Save
-          </Button>
-          <Button
-            style={{width: '100%'}}
-            raised
-            onClick={() => this.props.resetUserChanges()}
-          >
-            Reset
           </Button>
         </div>
 
