@@ -1,16 +1,19 @@
 import CardComponent, { CardComponentSettingsForm } from './CardComponent';
 import ColoredArea, { ColoredAreaSettingsForm } from './ColoredArea';
 import ThemedColoredArea, { ThemedColoredAreaSettingsForm } from './ThemedColoredArea';
+import TypographyComponent, { TypographyComponentSettingsForm } from './TypographyComponent';
 
 export const EXPERIENCE_CARD = "E_CARD"
 export const CONTAINER_COLORED_AREA = "C_COL_A"
 export const CONTAINER_THEMED_COLORED_AREA = "C_T_COL_A"
+export const TEXT_TYPOGRAPHY = "T_TYP"
 
 export const ExperienceList = [
   EXPERIENCE_CARD,
 ]
 
 export const TextList = [
+  TEXT_TYPOGRAPHY
 ]
 
 export const ContainerList = [
@@ -26,6 +29,8 @@ export function getComponentFromType(type){
       return ColoredArea;
     case CONTAINER_THEMED_COLORED_AREA:
       return ThemedColoredArea;
+    case TEXT_TYPOGRAPHY:
+      return TypographyComponent;
     default:
       return null;
   }
@@ -34,6 +39,8 @@ export function getComponentFromType(type){
 export function getIsGridFromType(type){
   switch(type){
     case CONTAINER_COLORED_AREA:
+      return true;
+    case CONTAINER_THEMED_COLORED_AREA:
       return true;
     default:
       return false;
@@ -48,6 +55,8 @@ export function getSettingsFormFromType(type){
       return ColoredAreaSettingsForm;
     case CONTAINER_THEMED_COLORED_AREA:
       return ThemedColoredAreaSettingsForm;
+    case TEXT_TYPOGRAPHY:
+      return TypographyComponentSettingsForm;
     default:
       return null;
   }

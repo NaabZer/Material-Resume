@@ -29,6 +29,7 @@ class Component(models.Model):
         E_CARD = 'E_CARD', _('Card Experience')
         COL_A = 'C_COL_A', _('Colored Area')
         T_COL_A = 'C_T_COL_A', _('Themed Colored Area')
+        TYP = 'T_TYP', _('Typography text')
 
     component_type = models.CharField(
         max_length=32,

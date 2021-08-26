@@ -7,11 +7,37 @@ export const THEME_COLOR_SECONDARY = '--mdc-theme-secondary'
 export const THEME_COLOR_ERROR = '--mdc-theme-error'
 export const THEME_COLOR_BACKGROUND = '--mdc-theme-background'
 export const THEME_COLOR_SURFACE = '--mdc-theme-surface'
+export const THEME_COLOR_ON_PRIMARY = '--mdc-theme-on-primary'
+export const THEME_COLOR_ON_SECONDARY = '--mdc-theme-on-secondary'
+export const THEME_COLOR_ON_SURFACE = '--mdc-theme-on-surface'
 
 export const THEMES = [
   THEME_BASELINE,
   THEME_CRANE,
   THEME_DARK
+]
+
+export const TEXT_COLOR_OPTIONS = [
+  {
+    label: 'Primary',
+    value: THEME_COLOR_PRIMARY
+  },
+  {
+    label: 'Secondary',
+    value: THEME_COLOR_SECONDARY
+  },
+  {
+    label: 'On Primary',
+    value: THEME_COLOR_ON_PRIMARY
+  },
+  {
+    label: 'On Secondary',
+    value: THEME_COLOR_ON_SECONDARY
+  },
+  {
+    label: 'On Surface',
+    value: THEME_COLOR_ON_SURFACE
+  },
 ]
 
 export function getThemeName(theme){
