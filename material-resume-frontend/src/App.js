@@ -26,7 +26,6 @@ function App(props) {
   } else if(props.user){
     theme = props.user.setting_page_theme
   }
-  console.log(theme)
 
 
   return (

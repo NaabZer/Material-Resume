@@ -311,7 +311,6 @@ export function components(state = initialState, action){
     case COMPONENT_SETTINGS_CHANGE: {
       let {id, settings} = action;
       return Object.assign({}, state,{
-        ...state,
         componentSettings:{
           ...state.componentSettings,
           [id]: settings

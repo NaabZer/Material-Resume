@@ -231,25 +231,20 @@ export class CommonSettingsForm extends React.Component {
   }
 
   setGapIgnore = (pos) => {
-    console.log(pos)
     switch(pos){
       case 'left':{
-        console.log(this.state.ignoreGap ^ 8)
         this.setState({ignoreGap: this.state.ignoreGap ^ 8})
         break;
       }
       case 'top':{
-        console.log(this.state.ignoreGap ^ 4)
         this.setState({ignoreGap: this.state.ignoreGap ^ 4})
         break;
       }
       case 'right':{
-        console.log(this.state.ignoreGap ^ 2)
         this.setState({ignoreGap: this.state.ignoreGap ^ 2})
         break;
       }
       case 'bottom':{
-        console.log(this.state.ignoreGap ^ 1)
         this.setState({ignoreGap: this.state.ignoreGap ^ 1})
         break;
       }

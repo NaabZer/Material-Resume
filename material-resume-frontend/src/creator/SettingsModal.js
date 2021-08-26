@@ -21,7 +21,6 @@ class SettingsModal extends React.Component {
 
   back = (e) =>{
     e.preventDefault();
-    console.log(this.formRef.current.getSettings());
     const settings = {
       ...this.formRef.current.getSettings(),
       ...this.commonFormRef.current.getSettings()
@@ -34,6 +33,9 @@ class SettingsModal extends React.Component {
   render(){
     const SettingsForm = getSettingsFormFromType(this.props.type);
     const Component = getComponentFromType(this.props.type);
+    let {ignoreGap, elevation, ...componentSettings} = this.props.settings
+    let generalSettings = {ignoreGap, elevation}
+
     return(
       <Modal
         open={true}
@@ -56,12 +58,12 @@ class SettingsModal extends React.Component {
         </Typography>
         <SettingsForm
           ref={this.formRef}
-          settings={this.props.settings}
+          settings={componentSettings}
           entries={this.props.entries}
         />
         <CommonSettingsForm
           ref={this.commonFormRef}
-          settings={this.props.settings}
+          settings={generalSettings}
         />
       </Modal>
     );
