@@ -31,6 +31,7 @@ class Component(models.Model):
         T_COL_A = 'C_T_COL_A', _('Themed Colored Area')
         TYP = 'T_TYP', _('Typography Text')
         T_TYP = 'T_T_TYP', _('Themed Typography Text')
+        IM = 'O_IM', _('Image')
 
     component_type = models.CharField(
         max_length=32,
@@ -63,4 +64,4 @@ class SettingsRow(models.Model):
     page = models.ForeignKey(Page, on_delete=models.CASCADE,
                              related_name='settings', blank=True, null=True)
     setting = models.CharField(max_length=64)
-    value = models.CharField(max_length=64)
+    value = models.CharField(max_length=256, blank=True)

@@ -9,6 +9,7 @@ import {
   ExperienceList,
   TextList,
   ContainerList,
+  OtherList,
   getComponentFromType
 } from './components/ComponentFactory';
 import DraggableComponent from './components/DraggableComponent.js';
@@ -39,8 +40,10 @@ export default class ComponentSelector extends React.Component {
       componentList = ExperienceList;
     } else if(this.state.activeIndex === 1){
       componentList = TextList
-    } else{
+    } else if(this.state.activeIndex === 2){
       componentList = ContainerList
+    } else{
+      componentList = OtherList
     }
     const components = componentList.map(type => {
       return (
@@ -76,6 +79,9 @@ export default class ComponentSelector extends React.Component {
           </Tab>
           <Tab>
             <span className='mdc-tab__text-label'>Containers</span>
+          </Tab>
+          <Tab>
+            <span className='mdc-tab__text-label'>Other</span>
           </Tab>
         </TabBar>
         <ListDivider 

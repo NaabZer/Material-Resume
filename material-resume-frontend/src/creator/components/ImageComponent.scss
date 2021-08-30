@@ -1,0 +1,25 @@
+.image-component{
+    width: 100%;
+    height: 100%;
+
+    .stock-image{
+        width:100%;
+        height: 100%;
+        background: var(--mdc-theme-background);
+
+        .stock-svg{
+            width:100%;
+            height: 100%;
+            -webkit-mask: url(/person_icon.svg) center;
+            mask: url(/person_icon.svg) center;
+            mask-size: 100%;
+            background: var(--mdc-theme-primary);
+        }
+    }
+
+    img{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
