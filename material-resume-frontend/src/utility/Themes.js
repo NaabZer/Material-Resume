@@ -7,9 +7,12 @@ export const THEME_COLOR_SECONDARY = '--mdc-theme-secondary'
 export const THEME_COLOR_ERROR = '--mdc-theme-error'
 export const THEME_COLOR_BACKGROUND = '--mdc-theme-background'
 export const THEME_COLOR_SURFACE = '--mdc-theme-surface'
-export const THEME_COLOR_ON_PRIMARY = '--mdc-theme-on-primary'
-export const THEME_COLOR_ON_SECONDARY = '--mdc-theme-on-secondary'
-export const THEME_COLOR_ON_SURFACE = '--mdc-theme-on-surface'
+export const THEME_COLOR_PRIMARY_ON_LIGHT = '--mdc-theme-text-primary-on-light'
+export const THEME_COLOR_SECODNDARY_ON_LIGHT = '--mdc-theme-text-secondary-on-light'
+export const THEME_COLOR_HINT_ON_LIGHT = '--mdc-theme-text-hint-on-light'
+export const THEME_COLOR_PRIMARY_ON_DARK = '--mdc-theme-text-primary-on-dark'
+export const THEME_COLOR_SECODNDARY_ON_DARK = '--mdc-theme-text-secondary-on-dark'
+export const THEME_COLOR_HINT_ON_DARK = '--mdc-theme-text-hint-on-dark'
 
 export const THEMES = [
   THEME_BASELINE,
@@ -27,16 +30,28 @@ export const TEXT_COLOR_OPTIONS = [
     value: THEME_COLOR_SECONDARY
   },
   {
-    label: 'On Primary',
-    value: THEME_COLOR_ON_PRIMARY
+    label: 'Primary on light background',
+    value: THEME_COLOR_PRIMARY_ON_LIGHT
   },
   {
-    label: 'On Secondary',
-    value: THEME_COLOR_ON_SECONDARY
+    label: 'Secondary on light background',
+    value: THEME_COLOR_SECODNDARY_ON_LIGHT
   },
   {
-    label: 'On Surface',
-    value: THEME_COLOR_ON_SURFACE
+    label: 'Hint on light background',
+    value: THEME_COLOR_HINT_ON_LIGHT
+  },
+  {
+    label: 'Primary on dark background',
+    value: THEME_COLOR_PRIMARY_ON_DARK
+  },
+  {
+    label: 'Secondary on ldark background',
+    value: THEME_COLOR_SECODNDARY_ON_DARK
+  },
+  {
+    label: 'Hint on dark background',
+    value: THEME_COLOR_HINT_ON_DARK
   },
 ]
 
