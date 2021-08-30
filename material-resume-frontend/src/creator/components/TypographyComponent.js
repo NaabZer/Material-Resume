@@ -33,10 +33,13 @@ class TypographyComponent extends React.Component {
     const {data} = this.props;
     const classNames = 'typography-component mdc-elevation-transition mdc-elevation--z0';
     let justify = 'flex-start';
+    let textAlign = 'left';
     if(this.props.settings.horizontalAlign === 'center'){
       justify = 'center';
+      textAlign = 'center';
     } else if(this.props.settings.horizontalAlign === 'right'){
       justify = 'flex-end';
+      textAlign = 'right';
     }
     let align = 'flex-start';
     if(this.props.settings.verticalAlign === 'center'){
@@ -47,7 +50,7 @@ class TypographyComponent extends React.Component {
     return (
       <div
         className={classNames}
-        style={{justifyContent: justify, alignItems: align}}
+        style={{justifyContent: justify, alignItems: align, textAlign: textAlign}}
       >
         <Typography
           use={this.props.settings.typography}
