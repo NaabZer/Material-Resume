@@ -35,6 +35,7 @@ class DragAndDropGrid extends React.Component {
     const col = Math.round(relativeX/colSize)
     const row = Math.round(relativeY/rowSize)
 
+    console.log(col, row)
     return [col, row]
   }
 
@@ -48,8 +49,8 @@ class DragAndDropGrid extends React.Component {
       if(child && child.props.isgrid){
         const [elem, childCol, childRow] = child.getDeepestGridElemAndPos(x, y, excludeIds)
         if(elem !== null && !excludeIds.includes(elem.props.componentid) && 
-            childRow >= 0 && childRow < this.props.rows &&
-            childCol >= 0 && childCol < this.props.columns){
+            childRow >= 0 && childRow < child.props.rows &&
+            childCol >= 0 && childCol < child.props.columns){
           childE = elem;
           row = childRow;
           col = childCol;
