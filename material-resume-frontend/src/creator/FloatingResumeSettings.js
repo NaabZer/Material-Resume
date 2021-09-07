@@ -11,6 +11,7 @@ import { Typography } from '@rmwc/typography';
 import { CircularProgress } from '@rmwc/circular-progress';
 
 import { saveResume } from '../actions/components';
+import LoadingIcon from '../utility/LoadingIcon';
 
 class FloatingResumeSettings extends React.Component {
 
@@ -24,6 +25,8 @@ class FloatingResumeSettings extends React.Component {
   render(){
     let loading = this.props.components.loading;
     let loadingTheme = loading ? 'text-disabled-on-dark' : 'on-primary'
+    let pdfDownloading = this.props.pdfDownloading
+    let pdfDownloadingTheme = pdfDownloading ? 'text-disabled-on-dark' : 'on-primary'
     return (
       <div
         className='floating-resume-settings'
@@ -70,25 +73,37 @@ class FloatingResumeSettings extends React.Component {
           className={'floating-resume-setting ' + (loading ? 'floating-resume-setting-disabled':"")}
           onClick = {this.clickSave}
         >
-          <Icon 
-            icon="save"
+          <LoadingIcon
+            loading={loading}
+            loadingTheme={loadingTheme}
+            icon='save'
+            size='medium'
           />
-          <div
+          <Typography
+            use='headline4'
+            theme={loadingTheme}
             className='floating-resume-setting-text'
-            style={{display: 'flex', justifyContent: 'space-between', flexWrap: 'nowrap', alignItems: 'center'}}
           >
-            <Typography
-              use='headline4'
-              theme={loadingTheme}
-            >
-              Save
-            </Typography>
-            <CircularProgress
-              style={{marginRight: '12px', display: loading ? 'inherit': 'none'}}
-              size='medium'
-              theme={loadingTheme}
-            />
-          </div>
+            Save
+          </Typography>
+        </div>
+        <div 
+          className={'floating-resume-setting ' + (pdfDownloading ? 'floating-resume-setting-disabled':"")}
+          onClick={this.props.savePdfCallback}
+        >
+          <LoadingIcon
+            loading={pdfDownloading}
+            loadingTheme={pdfDownloadingTheme}
+            icon='picture_as_pdf'
+            size='medium'
+          />
+          <Typography
+            className='floating-resume-setting-text'
+            use='headline4'
+            theme={pdfDownloadingTheme}
+          >
+            Download
+          </Typography>
         </div>
       </div>
     )

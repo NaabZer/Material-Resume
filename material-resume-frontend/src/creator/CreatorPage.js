@@ -2,6 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Route, withRouter } from 'react-router-dom';
 
+
+import axios from 'axios';
+
 import { Button } from '@rmwc/button';
 import { CircularProgress } from '@rmwc/circular-progress';
 import { ThemeProvider } from '@rmwc/theme';
@@ -24,12 +27,35 @@ import ResumeSettingsModal from './ResumeSettingsModal';
 import ComponentSelector from './ComponentSelector';
 import Page from './components/Page';
 
+
 class CreatorPage extends React.Component {
   constructor(props){
     super(props);
 
     this.pages = [];
-    this.state = {testOpen: true}
+    this.state = {testOpen: true, pdfDownloading: false, svgUrl: null}
+  }
+
+  downloadPdf = (e) => {
+    this.setState({pdfDownloading: true})
+    axios.post('http://localhost:3001/pdf', {components: this.props.components, entries: this.props.entries}, {
+      responseType: 'arraybuffer',
+      headers: {
+        'Accept': 'application/pdf'
+      }})
+      .then(response => {
+        const blob = new Blob([response.data], {type: 'application/pdf'})
+        const link = document.createElement('a')
+        link.href = window.URL.createObjectURL(blob)
+        link.download = `your-file-name.pdf`
+        link.click()
+        this.setState({pdfDownloading: false})
+        console.log('after call')
+      })
+      .catch( error => {
+        this.setState({pdfDownloading: false})
+        console.log('error call')
+      })
   }
 
   onDrop = (comp, e, data, type) => {
@@ -149,8 +175,15 @@ class CreatorPage extends React.Component {
             componentdropcallback={(c, e, d) => this.onDrop(c, e, d, 0)}
             style={{position: 'sticky', top: '0px'}}
           />
-          <FloatingResumeSettings/>
-          {page_content}
+          <FloatingResumeSettings
+            pdfDownloading={this.state.pdfDownloading}
+            savePdfCallback={this.downloadPdf}
+          />
+
+          <div
+          >
+            {page_content}
+          </div>
         </ThemeProvider>
       </div>
     )

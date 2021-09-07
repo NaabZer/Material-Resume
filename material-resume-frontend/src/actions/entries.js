@@ -7,6 +7,7 @@ export const ENTRY_CREATE_SUCCESS = "ENTRY_CREATE_SUCCESS"
 export const ENTRY_EDIT_SUCCESS = "ENTRY_EDIT_SUCCESS"
 export const ENTRY_REMOVE_SUCCESS = "ENTRY_REMOVE_SUCCESS"
 export const ENTRY_TRANSACTION_FAIL = "ENTRY_START_TRANSACTION"
+export const ENTRIES_SET = "ENTRIES_SET"
 
 export const entryTransactionStart = () => ({
   type: ENTRY_TRANSACTION_START,
@@ -39,6 +40,10 @@ export const removeEntrySuccess = (entryId, entryType) => ({
   type: ENTRY_REMOVE_SUCCESS,
   id: entryId,
   entryType
+})
+export const setEntries = (entries) => ({
+  type: ENTRIES_SET,
+  entries
 })
 
 function refactorJsonWithLang(json){

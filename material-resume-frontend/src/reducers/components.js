@@ -14,7 +14,7 @@ import {
   COMPONENT_SETTINGS_CHANGE,
   PAGES_SETTINGS_CHANGE,
   RESUME_SETTINGS_CHANGE,
-  defaultResumeSettings,
+  COMPONENTS_SET,
   defaultPageSettings,
 } from '../actions/components';
 
@@ -331,6 +331,11 @@ export function components(state = initialState, action){
       return Object.assign({}, state,{
         resumeSettings: settings
       });
+    }
+    case COMPONENTS_SET: {
+      let {components} = action;
+      console.log(components)
+      return Object.assign({}, state, components);
     }
     default:
       return state

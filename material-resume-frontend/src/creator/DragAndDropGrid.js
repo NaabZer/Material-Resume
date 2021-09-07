@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 
 import { addComponent, resizeComponent } from '../actions/components';
 import DraggableComponent from './components/DraggableComponent';
-import CardComponent from './components/CardComponent.js';
 import { getComponentFromType} from './components/ComponentFactory';
 
  
@@ -138,8 +137,8 @@ class DragAndDropGrid extends React.Component {
     return (
       <div 
         {...props}
-        ref={this.divRef}
         className="drag-and-drop-grid"
+        ref={this.divRef}
         style={{
           ...style,
           gridTemplateColumns: colStyle,

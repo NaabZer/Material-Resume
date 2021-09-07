@@ -15,11 +15,15 @@
         margin: 12px 24px 12px 12px;
         font-size: 36px;
     }
+    .rmwc-circular-progress{
+        margin: 12px 24px 12px 12px;
+        font-size: 36px;
+    }
 
     &:hover{
         .floating-resume-setting{
             .floating-resume-setting-text{
-                width: 140px;
+                width: 168px;
                 color: var(--mdc-theme-on-primary);
             }
         }

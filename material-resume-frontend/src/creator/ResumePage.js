@@ -9,12 +9,14 @@ import { loadResumes, deleteResume } from '../actions/resumes';
 import { componentReset } from '../actions/components';
 import CreatorPage from './CreatorPage';
 import ResumeModal from './ResumeModal';
+import ExportPdf from './ExportPdf';
 
 class EntriesPageRouterUNC extends React.Component {
   render(){
     let location = this.props.location;
     return(
       <Switch location={location}>
+        <Route exact path='/resumes/exportpdf' component={ExportPdf} />
         <Route path='/resumes/creator/:id' component={CreatorPage} />
         <Route path='/resumes' component={EntriesPage} />
       </Switch>

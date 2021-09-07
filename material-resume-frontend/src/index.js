@@ -24,7 +24,7 @@ axios.defaults.baseURL = 'http://localhost:8000';
 
 ReactDOM.render(
   <Provider store={store}>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" crossorigin="anonymous"/>
     <Router>
       <Route path='/' component={App} />
     </Router>

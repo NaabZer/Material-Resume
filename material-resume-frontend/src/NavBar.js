@@ -21,7 +21,7 @@ import { MenuSurface, MenuSurfaceAnchor } from '@rmwc/menu';
 import { Typography } from '@rmwc/typography';
 import { Icon } from '@rmwc/icon';
 import { Theme } from '@rmwc/theme';
-import { Link, withRouter } from 'react-router-dom';
+import { Link, withRouter, matchPath } from 'react-router-dom';
 import { Button } from '@rmwc/button';
 import { connect } from 'react-redux';
 
@@ -34,6 +34,10 @@ export default class NavBar extends React.Component {
     this.state = {navOpen: false}
   }
   render(){
+    let inPdfSave = matchPath(this.props.location.pathname, {path: '/resumes/exportpdf'}) !== null
+    if(inPdfSave){
+      return null
+    }
     return(
       <React.Fragment>
         <TopAppBar style={{zIndex: 999}}>
@@ -88,6 +92,12 @@ class NavDrawer extends React.Component {
                 to="/settings"
               >
                 <ListItem>Settings</ListItem>
+              </Link>
+              <Link
+                style={{textDecoration: 'none'}}
+                to="/resumes/exportpdf"
+              >
+                <ListItem>pdfthing</ListItem>
               </Link>
             </List>
           </DrawerContent>

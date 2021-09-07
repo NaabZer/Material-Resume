@@ -6,6 +6,7 @@ import {
   ENTRY_EDIT_SUCCESS,
   ENTRY_REMOVE_SUCCESS,
   ENTRY_TRANSACTION_FAIL,
+  ENTRIES_SET,
 } from '../actions/entries';
 
 const initialState = {
@@ -130,6 +131,10 @@ export function entries(state = initialState, action){
           }
         },
       });
+    }
+    case ENTRIES_SET: {
+      let {entries} = action;
+      return Object.assign({}, state, entries);
     }
     default:
       return state

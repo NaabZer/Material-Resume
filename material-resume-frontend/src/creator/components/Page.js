@@ -18,7 +18,6 @@ class Page extends React.Component {
     super(props)
 
     this.childGrids = []
-    this.divRef = React.createRef();
     this.state = {deleteOpen: false, settingsOpen: false}
   }
 
@@ -27,6 +26,7 @@ class Page extends React.Component {
     pageid: PropTypes.number.isRequired,
     componentid: PropTypes.number.isRequired,
   }
+
 
   saveSettings = (settings) => {
     this.setState({settingsOpen: false})
@@ -51,33 +51,45 @@ class Page extends React.Component {
           cancelClickCallback={() => this.setState({settingsOpen: false})}
           confirmClickCallback={(settings) => this.saveSettings(settings)}
         />
-        <h2>
+        <h2 
+          className='page-header'
+          style={{display: this.props.onlyPage ? 'none' : 'inherit'}}
+        >
           Page {pageid+1}
         </h2>
         <div
           style={{display: 'flex'}}
         >
-          <Card
-            className='mdc-elevation--z8 page'
+          <div
+            style={{
+              height: '297mm',
+              width: '210mm'
+            }}
           >
-            <DragAndDropGrid 
-              {...props}
-              ref={forwardedRef}
-              componentdropcallback={componentdropcallback}
-              componentdragcallback={() => {}}
-              isgrid={true}
-              rows={settings.rows}
-              columns={settings.cols}
-              gap={settings.gap}
-              componentid={componentid}
-              style={{
-                width: 'calc(100% - 2*'+settings.gap+")",
-                height: 'calc(100% - 2*'+settings.gap+")",
-              }}
-            />
-          </Card>
+            <Card
+              className={this.props.onlyPage ? 'mdc-elevation--z0 page' : 'mdc-elevation--z8 page'}
+              style={this.props.onlyPage ? {overflow: 'hidden'} : {}}
+            >
+                <DragAndDropGrid 
+                  {...props}
+                  ref={forwardedRef}
+                  componentdropcallback={componentdropcallback}
+                  componentdragcallback={() => {}}
+                  isgrid={true}
+                  rows={settings.rows}
+                  columns={settings.cols}
+                  gap={settings.gap}
+                  componentid={componentid}
+                  style={{
+                    width: 'calc(100% - 2*'+settings.gap+")",
+                    height: 'calc(100% - 2*'+settings.gap+")",
+                  }}
+                />
+            </Card>
+          </div>
           <div 
             className='page-settings mdc-elevation--z4'
+            style={{display: this.props.onlyPage ? 'none' : 'inherit'}}
           >
             <Icon 
               icon="delete"

@@ -33,7 +33,7 @@ function App(props) {
       options={getThemeOptions(theme)}
     >
       <div className="App">
-        <NavBar/>
+        <NavBar location={location}/>
         <DrawerAppContent>
           <Switch location={background || location}> 
             <Route exact path='/' component={StartPage} />

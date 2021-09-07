@@ -23,6 +23,7 @@ export const PAGE_REMOVE = "PAGE_REMOVE"
 export const COMPONENT_SETTINGS_CHANGE = "COMPONENT_SETTINGS_CHANGE"
 export const RESUME_SETTINGS_CHANGE = "RESUME_SETTINGS_CHANGE"
 export const PAGES_SETTINGS_CHANGE = 'PAGES_SETTINGS_CHANGE'
+export const COMPONENTS_SET = 'COMPONENTS_SET'
 
 
 export const componentTransactionStart = () => ({
@@ -96,6 +97,11 @@ export const changePageSettings = (pageid, settings) => ({
 export const changeResumeSettings = (settings) => ({
   type: RESUME_SETTINGS_CHANGE,
   settings
+})
+
+export const setComponents = (components) => ({
+  type: COMPONENTS_SET,
+  components
 })
 
 
@@ -265,7 +271,7 @@ function nestComponent(grid, reduxComponents){
 }
 
 function nestComponentStructure(reduxComponents){
-  let { componentSettings, grids, pages, resumeSettings, pageSettings} = reduxComponents;
+  let { grids, pages, resumeSettings, pageSettings} = reduxComponents;
   let object = {
     'pages': [],
     'settings': resumeSettingsObjToList(resumeSettings)
