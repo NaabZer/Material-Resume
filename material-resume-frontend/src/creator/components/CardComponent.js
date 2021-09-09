@@ -33,7 +33,12 @@ class CardComponent extends React.Component {
       <Card 
         className={classNames}
       >
-        <Typography use='headline6'>{data.entries.en.title}</Typography>
+        <Typography 
+          use='headline6'
+          theme="textPrimaryOnBackground"
+        >
+          {data.entries.en.title}
+        </Typography>
         <div className='card-location-date'>
           <Typography 
             use='subtitle2'
@@ -42,20 +47,34 @@ class CardComponent extends React.Component {
             {data.entries.en.location}
           </Typography>
           <div className='card-date-text'>
-            <Typography use='subtitle2'>
+            <Typography 
+              use='subtitle2'
+              theme="textPrimaryOnBackground"
+            >
               {formatDate(data.start, this.props.settings.dateFormat)}
             </Typography>
-            <div className='card-date-divider'>
-               - 
-            </div>
-            <Typography use='subtitle2'>
+            <Typography 
+              use='subtitle2'
+              theme="textPrimaryOnBackground"
+            >
+              <div className='card-date-divider'>
+                - 
+              </div>
+            </Typography>
+            <Typography 
+              use='subtitle2'
+              theme="textPrimaryOnBackground"
+            >
               {formatDate(data.end, this.props.settings.dateFormat)}
             </Typography>
             <div className='card-date-divider'>
             </div>
           </div>
         </div>
-        <Typography use='body1'>
+        <Typography 
+          use='body1'
+          theme="textPrimaryOnBackground"
+        >
           {data.entries.en.description}
         </Typography>
       </Card>
