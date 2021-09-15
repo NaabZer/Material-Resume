@@ -1,0 +1,18 @@
+# pull official base image
+FROM node:16.8.0-alpine
+
+# set working directory
+WORKDIR /usr/src/app
+
+# add `/usr/src/app/node_modules/.bin` to $PATH
+ENV PATH /usr/src/app/node_modules/.bin:$PATH
+ENV SASS_PATH /usr/src/app/node_modules
+
+# install and cache app dependencies
+COPY package.json .
+COPY package-lock.json .
+RUN npm ci
+RUN npm install react-scripts@4.0.0 -g --silent
+
+# start app
+CMD ["npm", "start"]
