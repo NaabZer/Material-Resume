@@ -38,7 +38,7 @@ class CreatorPage extends React.Component {
 
   downloadPdf = (e) => {
     this.setState({pdfDownloading: true})
-    axios.post('http://localhost:3001/pdf', {components: this.props.components, entries: this.props.entries}, {
+    axios.post('http://localhost:81/pdf', {components: this.props.components, entries: this.props.entries}, {
       responseType: 'arraybuffer',
       headers: {
         'Accept': 'application/pdf'

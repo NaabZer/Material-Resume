@@ -15,9 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-from rest_framework.authtoken import views
 from material_resume_backend import views as core_views
-from django.views.decorators.csrf import csrf_exempt
 
 user_detail = core_views.UserViewSet.as_view({
     'get': 'retrieve',
@@ -28,12 +26,19 @@ user_detail = core_views.UserViewSet.as_view({
 
 
 urlpatterns = [
+    # path('api/login/', core_views.login_view, name='api-login'),
+    path('api/signup', core_views.SignupViewSet.as_view(),
+         name='api-signup'),
+    path('api/login', core_views.login_view,
+         name='api-login'),
+    path('api/logout', core_views.LogoutView.as_view(),
+         name='api-logout'),
+    path('api/user', core_views.GetUser.as_view(),
+         name='api-user'),
+    path('admin/', admin.site.urls),
+    path('api/user/<email>', user_detail, name='api-user-detail'),
     path('api/components/', include('resume_components.urls')),
     path('api/entries/', include('resume_entries.urls')),
-    path('admin/', admin.site.urls),
-    path('api/api-token-auth/', core_views.ObtainAuthToken.as_view()),
+    path('api/csrf/', core_views.get_csrf, name='api-csrf'),
     path('api/api-auth/', include('rest_framework.urls')),
-    path('api/user/<email>', user_detail, name='api-user-detail'),
-    path('api/user/signup', core_views.SignupViewSet.as_view(),
-         name='api-signup'),
 ]

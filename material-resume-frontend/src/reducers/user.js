@@ -1,9 +1,9 @@
 import {
   USER_TRANSACTION_START,
+  USER_AUTH_START,
   USER_LOG_IN_SUCCESS,
   USER_SAVE_SUCCESS,
   USER_FAIL,
-  USER_SET_TOKEN,
   USER_RESET,
   USER_CHANGE_VALUE,
   USER_RESET_CHANGES,
@@ -11,9 +11,10 @@ import {
 
 const initialState = {
   isFetching: false,
+  authenticated: false,
+  triedAuthentication: false,
   error: false,
   errorObj: null,
-  token: null,
   user: null,
   userChanges: {}
 }
@@ -27,11 +28,21 @@ export function user(state = initialState, action){
         error: false
       });
     }
+    case USER_AUTH_START: {
+      return Object.assign({}, state, {
+        ...state,
+        isFetching: true,
+        triedAuthentication: true,
+        error: false
+      });
+    }
     case USER_LOG_IN_SUCCESS: {
       let {user} = action;
       return Object.assign({}, state, {
         ...state,
         isFetching: false,
+        authenticated: true ,
+        triedAuthentication: false,
         user: user,
       });
     }
@@ -49,18 +60,11 @@ export function user(state = initialState, action){
         errorObj: errorObj,
       });
     }
-    case USER_SET_TOKEN: {
-      let {token} = action;
-      return Object.assign({}, state, {
-        ...state,
-        token: token,
-      });
-    }
     case USER_RESET: {
       return Object.assign({}, state, {
         ...state,
         user: null,
-        token: null,
+        authenticated: false,
       });
     }
     case USER_CHANGE_VALUE: {

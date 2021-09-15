@@ -1,17 +1,21 @@
-from django.contrib.auth import authenticate
+import json
+from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
-from rest_framework.authtoken.models import Token
+from django.middleware.csrf import get_token
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.views import APIView
 from rest_framework import viewsets
 from rest_framework.response import Response
-from material_resume_backend.permissions import IsOwner, IsUser
-from material_resume_backend.forms import SignUpForm
+from django.views.decorators.http import require_POST
+from material_resume_backend.permissions import IsUser
 from material_resume_backend.models import User
-from material_resume_backend.serializers import (
-        UserSerializer,
-        AuthCustomTokenSerializer
-        )
+from material_resume_backend.serializers import UserSerializer
+
+
+def get_csrf(request):
+    response = JsonResponse({'detail': 'CSRF cookie set'})
+    response['X-CSRFToken'] = get_token(request)
+    return response
 
 
 class SignupViewSet(APIView):
@@ -23,17 +27,12 @@ class SignupViewSet(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
-        # Get token
         email = serializer.validated_data['email']
         raw_password = serializer.validated_data['password']
         user = authenticate(email=email, password=raw_password)
-        token, _ = Token.objects.get_or_create(user=user)
-        content = {
-            'token': token.key,
-            'email': email
-        }
+        login(request, user)
 
-        return Response(content)
+        return JsonResponse({'detail': 'Successfully logged in.'})
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -51,16 +50,29 @@ class GetUser(APIView):
         return Response(serializer.data)
 
 
-class ObtainAuthToken(APIView):
-    def post(self, request):
-        serializer = AuthCustomTokenSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data['user']
-        token, created = Token.objects.get_or_create(user=user)
+@require_POST
+def login_view(request):
+    data = json.loads(request.body)
+    email = data.get('email')
+    password = data.get('password')
 
-        content = {
-            'token': token.key,
-            'email': user.email
-        }
+    if email is None or password is None:
+        return JsonResponse(
+                {'detail': 'Please provide username and password.'},
+                status=400)
 
-        return Response(content)
+    user = authenticate(email=email, password=password)
+
+    if user is None:
+        return JsonResponse({'detail': 'Invalid credentials.'}, status=400)
+
+    login(request, user)
+    return JsonResponse({'detail': 'Successfully logged in.'})
+
+
+class LogoutView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, format=None):
+        logout(request)
+        return JsonResponse({'detail': 'Successfully logged out.'})

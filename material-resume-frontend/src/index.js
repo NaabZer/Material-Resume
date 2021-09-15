@@ -16,11 +16,13 @@ import { BrowserRouter as Router, Route} from 'react-router-dom';
 
 import reducer from './reducers/index.js';
 
+import { getCSRFToken } from './actions/user';
+
 const store = createStore(
   reducer,
   applyMiddleware(logger, thunkMiddleware)
 )
-axios.defaults.baseURL = 'http://localhost:8000';
+axios.defaults.baseURL = 'http://localhost:81/api';
 
 ReactDOM.render(
   <Provider store={store}>

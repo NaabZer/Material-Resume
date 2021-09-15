@@ -13,6 +13,8 @@ import NavBar from './NavBar';
 import LoginModal from './LoginModal';
 import { THEME_BASELINE, getThemeOptions } from './utility/Themes';
 
+import { getUser, getCSRFToken } from './actions/user';
+
 function App(props) {
   let location = useLocation();
   let background = location.state && location.state.background;
@@ -25,6 +27,11 @@ function App(props) {
     theme = props.components.resumeSettings.theme
   } else if(props.user){
     theme = props.user.setting_page_theme
+  }
+
+  if(!props.userObj.authenticated && !props.userObj.triedAuthentication){
+    props.getCSRFToken();
+    props.getUser();
   }
 
 
@@ -57,6 +64,14 @@ function App(props) {
 const mapStateToProps = state => ({
   components: state.components,
   user: state.user.user,
+  userObj: state.user,
 });
 
-export default connect(mapStateToProps)(App);
+const mapDispatchToProps = dispatch => ({
+  getUser: () => 
+    dispatch(getUser()),
+  getCSRFToken: () => 
+    dispatch(getCSRFToken()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

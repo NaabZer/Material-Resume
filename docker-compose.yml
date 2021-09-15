@@ -26,8 +26,11 @@ services:
   pdf_generator:
     stdin_open: true
     build: ./material-resume-pdf-generator
+    restart: on-failure
     volumes:
       - ./material-resume-pdf-generator:/usr/src/app
+    security_opt:
+      - seccomp=./.chrome.json
     expose:
       - 3001
 
