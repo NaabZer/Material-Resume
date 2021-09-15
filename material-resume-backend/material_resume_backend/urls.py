@@ -28,11 +28,12 @@ user_detail = core_views.UserViewSet.as_view({
 
 
 urlpatterns = [
-    path('components/', include('resume_components.urls')),
-    path('entries/', include('resume_entries.urls')),
+    path('api/components/', include('resume_components.urls')),
+    path('api/entries/', include('resume_entries.urls')),
     path('admin/', admin.site.urls),
-    path('api-token-auth/', core_views.ObtainAuthToken.as_view()),
-    path('api-auth/', include('rest_framework.urls')),
-    path('user/<email>', user_detail, name='user-detail'),
-    path('user/signup', core_views.SignupViewSet.as_view(), name='signup'),
+    path('api/api-token-auth/', core_views.ObtainAuthToken.as_view()),
+    path('api/api-auth/', include('rest_framework.urls')),
+    path('api/user/<email>', user_detail, name='api-user-detail'),
+    path('api/user/signup', core_views.SignupViewSet.as_view(),
+         name='api-signup'),
 ]
