@@ -24,10 +24,16 @@ class PageModal extends React.Component {
     this.props.confirmClickCallback(this.state)
   }
 
+  resizeEvent = (e) =>{
+    // Fixes scaling for sliders being way off
+    window.dispatchEvent(new Event('resize'));
+  }
+
   render(){
     return(
       <Modal
         open={this.props.open}
+        onAnimationEnd={this.resizeEvent}
         backgroundClickCallback={this.props.cancelClickCallback}
       >
         <Typography

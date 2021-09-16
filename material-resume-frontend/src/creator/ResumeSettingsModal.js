@@ -28,6 +28,11 @@ class ResumeSettingsModal extends React.Component {
     this.props.history.goBack();
   }
 
+  resizeEvent = (e) =>{
+    // Fixes scaling for sliders being way off
+    window.dispatchEvent(new Event('resize'));
+  }
+
   render(){
     const themes = THEMES.map(theme => (
       {label: getThemeName(theme), value: theme}
@@ -36,6 +41,7 @@ class ResumeSettingsModal extends React.Component {
     return(
       <Modal
         open={true}
+        onAnimationEnd={this.resizeEvent}
         backgroundClickCallback={e => this.back(e)}
       >
         <Typography

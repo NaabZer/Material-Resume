@@ -10,7 +10,7 @@ export default class Modal extends React.Component {
     backgroundClickCallback: PropTypes.func.isRequired,
   }
   render(){
-    const {className, children, open, backgroundClickCallback,
+    const {className, children, open, backgroundClickCallback, onAnimationEnd,
       ...props} = this.props;
 
     const newClassName = [className, "modal-content"];
@@ -20,6 +20,7 @@ export default class Modal extends React.Component {
         className={(open ? 'modal-container-show': 'model-container-hidden')  + ' modal-container'}
       >
         <div 
+          onAnimationEnd={onAnimationEnd}
           className="modal-background"
           onClick={e => backgroundClickCallback(e)}
         />
