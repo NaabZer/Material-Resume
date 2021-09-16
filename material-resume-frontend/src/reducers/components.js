@@ -83,8 +83,13 @@ export function components(state = initialState, action){
       });
     }
     case COMPONENT_SAVE_SUCCESS: {
+      let {values, resumeId} = action;
+      console.log(values)
       return Object.assign({}, state, {
-        loading: false
+        loading: false,
+        fetched: resumeId,
+        pageSettings: state.pageSettings,
+        ...values
       });
     }
     case COMPONENT_REMOVE_SUCCESS: {

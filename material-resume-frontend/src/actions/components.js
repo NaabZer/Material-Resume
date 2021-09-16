@@ -35,8 +35,9 @@ export const componentLoadSuccess = (values, resumeId) => ({
   values, resumeId
 })
 
-export const componentSaveSuccess = () => ({
+export const componentSaveSuccess = (values, resumeId) => ({
   type: COMPONENT_SAVE_SUCCESS,
+  values, resumeId
 })
 
 export const componentRemoveSuccess = () => ({
@@ -315,7 +316,15 @@ export function saveResume(resumeId, reduxComponents){
         api.patch('components/resume/' + resumeId, JSON.stringify(nestedComponents))
           .then(response => response.data)
           .then(json => {
-            dispatch(componentSaveSuccess())
+            let values = flattenComponentStructure(json.pages)
+
+            let resumeSettings = Object.assign({}, defaultResumeSettings);
+            console.log(resumeSettings)
+            json.settings.forEach(setting => {
+              resumeSettings[setting.setting] = setting.value;
+            });
+            values.resumeSettings = resumeSettings;
+            dispatch(componentSaveSuccess(values, resumeId))
           })
           .catch(error => {
             dispatch(componentFail(error))
@@ -328,7 +337,15 @@ export function saveResume(resumeId, reduxComponents){
       api.patch('components/resume/' + resumeId, JSON.stringify(nestedComponents))
         .then(response => response.data)
         .then(json => {
-          dispatch(componentSaveSuccess())
+          let values = flattenComponentStructure(json.pages)
+
+          let resumeSettings = Object.assign({}, defaultResumeSettings);
+          console.log(resumeSettings)
+          json.settings.forEach(setting => {
+            resumeSettings[setting.setting] = setting.value;
+          });
+          values.resumeSettings = resumeSettings;
+          dispatch(componentSaveSuccess(values, resumeId))
         })
         .catch(error => {
           dispatch(componentFail(error))
