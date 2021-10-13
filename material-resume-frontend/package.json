@@ -38,6 +38,7 @@
     "@testing-library/user-event": "^7.2.1",
     "axios": "^0.20.0",
     "django-react-csrftoken": "^1.0.4",
+    "downshift": "^6.1.7",
     "js-cookie": "^2.2.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
