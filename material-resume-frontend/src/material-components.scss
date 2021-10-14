@@ -1,6 +1,7 @@
 @use '@rmwc/icon/icon';
 @use '@rmwc/select/select';
 @use '@rmwc/circular-progress/circular-progress';
+@use '@rmwc/theme/theme';
 @use '@material/ripple/mdc-ripple';
 @use '@material/button/mdc-button';
 @use '@material/icon-button/mdc-icon-button';
@@ -22,9 +23,9 @@
 @use '@material/top-app-bar/mdc-top-app-bar';
 @use '@material/drawer/mdc-drawer';
 @use '@material/theme/mdc-theme';
-@use '@rmwc/theme/theme';
 @use '@material/slider/mdc-slider';
 @use '@material/checkbox/mdc-checkbox';
 @use '@material/form-field/mdc-form-field';
+@use '@material/chips/mdc-chips';
 
 @import '../node_modules/react-resizable/css/styles.css';
