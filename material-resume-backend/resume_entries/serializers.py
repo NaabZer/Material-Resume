@@ -1,5 +1,11 @@
 from rest_framework import serializers
-from .models import Experience, ExperienceEntry, Text, TextEntry
+from .models import Language, Experience, ExperienceEntry, Text, TextEntry
+
+
+class LanguageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Language
+        fields = ['language']
 
 
 class ExperienceEntrySerializer(serializers.HyperlinkedModelSerializer):
