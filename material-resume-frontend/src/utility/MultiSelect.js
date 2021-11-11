@@ -66,6 +66,11 @@ export default function MultiSelect(props) {
   })
   function stateReducer(state, actionAndChanges) {
     const {type, changes} = actionAndChanges
+    //Callback on change
+    if(props.selectedItemsChangeCallback !== null && state.selectedItems !== changes.selectedItems){
+      console.log(changes.selectedItems);
+      props.selectedItemsChangeCallback(changes.selectedItems);
+    }
     if(
       props.min &&
       state.selectedItems.length === props.min &&

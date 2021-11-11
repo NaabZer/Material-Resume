@@ -10,10 +10,29 @@ import { Checkbox } from '@rmwc/checkbox';
 import { THEMES, getThemeName } from './utility/Themes';
 
 import { userChangeValue, resetUserChanges, saveUser } from './actions/user';
+import MultiSelect from './utility/MultiSelect';
+import { languageList, abrvToLanguage } from './utility/Languages';
 
 class SettingsPage extends React.Component {
+  constructor(props){
+    super(props)
+
+    this.langRef = React.createRef();
+  }
   componentWillUnmount(){
     this.props.resetUserChanges()
+  }
+
+  saveUser = () => {
+    console.log(this.langRef.current);
+    this.props.saveUser(this.props.user.user)
+  }
+
+  selectedItemsCallback = (selectedItems) => {
+    const languageItems = selectedItems.map(item => (
+      {'language': item.abrv}
+    ));
+    this.props.userChangeValue('languages', languageItems);
   }
 
   render(){
@@ -66,10 +85,22 @@ class SettingsPage extends React.Component {
           <div
             style={{paddingTop: '16px'}}
           />
+          <MultiSelect
+            items={languageList}
+            initalItems={user.languages.map(lang => (
+              abrvToLanguage[lang.language]
+            ))}
+            title='Languages'
+            min={1}
+            selectedItemsChangeCallback={this.selectedItemsCallback}
+          />
+          <div
+            style={{paddingTop: '16px'}}
+          />
           <Button
             style={{width: '100%'}}
             raised
-            onClick={() => this.props.saveUser(user)}
+            onClick={() => this.saveUser()}
           >
             Save
           </Button>

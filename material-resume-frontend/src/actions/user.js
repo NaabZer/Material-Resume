@@ -99,9 +99,7 @@ export function register(args){
                   JSON.stringify(args))
       .then(response => response.data)
       .then(json => {
-        const email = json['email']
-
-        api.get('user/' + email)
+        api.get('user')
           .then(response => response.data)
           .then(json => {
             dispatch(entryReset())
