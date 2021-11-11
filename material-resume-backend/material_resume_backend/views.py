@@ -8,7 +8,7 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from django.views.decorators.http import require_POST
 from material_resume_backend.permissions import IsUser
-from material_resume_backend.models import User
+from material_resume_backend.models import User, Language
 from material_resume_backend.serializers import UserSerializer
 
 

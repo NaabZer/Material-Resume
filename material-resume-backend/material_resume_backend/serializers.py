@@ -12,7 +12,7 @@ class LanguageSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    languages = LanguageSerializer(many=True)
+    languages = LanguageSerializer(many=True, required=False)
 
     class Meta:
         model = User
@@ -26,12 +26,13 @@ class UserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user = User.objects.create_user(**validated_data)
+        en_lang = Language.objects.get(language='en')
+        user.languages.add(en_lang)
 
         return user
 
     def update(self, instance, validated_data):
         languages_data = validated_data.pop('languages')
-        print(languages_data)
         instance.languages.clear()
 
         for lang_data in languages_data:
