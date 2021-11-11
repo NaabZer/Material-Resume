@@ -31,10 +31,18 @@ class UserSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         languages_data = validated_data.pop('languages')
+        print(languages_data)
+        instance.languages.clear()
 
         for lang_data in languages_data:
-            lang = Language.objects.get(language=lang_data.get('language'))
-            LanguageSerializer().update(lang, lang_data)
+            lang = Language.objects.filter(
+                    language=lang_data.get('language')).first()
+            if lang:
+                instance.languages.add(lang)
+            else:
+                new_lang = Language.objects.create(
+                        language=lang_data.get('language'))
+                instance.languages.add(new_lang)
 
         return super(UserSerializer, self).update(instance,
                                                   validated_data)

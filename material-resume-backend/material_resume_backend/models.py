@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 
 class Language(models.Model):
-    language = models.CharField(max_length=2, default='en')
+    language = models.CharField(max_length=2)
 
     def __str__(self):
         return self.language
