@@ -18,6 +18,7 @@ export default function MultiSelect(props) {
     removeSelectedItem,
     selectedItems,
   } = useMultipleSelection({
+    initialSelectedItems: props.initalItems,
     stateReducer
   })
   const getFilteredItems = (items) =>{
@@ -66,7 +67,8 @@ export default function MultiSelect(props) {
   function stateReducer(state, actionAndChanges) {
     const {type, changes} = actionAndChanges
     if(
-      state.selectedItems.length === 1 &&
+      props.min &&
+      state.selectedItems.length === props.min &&
       (type === useMultipleSelection.stateChangeTypes.SelectedItemKeyDownDelete ||
         type === useMultipleSelection.stateChangeTypes.SelectedItemKeyDownBackspace ||
         type === useMultipleSelection.stateChangeTypes.DropdownKeyDownBackspace ||
@@ -92,7 +94,7 @@ export default function MultiSelect(props) {
             {selectedItems.map((selectedItem, index) => (
               <Chip
                 key={`selected-item-${selectedItem.abrv}`}
-                trailingIcon='close'
+                trailingIcon={selectedItems.length <= props.min ? null :'close'}
                 onTrailingIconInteraction={() => removeSelectedItem(selectedItem)}
                 trailingIconRemovesChip={false}
                 {...getSelectedItemProps({selectedItem, index})}
