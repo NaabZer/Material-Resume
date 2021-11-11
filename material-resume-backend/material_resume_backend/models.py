@@ -3,6 +3,13 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 
+class Language(models.Model):
+    language = models.CharField(max_length=2, default='en')
+
+    def __str__(self):
+        return self.language
+
+
 class User(AbstractCUser):
     class SettingPageThemes(models.TextChoices):
         THEME_BASELINE = 'THEME_BASELINE', _('Baseline')
@@ -15,3 +22,4 @@ class User(AbstractCUser):
         default='THEME_BASELINE'
     )
     setting_override_theme = models.BooleanField(default=False)
+    languages = models.ManyToManyField(Language)

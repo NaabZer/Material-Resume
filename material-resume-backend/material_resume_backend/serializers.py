@@ -2,8 +2,13 @@ from django.contrib.auth import authenticate
 from django.core import exceptions
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
-from .models import User
-from resume_entries.serializers import LanguageSerializer
+from .models import User, Language
+
+
+class LanguageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Language
+        fields = ['language']
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -23,6 +28,16 @@ class UserSerializer(serializers.ModelSerializer):
         user = User.objects.create_user(**validated_data)
 
         return user
+
+    def update(self, instance, validated_data):
+        languages_data = validated_data.pop('languages')
+
+        for lang_data in languages_data:
+            lang = Language.objects.get(language=lang_data.get('language'))
+            LanguageSerializer().update(lang, lang_data)
+
+        return super(UserSerializer, self).update(instance,
+                                                  validated_data)
 
 
 class AuthCustomTokenSerializer(serializers.Serializer):
