@@ -38,20 +38,7 @@ class ThemedTypographyComponent extends React.Component {
   }
 }
 
-const mapStateToProps = (state, props) => {
-  const componentid = props.settings.componentid;
-  if(componentid === 'sample'){
-    return({ 
-      data: state.entries.text[componentid]
-    });
-  } else{
-    return({ 
-      data: state.entries.text.entries[componentid]
-    });
-  }
-}
-
-export default connect(mapStateToProps, null, null, {forwardRef: true})(ThemedTypographyComponent);
+export default ThemedTypographyComponent;
 
 export class ThemedTypographyComponentSettingsForm extends React.Component {
   constructor(props){

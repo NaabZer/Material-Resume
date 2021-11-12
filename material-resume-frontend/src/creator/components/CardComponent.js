@@ -27,7 +27,7 @@ class CardComponent extends React.Component {
   static Name = "Work Card";
   
   render(){
-    const {data} = this.props;
+    const {data, lang} = this.props;
     const classNames = 'card-component mdc-elevation-transition mdc-elevation--z' + this.props.elevation;
     return (
       <Card 
@@ -37,14 +37,14 @@ class CardComponent extends React.Component {
           use='headline6'
           theme="textPrimaryOnBackground"
         >
-          {data.entries.en.title}
+          {data.entries[lang].title}
         </Typography>
         <div className='card-location-date'>
           <Typography 
             use='subtitle2'
             theme="textSecondaryOnBackground"
           >
-            {data.entries.en.location}
+            {data.entries[lang].location}
           </Typography>
           <div className='card-date-text'>
             <Typography 
@@ -75,7 +75,7 @@ class CardComponent extends React.Component {
           use='body1'
           theme="textPrimaryOnBackground"
         >
-          {data.entries.en.description}
+          {data.entries[lang].description}
         </Typography>
       </Card>
     )
@@ -83,16 +83,32 @@ class CardComponent extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
+  let ret = {};
   const componentid = props.settings.componentid;
   if(componentid === 'sample'){
-    return({ 
+    ret = { 
+      ...ret,
       data: state.entries.experience[componentid]
-    });
+    };
   } else{
-    return({ 
+    ret = {
+      ...ret,
       data: state.entries.experience.entries[componentid]
-    });
+    };
   }
+  if(state.user.user){
+    ret = {
+      ...ret,
+      lang: state.user.user.languages[state.components.langId].language
+    }
+  } else {
+    ret = {
+      ...ret,
+      lang: 'en'
+    }
+  }
+
+  return ret;
 }
 
 export default connect(mapStateToProps, null, null, {forwardRef: true})(CardComponent);

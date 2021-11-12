@@ -30,7 +30,7 @@ class TypographyComponent extends React.Component {
   static Name = "Typography text";
   
   render(){
-    const {data} = this.props;
+    const {data, lang} = this.props;
     const classNames = 'typography-component mdc-elevation-transition mdc-elevation--z0';
     let justify = 'flex-start';
     let textAlign = 'left';
@@ -56,7 +56,7 @@ class TypographyComponent extends React.Component {
           use={this.props.settings.typography}
           style={{color: this.props.settings.color}}
         >
-          {data.entries.en.text}
+          {data.entries[lang].text}
         </Typography>
       </div>
     )
@@ -64,16 +64,31 @@ class TypographyComponent extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
+  let ret = {};
   const componentid = props.settings.componentid;
   if(componentid === 'sample'){
-    return({ 
+    ret = {
+      ...ret,
       data: state.entries.text[componentid]
-    });
+    };
   } else{
-    return({ 
+    ret = {
+      ...ret,
       data: state.entries.text.entries[componentid]
-    });
+    };
   }
+  if(state.user.user){
+    ret = {
+      ...ret,
+      lang: state.user.user.languages[state.components.langId].language
+    }
+  } else {
+    ret = {
+      ...ret,
+      lang: 'en'
+    }
+  }
+  return ret;
 }
 
 export default connect(mapStateToProps, null, null, {forwardRef: true})(TypographyComponent);
