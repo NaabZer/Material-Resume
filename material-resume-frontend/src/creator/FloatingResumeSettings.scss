@@ -61,3 +61,13 @@
     color: rgba(0, 0, 0, 0);
     width: 0px;
 }
+
+.floating-resume-setting-language-text{
+    color: var(--mdc-theme-text-disabled-on-dark);
+    margin-right: 8px;
+}
+
+.floating-resume-setting-language-text--active{
+    color: var(--mdc-theme-text-on-dark);
+    margin-right: 8px;
+}

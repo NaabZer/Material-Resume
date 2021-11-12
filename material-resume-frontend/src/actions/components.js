@@ -24,6 +24,7 @@ export const COMPONENT_SETTINGS_CHANGE = "COMPONENT_SETTINGS_CHANGE"
 export const RESUME_SETTINGS_CHANGE = "RESUME_SETTINGS_CHANGE"
 export const PAGES_SETTINGS_CHANGE = 'PAGES_SETTINGS_CHANGE'
 export const COMPONENTS_SET = 'COMPONENTS_SET'
+export const COMPONENT_LANGID_SET = 'COMPONENT_LANGID_SET'
 
 
 export const componentTransactionStart = () => ({
@@ -103,6 +104,11 @@ export const changeResumeSettings = (settings) => ({
 export const setComponents = (components) => ({
   type: COMPONENTS_SET,
   components
+})
+
+export const setLangId = (langid) => ({
+  type: COMPONENT_LANGID_SET,
+  langid
 })
 
 

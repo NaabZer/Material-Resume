@@ -14,6 +14,7 @@ import {
   COMPONENT_SETTINGS_CHANGE,
   PAGES_SETTINGS_CHANGE,
   RESUME_SETTINGS_CHANGE,
+  COMPONENT_LANGID_SET,
   COMPONENTS_SET,
   defaultPageSettings,
 } from '../actions/components';
@@ -29,8 +30,9 @@ const initialState = {
   error: false,
   errorObj: null,
   loading: false,
-  components: {},
   fetched: 0,
+  langId: 0,
+  components: {},
   grids: {},
   componentSettings: {},
   pages: [],
@@ -339,8 +341,11 @@ export function components(state = initialState, action){
     }
     case COMPONENTS_SET: {
       let {components} = action;
-      console.log(components)
       return Object.assign({}, state, components);
+    }
+    case COMPONENT_LANGID_SET: {
+      let {langid} = action;
+      return Object.assign({}, state, {langId: langid});
     }
     default:
       return state

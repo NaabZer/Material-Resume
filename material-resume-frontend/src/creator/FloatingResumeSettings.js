@@ -8,9 +8,8 @@ import './FloatingResumeSettings.scss';
 import { Icon } from '@rmwc/icon';
 import '@rmwc/icon/styles';
 import { Typography } from '@rmwc/typography';
-import { CircularProgress } from '@rmwc/circular-progress';
 
-import { saveResume } from '../actions/components';
+import { saveResume, setLangId } from '../actions/components';
 import LoadingIcon from '../utility/LoadingIcon';
 
 class FloatingResumeSettings extends React.Component {
@@ -27,11 +26,27 @@ class FloatingResumeSettings extends React.Component {
     let loadingTheme = loading ? 'text-disabled-on-dark' : 'on-primary'
     let pdfDownloading = this.props.pdfDownloading
     let pdfDownloadingTheme = pdfDownloading ? 'text-disabled-on-dark' : 'on-primary'
+    const languages = this.props.user.user && this.props.user.user.languages.map((lang, index) => (
+      <Typography
+        className={index === this.props.components.langId ? 
+            'floating-resume-setting-language-text floating-resume-setting-language-text--active' :
+            'floating-resume-setting-language-text' 
+        }
+        use='caption'
+      >
+        {lang.language}
+      </Typography>
+        ));
+    const languageAmt = this.props.user.user && this.props.user.user.languages.length;
+    const languageIndex = this.props.components.langId;
     return (
       <div
         className='floating-resume-settings'
       >
-        <div className='floating-resume-setting'>
+        <div 
+          className='floating-resume-setting'
+          onClick={() => this.props.setLangId((languageIndex + 1) % languageAmt)}
+        >
           <Icon icon="language"/>
           <div
             className='floating-resume-setting-text'
@@ -44,16 +59,7 @@ class FloatingResumeSettings extends React.Component {
             <div
               style={{display: 'flex', marginTop: '-10px', marginLeft: '4px'}}
             >
-              <Typography
-                use='caption'
-              >
-                Sv
-              </Typography>
-              <Typography
-                use='caption'
-              >
-                En
-              </Typography>
+              {languages}
             </div>
           </div>
         </div>
@@ -111,11 +117,13 @@ class FloatingResumeSettings extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  components: state.components
+  components: state.components,
+  user: state.user
 });
 
 const mapDispatchToProps = dispatch => ({
   saveResume: (resumeId, reduxComponents) => dispatch(saveResume(resumeId, reduxComponents)),
+  setLangId: (langid) => dispatch(setLangId(langid)),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(FloatingResumeSettings));
