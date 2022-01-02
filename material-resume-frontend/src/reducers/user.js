@@ -7,6 +7,7 @@ import {
   USER_RESET,
   USER_CHANGE_VALUE,
   USER_RESET_CHANGES,
+  USER_SET_LANGUAGES,
 } from '../actions/user';
 
 const initialState = {
@@ -89,6 +90,12 @@ export function user(state = initialState, action){
       return Object.assign({}, state, {
         user: newUser,
         userChanges: {}
+      });
+    }
+    case USER_SET_LANGUAGES: {
+      let {languages} = action;
+      return Object.assign({}, state, {
+        user: {languages},
       });
     }
     default:

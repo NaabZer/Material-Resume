@@ -11,6 +11,7 @@ export const USER_FAIL = "USER_FAIL"
 export const USER_RESET = "RESET"
 export const USER_CHANGE_VALUE = "USER_CHANGE_VALUE"
 export const USER_RESET_CHANGES = "USER_RESET_CHANGES"
+export const USER_SET_LANGUAGES = "USER_SET_LANGUAGES"
 
 export const submitTransactionStart = () => ({
   type: USER_TRANSACTION_START
@@ -49,6 +50,13 @@ export const resetUser = () => ({
 
 export const resetUserChanges = () => ({
   type: USER_RESET_CHANGES
+})
+
+// Used to properly export languages when downloading pdf
+export const setUserLanguages = (languages) => ({
+  type: USER_SET_LANGUAGES,
+  languages
+
 })
 
 export function logIn(email, password){

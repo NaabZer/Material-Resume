@@ -9,6 +9,7 @@ import { THEME_BASELINE, getThemeOptions } from '../utility/Themes';
 
 import { setComponents } from '../actions/components';
 import { setEntries } from '../actions/entries';
+import { setUserLanguages } from '../actions/user';
 
 import Page from './components/Page';
 
@@ -20,9 +21,10 @@ class CreatorPage extends React.Component {
   }
 
   componentDidMount() {
-    window.setPdfData = (components, entries) => {
+    window.setPdfData = (components, entries, languages) => {
       this.props.setEntries(entries)
       this.props.setComponents(components)
+      this.props.setUserLanguages(languages)
       return "data set"
     }
   }
@@ -84,6 +86,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   setComponents: (components) => dispatch(setComponents(components)),
   setEntries: (entries) => dispatch(setEntries(entries)),
+  setUserLanguages: (languages) => dispatch(setUserLanguages(languages)),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CreatorPage));

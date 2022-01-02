@@ -38,7 +38,11 @@ class CreatorPage extends React.Component {
 
   downloadPdf = (e) => {
     this.setState({pdfDownloading: true})
-    axios.post('http://localhost:81/pdf', {components: this.props.components, entries: this.props.entries}, {
+    axios.post('http://localhost:81/pdf', {
+      components: this.props.components,
+      entries: this.props.entries,
+      languages: this.props.languages
+    }, {
       responseType: 'arraybuffer',
       headers: {
         'Accept': 'application/pdf'
@@ -189,12 +193,16 @@ class CreatorPage extends React.Component {
     )
   }
 }
-const mapStateToProps = state => ({
-  pages: state.components.pages,
-  drag: state.dragAndDrop,
-  entries: state.entries,
-  components: state.components
-});
+const mapStateToProps = state => {
+  const languages = (state.user.user && state.user.user.languages) || [{language: 'en'}];
+  return ({
+    pages: state.components.pages,
+    drag: state.dragAndDrop,
+    entries: state.entries,
+    components: state.components,
+    languages: languages,
+  });
+};
 
 const mapDispatchToProps = dispatch => ({
   addcomponent: (componentType, containerId, row, col, width, height) => 

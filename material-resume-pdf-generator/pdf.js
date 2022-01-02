@@ -10,7 +10,7 @@ const port = 3001
 
 app.post('/pdf', (req, res) => {
   try {
-    printPDF(req.body.components, req.body.entries).then(pdf => {
+    printPDF(req.body.components, req.body.entries, req.body.languages).then(pdf => {
       res.set({ 'Content-Type': 'application/pdf', 'Content-Length': pdf.length })
       res.send(pdf)
     })
@@ -27,7 +27,7 @@ function timeout(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
  
-async function printPDF(components, entries) {
+async function printPDF(components, entries, languages) {
   try {
     const browser = await puppeteer.launch(
     { 
@@ -39,9 +39,9 @@ async function printPDF(components, entries) {
     const page = await browser.newPage();
     page.setDefaultNavigationTimeout(10000);
     await page.goto('http://frontend:3000/resumes/exportpdf', {waitUntil: 'networkidle0'});
-    const ret = await page.evaluate((components, entries) => { 
-      return window.setPdfData(components, entries); 
-    }, components, entries);
+    const ret = await page.evaluate((components, entries, languages) => { 
+      return window.setPdfData(components, entries, languages); 
+    }, components, entries, languages);
     await page.emulateMediaType('screen')
     const content = await page.content();
     await page.evaluate(() => { window.scrollBy(0, window.innerHeight); })
