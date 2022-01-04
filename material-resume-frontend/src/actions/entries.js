@@ -88,7 +88,7 @@ export function createEntry(entryType, values){
     dispatch(entryTransactionStart());
 
     var entries_with_lang = Object.keys(values.entries).flatMap((key, index) =>{
-      return {lang: key, ...values.entries[key]}
+      return {...values.entries[key], lang: {language: key} }
     });
     const refactored_values = {...values, 'entries': entries_with_lang}
 
@@ -123,12 +123,12 @@ export function editEntry(entryId, entryType, values){
     dispatch(entryTransactionStart());
 
     var entries_with_lang = Object.keys(values.entries).flatMap((key, index) =>{
-      return {lang: key, ...values.entries[key]}
+      return {...values.entries[key], lang: {language: key} }
     });
     const refactored_values = {...values, 'entries': entries_with_lang}
     console.log(refactored_values)
 
-    api.patch('entries/' + entryType + 's/' + entryId, JSON.stringify(refactored_values))
+    api.put('entries/' + entryType + 's/' + entryId, JSON.stringify(refactored_values))
       .then(response => response.data)
       .then(json => {
         console.log(json)
