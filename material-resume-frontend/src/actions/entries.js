@@ -48,7 +48,14 @@ export const setEntries = (entries) => ({
 
 function refactorJsonWithLang(json){
   const refactored_json = Object.assign({}, ...json.map(json_e => {
-    let entries = Object.assign({}, ...json_e.entries.map((x) => ({[x.lang]: x})));
+    let entries = Object.assign(
+      {}, ...json_e.entries.map((x) => (
+        {[x.lang.language]: {
+          ...x,
+          lang: x.lang.language
+        }})
+      )
+    );
     return {[json_e.id]: {...json_e, entries}}
   }));
   return refactored_json
