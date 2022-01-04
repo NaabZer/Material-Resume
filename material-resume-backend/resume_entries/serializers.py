@@ -1,8 +1,11 @@
 from rest_framework import serializers
 from .models import Experience, ExperienceEntry, Text, TextEntry
+from material_resume_backend.serializers import LanguageSerializer
 
 
 class ExperienceEntrySerializer(serializers.HyperlinkedModelSerializer):
+    lang = LanguageSerializer(required=True)
+
     class Meta:
         model = ExperienceEntry
         fields = ['id', 'lang', 'title', 'location', 'description']
@@ -44,6 +47,8 @@ class ExperienceSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class TextEntrySerializer(serializers.HyperlinkedModelSerializer):
+    lang = LanguageSerializer(required=True)
+
     class Meta:
         model = TextEntry
         fields = ['id', 'lang', 'text']
