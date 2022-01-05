@@ -16,7 +16,7 @@ class EntryModal extends React.Component {
   constructor(props){
     super(props)
 
-    this.state = {open: false, lang: 'en'}
+    this.state = {open: false, lang: this.props.languages[0].language}
     this.formRef = React.createRef();
   }
 

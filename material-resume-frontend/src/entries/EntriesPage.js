@@ -29,7 +29,7 @@ class EntriesPage extends React.Component {
   constructor(props){
     super(props);
 
-    this.state = {lang: 'en', modalOpen: false}
+    this.state = {lang_id: 0, modalOpen: false}
   }
 
   editCallback = (id) => {
@@ -61,7 +61,7 @@ class EntriesPage extends React.Component {
           id={key} 
           key={key} 
           type={entryType}
-          lang={this.state.lang}
+          lang={this.props.languages[this.state.lang_id].language}
           editCallback = {this.editCallback}
         />)
     }
@@ -109,9 +109,13 @@ class EntriesPage extends React.Component {
     )
   }
 }
-const mapStateToProps = state => ({
-  entries: state.entries,
-});
+const mapStateToProps = state => {
+  const languages = (state.user.user && state.user.user.languages) || [{language: 'en'}];
+  return({
+    entries: state.entries,
+    languages: languages,
+  })
+};
 
 const mapDispatchToProps = dispatch => ({
   loadEntries: (entryType) => 
