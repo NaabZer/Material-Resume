@@ -85,17 +85,6 @@ class CardComponent extends React.Component {
 const mapStateToProps = (state, props) => {
   let ret = {};
   const componentid = props.settings.componentid;
-  if(componentid === 'sample'){
-    ret = { 
-      ...ret,
-      data: state.entries.experience[componentid]
-    };
-  } else{
-    ret = {
-      ...ret,
-      data: state.entries.experience.entries[componentid]
-    };
-  }
   if(state.user.user){
     ret = {
       ...ret,
@@ -106,6 +95,18 @@ const mapStateToProps = (state, props) => {
       ...ret,
       lang: 'en'
     }
+  }
+  if(componentid === 'sample'){
+    ret = { 
+      ...ret,
+      data: state.entries.experience[componentid],
+      lang: 'en',
+    };
+  } else{
+    ret = {
+      ...ret,
+      data: state.entries.experience.entries[componentid]
+    };
   }
 
   return ret;

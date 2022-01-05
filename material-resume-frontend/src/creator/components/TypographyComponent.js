@@ -66,17 +66,6 @@ class TypographyComponent extends React.Component {
 const mapStateToProps = (state, props) => {
   let ret = {};
   const componentid = props.settings.componentid;
-  if(componentid === 'sample'){
-    ret = {
-      ...ret,
-      data: state.entries.text[componentid]
-    };
-  } else{
-    ret = {
-      ...ret,
-      data: state.entries.text.entries[componentid]
-    };
-  }
   if(state.user.user){
     ret = {
       ...ret,
@@ -87,6 +76,18 @@ const mapStateToProps = (state, props) => {
       ...ret,
       lang: 'en'
     }
+  }
+  if(componentid === 'sample'){
+    ret = {
+      ...ret,
+      data: state.entries.text[componentid],
+      lang: 'en' // Needs to force en otherwise it breaks if user doesn't have en as language
+    };
+  } else{
+    ret = {
+      ...ret,
+      data: state.entries.text.entries[componentid]
+    };
   }
   return ret;
 }
