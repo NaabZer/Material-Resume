@@ -51,9 +51,9 @@ class UserSerializer(serializers.ModelSerializer):
             if lang:
                 instance.languages.add(lang)
             else:
-                new_lang = Language.objects.create(
+                lang = Language.objects.create(
                         language=lang_data.get('language'))
-                instance.languages.add(new_lang)
+                instance.languages.add(lang)
 
             # Add empy experience entries for new language
             for exp in instance.experiences.all():
