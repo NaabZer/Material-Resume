@@ -61,8 +61,6 @@ class UserSerializer(serializers.ModelSerializer):
                         experience=exp,
                         lang=lang
                     )
-                print('exp added')
-                print(entry)
                 exp.entries.add(entry)
 
             # Add empy text entries for new language
@@ -71,8 +69,6 @@ class UserSerializer(serializers.ModelSerializer):
                         text_obj=text,
                         lang=lang
                     )
-                print('text added')
-                print(entry)
                 text.entries.add(entry)
 
         # Check if old language has been deleted
@@ -80,11 +76,14 @@ class UserSerializer(serializers.ModelSerializer):
         lang_data = [lang.get('language') for lang in languages_data]
         for lang in instance.languages.all():
             if lang.language not in lang_data:
-                print("Removing {}".format(lang.language))
                 to_remove.append(lang)
 
         for remove_lang in to_remove:
             instance.languages.remove(remove_lang)
+            for exp in instance.experiences.all():
+                exp.entries.filter(lang=remove_lang).delete()
+            for text in instance.texts.all():
+                text.entries.filter(lang=remove_lang).delete()
 
         return super(UserSerializer, self).update(instance,
                                                   validated_data)
