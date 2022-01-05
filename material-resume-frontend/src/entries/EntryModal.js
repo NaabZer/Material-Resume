@@ -16,7 +16,7 @@ class EntryModal extends React.Component {
   constructor(props){
     super(props)
 
-    this.state = {open: false, lang: this.props.languages[0].language}
+    this.state = {open: false, lang_id: "0"}
     this.formRef = React.createRef();
   }
 
@@ -30,7 +30,6 @@ class EntryModal extends React.Component {
     const values = this.formRef.current.getValues();
     if(this.props.match.params.entryid){
       // If edit
-      
       this.props.editEntry(this.props.match.params.entryid,
                            this.props.match.params.type,
                            values)
@@ -40,6 +39,17 @@ class EntryModal extends React.Component {
     this.props.history.goBack();
   }
 
+  _handleOnSubmit = (e) => {
+    // If on last language, submit
+    if (this.state.lang_id === (this.props.languages.length - 1).toString()) {
+      console.log('last')
+      this.submit(e);
+    } else {
+      console.log('not last')
+      e.preventDefault();
+      this.setState({lang_id: (parseInt(this.state.lang_id) + 1).toString()})
+    }
+  }
 
 
   render(){
@@ -58,10 +68,13 @@ class EntryModal extends React.Component {
     }
     const Form = getEntryFormFromType(type);
 
-    const langOptions = languages.map(lang_obj => (
-      lang_obj.language
+    const langOptions = languages.map((lang_obj, index) => (
+      {
+        label: lang_obj.language,
+        value: index,
+      }
     ))
-
+    console.log(this.state.lang_id)
     return(
       <Modal
         open={true}
@@ -89,26 +102,49 @@ class EntryModal extends React.Component {
             label="Language"
             enhanced
             options={langOptions} 
-            value={this.state.lang}
-            onChange={(e) => this.setState({lang: e.currentTarget.value})}
+            value={this.state.lang_id}
+            onChange={(e) => this.setState({lang_id: e.currentTarget.value})}
           />
         </div>
-        <form onSubmit={(e) => this.submit(e)}>
+        <form onSubmit={(e) => this._handleOnSubmit(e)}>
           <Form
             ref={this.formRef}
             entry={formEntry}
-            lang={this.state.lang}
+            lang={languages[parseInt(this.state.lang_id)].language}
           />
           <div
             style={{marginTop: '8px', display: 'flex', justifyContent:'space-between'}}
           >
-            <Button
-              raised
-              type='submit'
-              style={{order: '2'}}
-            >
-              Save
-            </Button>
+            {this.state.lang_id !== (this.props.languages.length - 1).toString() ?
+              // Render next language with enter click as default if not at last language
+              <React.Fragment>
+                <Button
+                  raised
+                  type='submit'
+                  style={{order: '3'}}
+              >
+                  Next language
+                </Button>
+                <Button
+                  raised
+                  type='button'
+                  onClick={this.submit}
+                  style={{order: '2'}}
+                >
+                  Save
+                </Button>
+              </React.Fragment>
+              : // Else render only save button, as default press
+              <React.Fragment>
+                <Button
+                  raised
+                  type='submit'
+                  style={{order: '2'}}
+                >
+                  Save
+                </Button>
+              </React.Fragment>
+            }
             <Button
               raised
               danger
