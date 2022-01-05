@@ -28,7 +28,6 @@ class EntryModal extends React.Component {
   submit = (e) =>{
     e.preventDefault();
     const values = this.formRef.current.getValues();
-    console.log(values)
     if(this.props.match.params.entryid){
       // If edit
       
@@ -44,6 +43,7 @@ class EntryModal extends React.Component {
 
 
   render(){
+    const { languages } = this.props;
     const type = this.props.match.params.type
     var uppercaseType = type.charAt(0).toUpperCase() + type.slice(1);
     var entryString = 'New'
@@ -51,8 +51,17 @@ class EntryModal extends React.Component {
     if(this.props.match.params.entryid){
       entryString = 'Edit'
       formEntry = this.props.entries[type]['entries'][this.props.match.params.entryid]
+    } else {
+      formEntry.entries = Object.assign({}, ...languages.map(lang_obj => (
+        {[lang_obj.language]: Object.assign({}, formEntry.entries['en'])}
+      )));
     }
     const Form = getEntryFormFromType(type);
+
+    const langOptions = languages.map(lang_obj => (
+      lang_obj.language
+    ))
+
     return(
       <Modal
         open={true}
@@ -79,7 +88,7 @@ class EntryModal extends React.Component {
           <Select
             label="Language"
             enhanced
-            options={['sv', 'en']} 
+            options={langOptions} 
             value={this.state.lang}
             onChange={(e) => this.setState({lang: e.currentTarget.value})}
           />
@@ -118,8 +127,10 @@ class EntryModal extends React.Component {
 
 
 const mapStateToProps = (state, props) => {
+  const languages = (state.user.user && state.user.user.languages) || [{language: 'en'}];
   return({
-    entries: state.entries
+    entries: state.entries,
+    languages: languages,
   })
 }
 

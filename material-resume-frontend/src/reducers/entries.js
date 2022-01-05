@@ -18,7 +18,6 @@ const initialState = {
     initial:{
       id: 'initial',
       entries:{
-        sv: {'text': ""},
         en: {'text': ""},
       }
     },
@@ -38,11 +37,6 @@ const initialState = {
       start: "",
       end: "",
       entries:{
-        sv:{
-          title: "",
-          location: "",
-          description: ""
-        },
         en:{
           title: "",
           location: "",
